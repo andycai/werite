@@ -1,0 +1,21 @@
+app:
+  name: "werite"
+  version: 1 # 0=debug 1=release
+  cacheDir: "./cache/"
+httpserver:
+  addr: ":8888"
+log:
+  dir: "./log/"
+db:
+  type: "sqlite"
+  # dsn: "devel:i18n@tcp(127.0.0.1:3306)/werite_db?timeout=5s&readTimeout=5s&writeTimeout=5s&parseTime=true&loc=Local&charset=utf8,utf8mb4"
+  dsn: "./werite.db"
+  active: 200
+  idle: 10
+  idletimeout: 345600
+  debug: true
+redis:
+  # 发布消息 的redis地址
+  addr: "127.0.0.1:6379"
+  password: "i18n!@#"
+  db: 0
