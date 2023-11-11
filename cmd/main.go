@@ -1,17 +1,26 @@
 package main
 
 import (
+	"path/filepath"
+
 	"github.com/andycai/werite/conf"
 	"github.com/andycai/werite/library/database/gorm"
 	"github.com/andycai/werite/log"
 	"github.com/andycai/werite/v2/dao"
+	"github.com/andycai/werite/v2/middleware"
+	"github.com/andycai/werite/v2/router"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
 	"github.com/spf13/viper"
 )
 
 func main() {
-	app := fiber.New()
+	engine := html.New("./views", ".html")
+
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
 	log.Setup()
 	conf.ReadConf() // 读取配置
 	dbType := viper.GetString("db.type")
@@ -21,9 +30,11 @@ func main() {
 		panic(err)
 	}
 	dao.SetDefault(db)
-	// middleware.Use(app) // 初始化中间件
-	// router.Setup(app)   // 初始化路由
-	// system.Cache.InitIds() // 初始化数据表的 ID 到缓存
+	middleware.Use(app) // 初始化中间件
+
+	app.Static("/static", filepath.Join("", "assets"))
+
+	router.Setup(app) // 初始化路由
 
 	err = app.Listen(viper.GetString("httpserver.addr"))
 	if err != nil {
