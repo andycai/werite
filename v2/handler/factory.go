@@ -3,7 +3,6 @@ package handler
 import (
 	"fmt"
 
-	"github.com/andycai/werite/enum"
 	"github.com/spf13/cast"
 
 	"github.com/gofiber/fiber/v2"
@@ -44,22 +43,6 @@ func I64(c *Ctx, key string, defaultValue ...string) int64 {
 	return cast.ToInt64(c.Params(key, defaultValue...))
 }
 
-// Ok successful response
-func Ok(c *Ctx, data interface{}) error {
-	return c.JSON(fiber.Map{
-		"code": enum.Success,
-		"data": data,
-	})
-}
-
-// Push push response
-func Push(c *Ctx, code int) error {
-	return c.JSON(fiber.Map{
-		"code": code,
-		"msg":  enum.CodeText(code),
-	})
-}
-
 // Msg push common response
 func Msg(c *Ctx, code int, msg string) error {
 	return c.JSON(fiber.Map{
@@ -68,7 +51,6 @@ func Msg(c *Ctx, code int, msg string) error {
 	})
 }
 
-func Render(c *Ctx, name string, bind interface{}, layouts ...string) error {
-	theme := "andy"
-	return c.Render(fmt.Sprintf("%s/%s", theme, name), bind, layouts...)
+func render(c *Ctx, name string, bind interface{}, layouts ...string) error {
+	return c.Render(fmt.Sprintf("%s", name), bind, layouts...)
 }

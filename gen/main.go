@@ -18,7 +18,7 @@ func main() {
 	})
 
 	// gormdb, _ := gorm.Open(mysql.Open("root:123456@(127.0.0.1:3306)/werite?charset=utf8mb4&parseTime=true&loc=Local"))
-	gormdb, _ := gorm.Open(sqlite.Open("./bin/werite.db"))
+	gormdb, _ := gorm.Open(sqlite.Open("./werite.db"))
 	g.UseDB(gormdb)
 
 	g.ApplyBasic(g.GenerateAllTable()...)

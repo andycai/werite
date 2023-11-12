@@ -1,0 +1,35 @@
+<div id="feed-post-preview" hx-swap-oob="true">
+  {{ if .HasArticles }}
+    {{ range $article := .Articles }}
+
+    <div class="post-preview">
+      <div class="post-meta">
+        <div class="info">
+          <span class="date">{{ $article.CreatedAt.Format "2006-01-02" }}</span>
+        </div>
+      </div>
+      <a href="/articles/{{ $article.Slug }}"
+        hx-push-url="/articles/{{ $article.Slug }}"
+        hx-get="/htmx/articles/{{ $article.Slug }}"
+        hx-target="#app-body"
+        class="preview-link"
+      >
+        <h1>{{ $article.Title }}</h1>
+        <p>{{ $article.Description }}</p>
+
+        <div class="m-t-1">
+          <span>Read more...</span>
+        </div>
+      </a>
+    </div>
+    {{ end }}
+  {{ end }}
+  
+  {{ if not .HasArticles }}
+  <div class="post-preview">
+    <div class="alert alert-warning" role="alert">
+      No articles are here... yet.
+    </div>
+  </div>
+  {{ end }}
+</div>

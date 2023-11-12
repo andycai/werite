@@ -13,7 +13,7 @@ var Admin = new(AdminHandler)
 //#region handler
 
 // Login login to admin
-func (uh AdminHandler) Login(c *Ctx) error {
+func (ah AdminHandler) Login(c *Ctx) error {
 	return nil
 }
 

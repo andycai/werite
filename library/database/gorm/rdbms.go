@@ -25,6 +25,8 @@ import (
 //   driver: clickhouse
 //   source: tcp://localhost:9000?database=dbname&username=username&password=password&read_timeout=10&write_timeout=20
 
+var db *gorm.DB
+
 // Init database init
 func InitRDBMS(name, source string) (*gorm.DB, error) {
 	var (
@@ -55,15 +57,18 @@ func InitRDBMS(name, source string) (*gorm.DB, error) {
 		&model.User{},
 		&model.Blogger{},
 		&model.Article{},
+		&model.ArticleTag{},
 		&model.Page{},
+		&model.Tag{},
 		&model.Comment{},
 		&model.Serie{},
-		// &model.Group{},
-		// &model.GroupMember{},
-		// &model.GroupApplication{},
-		// &model.Activity{},
-		// &model.ActivityUser{},
 	)
 
+	db = gormDB
+
 	return gormDB, nil
+}
+
+func Get() *gorm.DB {
+	return db
 }
