@@ -22,11 +22,12 @@ type User struct {
 	Email     string    `gorm:"column:email;not null" json:"email"`
 	Addr      string    `gorm:"column:addr;not null" json:"addr"`
 	IP        string    `gorm:"column:ip;not null" json:"ip"`
-	LoginAt   time.Time `gorm:"column:login_at;not null" json:"login_at"`
-	OfflineAt time.Time `gorm:"column:offline_at;not null" json:"offline_at"`
+	LoginAt   time.Time `gorm:"column:login_at" json:"login_at"`
+	OfflineAt time.Time `gorm:"column:offline_at" json:"offline_at"`
 	CreateAt  time.Time `gorm:"column:create_at;not null;default:current_timestamp" json:"create_at"`
 	UpdateAt  time.Time `gorm:"column:update_at;not null;default:current_timestamp" json:"update_at"`
-	DeleteAt  time.Time `gorm:"column:delete_at;not null" json:"delete_at"`
+	DeleteAt  time.Time `gorm:"column:delete_at" json:"delete_at"`
+	Name      string    `gorm:"column:name;not null" json:"name"`
 }
 
 // TableName User's table name

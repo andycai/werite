@@ -20,7 +20,7 @@ type Page struct {
 	Title     string         `gorm:"column:title;not null" json:"title"`
 	Body      string         `gorm:"column:body;not null" json:"body"`
 	IsDraft   int32          `gorm:"column:is_draft;not null" json:"is_draft"`
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;not null" json:"deleted_at"`
+	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 	UpdatedAt time.Time      `gorm:"column:updated_at;not null;default:current_timestamp" json:"updated_at"`
 	CreatedAt time.Time      `gorm:"column:created_at;not null;default:current_timestamp" json:"created_at"`
 }
