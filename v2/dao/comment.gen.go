@@ -29,8 +29,7 @@ func newComment(db *gorm.DB, opts ...gen.DOOption) comment {
 	_comment.ALL = field.NewAsterisk(tableName)
 	_comment.ID = field.NewInt32(tableName, "id")
 	_comment.UserID = field.NewInt32(tableName, "user_id")
-	_comment.Author = field.NewString(tableName, "author")
-	_comment.Text = field.NewString(tableName, "text")
+	_comment.Body = field.NewString(tableName, "body")
 	_comment.Email = field.NewString(tableName, "email")
 	_comment.IP = field.NewString(tableName, "ip")
 	_comment.DeletedAt = field.NewField(tableName, "deleted_at")
@@ -48,8 +47,7 @@ type comment struct {
 	ALL       field.Asterisk
 	ID        field.Int32
 	UserID    field.Int32
-	Author    field.String
-	Text      field.String
+	Body      field.String
 	Email     field.String
 	IP        field.String
 	DeletedAt field.Field
@@ -73,8 +71,7 @@ func (c *comment) updateTableName(table string) *comment {
 	c.ALL = field.NewAsterisk(table)
 	c.ID = field.NewInt32(table, "id")
 	c.UserID = field.NewInt32(table, "user_id")
-	c.Author = field.NewString(table, "author")
-	c.Text = field.NewString(table, "text")
+	c.Body = field.NewString(table, "body")
 	c.Email = field.NewString(table, "email")
 	c.IP = field.NewString(table, "ip")
 	c.DeletedAt = field.NewField(table, "deleted_at")
@@ -96,11 +93,10 @@ func (c *comment) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *comment) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 9)
+	c.fieldMap = make(map[string]field.Expr, 8)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["user_id"] = c.UserID
-	c.fieldMap["author"] = c.Author
-	c.fieldMap["text"] = c.Text
+	c.fieldMap["body"] = c.Body
 	c.fieldMap["email"] = c.Email
 	c.fieldMap["ip"] = c.IP
 	c.fieldMap["deleted_at"] = c.DeletedAt

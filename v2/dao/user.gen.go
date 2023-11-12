@@ -30,11 +30,7 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.ID = field.NewInt32(tableName, "id")
 	_user.Username = field.NewString(tableName, "username")
 	_user.Password = field.NewString(tableName, "password")
-	_user.Scores = field.NewInt32(tableName, "scores")
 	_user.Token = field.NewString(tableName, "token")
-	_user.WxToken = field.NewString(tableName, "wx_token")
-	_user.WxNick = field.NewString(tableName, "wx_nick")
-	_user.Nick = field.NewString(tableName, "nick")
 	_user.Avatar = field.NewString(tableName, "avatar")
 	_user.Gender = field.NewInt32(tableName, "gender")
 	_user.Phone = field.NewString(tableName, "phone")
@@ -59,11 +55,7 @@ type user struct {
 	ID        field.Int32
 	Username  field.String
 	Password  field.String
-	Scores    field.Int32
 	Token     field.String
-	WxToken   field.String
-	WxNick    field.String
-	Nick      field.String
 	Avatar    field.String
 	Gender    field.Int32
 	Phone     field.String
@@ -94,11 +86,7 @@ func (u *user) updateTableName(table string) *user {
 	u.ID = field.NewInt32(table, "id")
 	u.Username = field.NewString(table, "username")
 	u.Password = field.NewString(table, "password")
-	u.Scores = field.NewInt32(table, "scores")
 	u.Token = field.NewString(table, "token")
-	u.WxToken = field.NewString(table, "wx_token")
-	u.WxNick = field.NewString(table, "wx_nick")
-	u.Nick = field.NewString(table, "nick")
 	u.Avatar = field.NewString(table, "avatar")
 	u.Gender = field.NewInt32(table, "gender")
 	u.Phone = field.NewString(table, "phone")
@@ -126,15 +114,11 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (u *user) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 19)
+	u.fieldMap = make(map[string]field.Expr, 15)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["username"] = u.Username
 	u.fieldMap["password"] = u.Password
-	u.fieldMap["scores"] = u.Scores
 	u.fieldMap["token"] = u.Token
-	u.fieldMap["wx_token"] = u.WxToken
-	u.fieldMap["wx_nick"] = u.WxNick
-	u.fieldMap["nick"] = u.Nick
 	u.fieldMap["avatar"] = u.Avatar
 	u.fieldMap["gender"] = u.Gender
 	u.fieldMap["phone"] = u.Phone

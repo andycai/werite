@@ -16,8 +16,7 @@ const TableNameComment = "comment"
 type Comment struct {
 	ID        int32          `gorm:"column:id;primaryKey" json:"id"`
 	UserID    int32          `gorm:"column:user_id;not null" json:"user_id"`
-	Author    string         `gorm:"column:author;not null" json:"author"`
-	Text      string         `gorm:"column:text;not null" json:"text"`
+	Body      string         `gorm:"column:body;not null" json:"body"`
 	Email     string         `gorm:"column:email;not null" json:"email"`
 	IP        string         `gorm:"column:ip;not null" json:"ip"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;not null" json:"deleted_at"`

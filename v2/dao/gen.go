@@ -16,59 +16,69 @@ import (
 )
 
 var (
-	Q       = new(Query)
-	Article *article
-	Blogger *blogger
-	Comment *comment
-	Page    *page
-	Serie   *serie
-	User    *user
+	Q          = new(Query)
+	Article    *article
+	ArticleTag *articleTag
+	Blogger    *blogger
+	Comment    *comment
+	Page       *page
+	Serie      *serie
+	Tag        *tag
+	User       *user
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
 	Article = &Q.Article
+	ArticleTag = &Q.ArticleTag
 	Blogger = &Q.Blogger
 	Comment = &Q.Comment
 	Page = &Q.Page
 	Serie = &Q.Serie
+	Tag = &Q.Tag
 	User = &Q.User
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:      db,
-		Article: newArticle(db, opts...),
-		Blogger: newBlogger(db, opts...),
-		Comment: newComment(db, opts...),
-		Page:    newPage(db, opts...),
-		Serie:   newSerie(db, opts...),
-		User:    newUser(db, opts...),
+		db:         db,
+		Article:    newArticle(db, opts...),
+		ArticleTag: newArticleTag(db, opts...),
+		Blogger:    newBlogger(db, opts...),
+		Comment:    newComment(db, opts...),
+		Page:       newPage(db, opts...),
+		Serie:      newSerie(db, opts...),
+		Tag:        newTag(db, opts...),
+		User:       newUser(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	Article article
-	Blogger blogger
-	Comment comment
-	Page    page
-	Serie   serie
-	User    user
+	Article    article
+	ArticleTag articleTag
+	Blogger    blogger
+	Comment    comment
+	Page       page
+	Serie      serie
+	Tag        tag
+	User       user
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:      db,
-		Article: q.Article.clone(db),
-		Blogger: q.Blogger.clone(db),
-		Comment: q.Comment.clone(db),
-		Page:    q.Page.clone(db),
-		Serie:   q.Serie.clone(db),
-		User:    q.User.clone(db),
+		db:         db,
+		Article:    q.Article.clone(db),
+		ArticleTag: q.ArticleTag.clone(db),
+		Blogger:    q.Blogger.clone(db),
+		Comment:    q.Comment.clone(db),
+		Page:       q.Page.clone(db),
+		Serie:      q.Serie.clone(db),
+		Tag:        q.Tag.clone(db),
+		User:       q.User.clone(db),
 	}
 }
 
@@ -82,33 +92,39 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:      db,
-		Article: q.Article.replaceDB(db),
-		Blogger: q.Blogger.replaceDB(db),
-		Comment: q.Comment.replaceDB(db),
-		Page:    q.Page.replaceDB(db),
-		Serie:   q.Serie.replaceDB(db),
-		User:    q.User.replaceDB(db),
+		db:         db,
+		Article:    q.Article.replaceDB(db),
+		ArticleTag: q.ArticleTag.replaceDB(db),
+		Blogger:    q.Blogger.replaceDB(db),
+		Comment:    q.Comment.replaceDB(db),
+		Page:       q.Page.replaceDB(db),
+		Serie:      q.Serie.replaceDB(db),
+		Tag:        q.Tag.replaceDB(db),
+		User:       q.User.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	Article IArticleDo
-	Blogger IBloggerDo
-	Comment ICommentDo
-	Page    IPageDo
-	Serie   ISerieDo
-	User    IUserDo
+	Article    IArticleDo
+	ArticleTag IArticleTagDo
+	Blogger    IBloggerDo
+	Comment    ICommentDo
+	Page       IPageDo
+	Serie      ISerieDo
+	Tag        ITagDo
+	User       IUserDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Article: q.Article.WithContext(ctx),
-		Blogger: q.Blogger.WithContext(ctx),
-		Comment: q.Comment.WithContext(ctx),
-		Page:    q.Page.WithContext(ctx),
-		Serie:   q.Serie.WithContext(ctx),
-		User:    q.User.WithContext(ctx),
+		Article:    q.Article.WithContext(ctx),
+		ArticleTag: q.ArticleTag.WithContext(ctx),
+		Blogger:    q.Blogger.WithContext(ctx),
+		Comment:    q.Comment.WithContext(ctx),
+		Page:       q.Page.WithContext(ctx),
+		Serie:      q.Serie.WithContext(ctx),
+		Tag:        q.Tag.WithContext(ctx),
+		User:       q.User.WithContext(ctx),
 	}
 }
 

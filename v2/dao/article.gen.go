@@ -29,13 +29,10 @@ func newArticle(db *gorm.DB, opts ...gen.DOOption) article {
 	_article.ALL = field.NewAsterisk(tableName)
 	_article.ID = field.NewInt32(tableName, "id")
 	_article.UserID = field.NewInt32(tableName, "user_id")
-	_article.Author = field.NewString(tableName, "author")
 	_article.Slug = field.NewString(tableName, "slug")
 	_article.Title = field.NewString(tableName, "title")
-	_article.Count_ = field.NewInt32(tableName, "count")
-	_article.Content = field.NewString(tableName, "content")
-	_article.SerieID = field.NewInt32(tableName, "serie_id")
-	_article.Tags = field.NewString(tableName, "tags")
+	_article.Description = field.NewString(tableName, "description")
+	_article.Body = field.NewString(tableName, "body")
 	_article.IsDraft = field.NewInt32(tableName, "is_draft")
 	_article.DeletedAt = field.NewField(tableName, "deleted_at")
 	_article.UpdatedAt = field.NewTime(tableName, "updated_at")
@@ -49,20 +46,17 @@ func newArticle(db *gorm.DB, opts ...gen.DOOption) article {
 type article struct {
 	articleDo
 
-	ALL       field.Asterisk
-	ID        field.Int32
-	UserID    field.Int32
-	Author    field.String
-	Slug      field.String
-	Title     field.String
-	Count_    field.Int32
-	Content   field.String
-	SerieID   field.Int32
-	Tags      field.String
-	IsDraft   field.Int32
-	DeletedAt field.Field
-	UpdatedAt field.Time
-	CreatedAt field.Time
+	ALL         field.Asterisk
+	ID          field.Int32
+	UserID      field.Int32
+	Slug        field.String
+	Title       field.String
+	Description field.String
+	Body        field.String
+	IsDraft     field.Int32
+	DeletedAt   field.Field
+	UpdatedAt   field.Time
+	CreatedAt   field.Time
 
 	fieldMap map[string]field.Expr
 }
@@ -81,13 +75,10 @@ func (a *article) updateTableName(table string) *article {
 	a.ALL = field.NewAsterisk(table)
 	a.ID = field.NewInt32(table, "id")
 	a.UserID = field.NewInt32(table, "user_id")
-	a.Author = field.NewString(table, "author")
 	a.Slug = field.NewString(table, "slug")
 	a.Title = field.NewString(table, "title")
-	a.Count_ = field.NewInt32(table, "count")
-	a.Content = field.NewString(table, "content")
-	a.SerieID = field.NewInt32(table, "serie_id")
-	a.Tags = field.NewString(table, "tags")
+	a.Description = field.NewString(table, "description")
+	a.Body = field.NewString(table, "body")
 	a.IsDraft = field.NewInt32(table, "is_draft")
 	a.DeletedAt = field.NewField(table, "deleted_at")
 	a.UpdatedAt = field.NewTime(table, "updated_at")
@@ -108,16 +99,13 @@ func (a *article) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *article) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 13)
+	a.fieldMap = make(map[string]field.Expr, 10)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["user_id"] = a.UserID
-	a.fieldMap["author"] = a.Author
 	a.fieldMap["slug"] = a.Slug
 	a.fieldMap["title"] = a.Title
-	a.fieldMap["count"] = a.Count_
-	a.fieldMap["content"] = a.Content
-	a.fieldMap["serie_id"] = a.SerieID
-	a.fieldMap["tags"] = a.Tags
+	a.fieldMap["description"] = a.Description
+	a.fieldMap["body"] = a.Body
 	a.fieldMap["is_draft"] = a.IsDraft
 	a.fieldMap["deleted_at"] = a.DeletedAt
 	a.fieldMap["updated_at"] = a.UpdatedAt

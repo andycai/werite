@@ -29,12 +29,9 @@ func newPage(db *gorm.DB, opts ...gen.DOOption) page {
 	_page.ALL = field.NewAsterisk(tableName)
 	_page.ID = field.NewInt32(tableName, "id")
 	_page.UserID = field.NewInt32(tableName, "user_id")
-	_page.Author = field.NewString(tableName, "author")
 	_page.Slug = field.NewString(tableName, "slug")
 	_page.Title = field.NewString(tableName, "title")
-	_page.Count_ = field.NewInt32(tableName, "count")
-	_page.Content = field.NewString(tableName, "content")
-	_page.Tags = field.NewString(tableName, "tags")
+	_page.Body = field.NewString(tableName, "body")
 	_page.IsDraft = field.NewInt32(tableName, "is_draft")
 	_page.DeletedAt = field.NewField(tableName, "deleted_at")
 	_page.UpdatedAt = field.NewTime(tableName, "updated_at")
@@ -51,12 +48,9 @@ type page struct {
 	ALL       field.Asterisk
 	ID        field.Int32
 	UserID    field.Int32
-	Author    field.String
 	Slug      field.String
 	Title     field.String
-	Count_    field.Int32
-	Content   field.String
-	Tags      field.String
+	Body      field.String
 	IsDraft   field.Int32
 	DeletedAt field.Field
 	UpdatedAt field.Time
@@ -79,12 +73,9 @@ func (p *page) updateTableName(table string) *page {
 	p.ALL = field.NewAsterisk(table)
 	p.ID = field.NewInt32(table, "id")
 	p.UserID = field.NewInt32(table, "user_id")
-	p.Author = field.NewString(table, "author")
 	p.Slug = field.NewString(table, "slug")
 	p.Title = field.NewString(table, "title")
-	p.Count_ = field.NewInt32(table, "count")
-	p.Content = field.NewString(table, "content")
-	p.Tags = field.NewString(table, "tags")
+	p.Body = field.NewString(table, "body")
 	p.IsDraft = field.NewInt32(table, "is_draft")
 	p.DeletedAt = field.NewField(table, "deleted_at")
 	p.UpdatedAt = field.NewTime(table, "updated_at")
@@ -105,15 +96,12 @@ func (p *page) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *page) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 12)
+	p.fieldMap = make(map[string]field.Expr, 9)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["user_id"] = p.UserID
-	p.fieldMap["author"] = p.Author
 	p.fieldMap["slug"] = p.Slug
 	p.fieldMap["title"] = p.Title
-	p.fieldMap["count"] = p.Count_
-	p.fieldMap["content"] = p.Content
-	p.fieldMap["tags"] = p.Tags
+	p.fieldMap["body"] = p.Body
 	p.fieldMap["is_draft"] = p.IsDraft
 	p.fieldMap["deleted_at"] = p.DeletedAt
 	p.fieldMap["updated_at"] = p.UpdatedAt

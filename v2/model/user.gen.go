@@ -15,11 +15,7 @@ type User struct {
 	ID        int32     `gorm:"column:id;primaryKey" json:"id"`
 	Username  string    `gorm:"column:username;not null" json:"username"`
 	Password  string    `gorm:"column:password;not null;default:123456" json:"password"`
-	Scores    int32     `gorm:"column:scores;not null" json:"scores"`
 	Token     string    `gorm:"column:token;not null" json:"token"`
-	WxToken   string    `gorm:"column:wx_token;not null" json:"wx_token"`
-	WxNick    string    `gorm:"column:wx_nick;not null" json:"wx_nick"`
-	Nick      string    `gorm:"column:nick;not null" json:"nick"`
 	Avatar    string    `gorm:"column:avatar;not null" json:"avatar"`
 	Gender    int32     `gorm:"column:gender;not null;default:1" json:"gender"`
 	Phone     string    `gorm:"column:phone;not null" json:"phone"`
