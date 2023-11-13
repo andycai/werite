@@ -14,7 +14,7 @@ func init() {
 func registerAppNoCheckRouter(r fiber.Router) {
 	// 注册
 	r.Get("/", handler.App.HomePage)
-	r.Get("/post/:slug", handler.App.Article)
+	r.Get("/articles/:slug", handler.App.ArticleDetailPage)
 	r.Get("/page/:slug", handler.App.Page)
 	r.Get("/series.html", handler.App.Series)
 	r.Get("/archives.html", handler.App.Archive)

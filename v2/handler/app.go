@@ -1,8 +1,13 @@
 package handler
 
 import (
+	"errors"
+
+	"github.com/andycai/werite/library/authentication"
+	database "github.com/andycai/werite/library/database/gorm"
 	"github.com/andycai/werite/v2/model"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type AppHandler struct{}
@@ -33,8 +38,42 @@ func (ah AppHandler) HomePage(c *Ctx) error {
 }
 
 // HomePage render home page
-func (ah AppHandler) Article(c *Ctx) error {
-	return nil
+func (ah AppHandler) ArticleDetailPage(c *Ctx) error {
+	var article model.Article
+	var authenticatedUser model.User
+	isSelf := false
+	isFollowed := false
+
+	isAuthenticated, userID := authentication.AuthGet(c)
+
+	db := database.Get()
+
+	err := db.Model(&article).
+		Where("slug = ?", c.Params("slug")).
+		Find(&article).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.Redirect("/")
+		}
+	}
+
+	if isAuthenticated {
+		db.Model(&authenticatedUser).
+			Where("id = ?", userID).
+			First(&authenticatedUser)
+	}
+
+	return c.Render("articles/show", fiber.Map{
+		"PageTitle":          article.Title + " — Werite",
+		"Article":            article,
+		"FiberCtx":           c,
+		"IsOob":              false,
+		"IsSelf":             isSelf,
+		"IsFollowed":         isFollowed,
+		"IsArticleFavorited": false,
+		"AuthenticatedUser":  authenticatedUser,
+	}, "layouts/app")
 }
 
 // HomePage render home page

@@ -2,6 +2,7 @@ package renderer
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/andycai/werite/library/authentication"
 	"github.com/gofiber/fiber/v2"
@@ -39,6 +40,10 @@ func ViewEngineStart() *html.Engine {
 			dict[key] = values[i+1]
 		}
 		return dict, nil
+	})
+
+	viewEngine.AddFunc("join", func(a []string, sep string) string {
+		return strings.Join(a, sep)
 	})
 
 	return viewEngine

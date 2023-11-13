@@ -17,8 +17,9 @@ import (
 )
 
 func main() {
+	engine := renderer.ViewEngineStart()
 	app := fiber.New(fiber.Config{
-		Views: renderer.ViewEngineStart(),
+		Views: engine,
 	})
 
 	log.Setup()

@@ -1,12 +1,15 @@
 package handler
 
 import (
+	"errors"
 	"math"
 
 	"github.com/andycai/werite/library/authentication"
+	database "github.com/andycai/werite/library/database/gorm"
 	"github.com/andycai/werite/v2/dao"
 	"github.com/andycai/werite/v2/model"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type HTMXHandler struct{}
@@ -22,6 +25,27 @@ var HTMX = new(HTMXHandler)
 //#region handler
 
 // HomeTagList tag list
+func (hh HTMXHandler) HomePage(c *Ctx) error {
+	var authenticatedUser model.User
+
+	isAuthenticated, userID := authentication.AuthGet(c)
+
+	if isAuthenticated {
+		db := database.Get()
+		db.Model(&authenticatedUser).
+			Where("id = ?", userID).
+			First(&authenticatedUser)
+	}
+
+	return render(c, "home/htmx-home-page", fiber.Map{
+		"PageTitle":         "Home",
+		"NavBarActive":      "home",
+		"FiberCtx":          c,
+		"AuthenticatedUser": authenticatedUser,
+	}, "layouts/app-htmx")
+}
+
+// HomeTagList tag list
 func (hh HTMXHandler) HomeTagList(c *Ctx) error {
 	var (
 		tags    []model.Tag
@@ -33,7 +57,7 @@ func (hh HTMXHandler) HomeTagList(c *Ctx) error {
 	}, "layouts/app-htmx")
 }
 
-// HomeGlobalFeed tag list
+// HomeGlobalFeed global feed
 func (hh HTMXHandler) HomeGlobalFeed(c *Ctx) error {
 	var (
 		articles        []model.Article
@@ -107,6 +131,46 @@ func (hh HTMXHandler) HomeGlobalFeed(c *Ctx) error {
 		"HasPagination":       hasPagination,
 		"CurrentPagination":   page + 1,
 		"PathPagination":      "global-feed",
+	}, "layouts/app-htmx")
+}
+
+// HomeArticleDetailPage detail page
+func (hh HTMXHandler) HomeArticleDetailPage(c *Ctx) error {
+	var article model.Article
+	isSelf := false
+	isFollowed := false
+	var authenticatedUser model.User
+
+	isAuthenticated, userID := authentication.AuthGet(c)
+
+	db := database.Get()
+
+	if isAuthenticated {
+		db.Model(&authenticatedUser).
+			Where("id = ?", userID).
+			First(&authenticatedUser)
+	}
+
+	err := db.Model(&article).
+		Where("slug = ?", c.Params("slug")).
+		Find(&article).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.Redirect("/")
+		}
+	}
+
+	return c.Render("articles/htmx-article-page", fiber.Map{
+		"PageTitle":          article.Title,
+		"NavBarActive":       "none",
+		"Article":            article,
+		"IsOob":              false,
+		"IsSelf":             isSelf,
+		"IsFollowed":         isFollowed,
+		"IsArticleFavorited": false,
+		"AuthenticatedUser":  authenticatedUser,
+		"FiberCtx":           c,
 	}, "layouts/app-htmx")
 }
 
