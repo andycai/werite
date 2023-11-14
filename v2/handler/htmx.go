@@ -5,7 +5,7 @@ import (
 	"math"
 
 	"github.com/andycai/werite/library/authentication"
-	database "github.com/andycai/werite/library/database/gorm"
+	"github.com/andycai/werite/library/database"
 	"github.com/andycai/werite/v2/dao"
 	"github.com/andycai/werite/v2/model"
 	"github.com/gofiber/fiber/v2"
@@ -16,13 +16,68 @@ type HTMXHandler struct{}
 
 var HTMX = new(HTMXHandler)
 
-//#region private methods
+func (hh HTMXHandler) SignInPage(c *fiber.Ctx) error {
+	return c.Render("sign-in/htmx-sign-in-page", fiber.Map{
+		"PageTitle":    "Sign In",
+		"NavBarActive": "sign-in",
+		"FiberCtx":     c,
+	}, "layouts/app-htmx")
+}
 
-//
+func (hh HTMXHandler) SignInAction(c *fiber.Ctx) error {
+	var user model.User
+	email := c.FormValue("email")
+	password := c.FormValue("password")
 
-//#endregion
+	if email == "" || password == "" {
+		return c.Render("sign-in/partials/sign-in-form", fiber.Map{
+			"Errors": []string{
+				"Email or password cannot be null.",
+			},
+			"IsOob": true,
+		}, "layouts/app-htmx")
+	}
 
-//#region handler
+	db := database.Get()
+
+	db.Model(&user)
+	err := db.Where(&model.User{Email: email}).
+		First(&user).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.Render("sign-in/partials/sign-in-form", fiber.Map{
+				"Errors": []string{
+					"Email and password did not match.",
+				},
+			}, "layouts/app-htmx")
+		}
+	}
+
+	if !CheckPassword(user.Password, password) {
+		return c.Render("sign-in/partials/sign-in-form", fiber.Map{
+			"Errors": []string{
+				"Email and password did not match.",
+			},
+		}, "layouts/app-htmx")
+	}
+
+	authentication.AuthStore(c, uint(user.ID))
+
+	return HTMXRedirectTo("/", "/htmx/home", c)
+}
+
+func (hh HTMXHandler) SignOut(c *fiber.Ctx) error {
+
+	isAuthenticated, _ := authentication.AuthGet(c)
+	if !isAuthenticated {
+		return c.Redirect("/")
+	}
+
+	authentication.AuthDestroy(c)
+
+	return HTMXRedirectTo("/", "/htmx/home", c)
+}
 
 // HomeTagList tag list
 func (hh HTMXHandler) HomePage(c *Ctx) error {
@@ -173,5 +228,3 @@ func (hh HTMXHandler) HomeArticleDetailPage(c *Ctx) error {
 		"FiberCtx":           c,
 	}, "layouts/app-htmx")
 }
-
-//#endregion

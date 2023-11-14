@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cast"
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -49,6 +50,27 @@ func Msg(c *Ctx, code int, msg string) error {
 		"code": code,
 		"msg":  msg,
 	})
+}
+
+func HashPassword(password string) string {
+	h, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(h)
+}
+
+func CheckPassword(password, plain string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(password), []byte(plain))
+	return err == nil
+}
+
+func HTMXRedirectTo(HXURL string, HXGETURL string, c *fiber.Ctx) error {
+	c.Append("HX-Replace-Url", HXURL)
+	c.Append("HX-Reswap", "none")
+
+	return c.Render("components/redirect", fiber.Map{
+		"HXGet":     HXGETURL,
+		"HXTarget":  "#app-body",
+		"HXTrigger": "load",
+	}, "layouts/app-htmx")
 }
 
 func render(c *Ctx, name string, bind interface{}, layouts ...string) error {

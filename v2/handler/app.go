@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/andycai/werite/library/authentication"
-	database "github.com/andycai/werite/library/database/gorm"
+	"github.com/andycai/werite/library/database"
 	"github.com/andycai/werite/v2/model"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -22,14 +22,48 @@ var App = new(AppHandler)
 
 //#region handlers
 
+func (ah AppHandler) SignIn(c *fiber.Ctx) error {
+
+	isAuthenticated, _ := authentication.AuthGet(c)
+	if isAuthenticated {
+		return c.Redirect("/")
+	}
+
+	return render(c, "sign-in/index", fiber.Map{
+		"PageTitle":    "Sign In — Werite",
+		"FiberCtx":     c,
+		"NavBarActive": "sign-in",
+	}, "layouts/app")
+}
+
+func (ah AppHandler) SignUp(c *fiber.Ctx) error {
+
+	isAuthenticated, _ := authentication.AuthGet(c)
+	if isAuthenticated {
+		return c.Redirect("/")
+	}
+
+	return render(c, "sign-up/index", fiber.Map{
+		"PageTitle":    "Sign Up — Werite",
+		"FiberCtx":     c,
+		"NavBarActive": "sign-up",
+	}, "layouts/app")
+}
+
 // HomePage render home page
 func (ah AppHandler) HomePage(c *Ctx) error {
 	var authenticatedUser model.User
 
-	// isAuthenticated, userID := authentication.AuthGet(c)
+	isAuthenticated, userID := authentication.AuthGet(c)
+	if isAuthenticated {
+		db := database.Get()
+		db.Model(&authenticatedUser).
+			Where("id = ?", userID).
+			First(&authenticatedUser)
+	}
 
 	return render(c, "home/index", fiber.Map{
-		"PageTitle":         "Andy's Blog Home Page",
+		"PageTitle":         "Home Page - Werite",
 		"FiberCtx":          c,
 		"NavBarActive":      "home",
 		"AuthenticatedUser": authenticatedUser,
