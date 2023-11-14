@@ -5,7 +5,7 @@ import (
 
 	"github.com/andycai/werite/conf"
 	"github.com/andycai/werite/library/authentication"
-	"github.com/andycai/werite/library/database/gorm"
+	"github.com/andycai/werite/library/database"
 	"github.com/andycai/werite/library/renderer"
 	"github.com/andycai/werite/log"
 	"github.com/andycai/werite/v2/dao"
@@ -26,7 +26,7 @@ func main() {
 	conf.ReadConf()
 
 	// database open and init
-	db, err := gorm.InitRDBMS(viper.GetString("db.type"), viper.GetString("db.dsn"))
+	db, err := database.InitRDBMS(viper.GetString("db.type"), viper.GetString("db.dsn"))
 	if err != nil {
 		panic(err)
 	}
