@@ -12,13 +12,11 @@ var (
 
 func Setup(app *fiber.App) {
 	v2 := app.Group("/")
-	// 需要登录校验的路由
 	for _, f := range routerCheck {
 		f(v2)
 	}
 
 	// v2 := app.Group("/api", JWTAuthMiddleware)
-	// 不需要登录校验的路由
 	for _, f := range routerNoCheck {
 		f(v2)
 	}
