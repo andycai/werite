@@ -1,5 +1,7 @@
 package handler
 
+import "github.com/gofiber/fiber/v2"
+
 type AdminHandler struct{}
 
 var Admin = new(AdminHandler)
@@ -14,7 +16,7 @@ var Admin = new(AdminHandler)
 
 // Login login to admin
 func (ah AdminHandler) Login(c *Ctx) error {
-	return nil
+	return render(c, "admin/login", fiber.Map{})
 }
 
 //#endregion
