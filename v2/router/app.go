@@ -17,6 +17,7 @@ func registerAppNoCheckRouter(r fiber.Router) {
 
 	r.Get("/", handler.HomePage)
 	r.Get("/articles/:slug", handler.ArticleDetailPage)
+	r.Get("/pages/:slug", handler.PageDetailPage)
 	// r.Get("/page/:slug", handler.App.Page)
 	// r.Get("/series.html", handler.App.Series)
 	// r.Get("/archives.html", handler.App.Archive)
