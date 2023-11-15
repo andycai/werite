@@ -1,8 +1,10 @@
 # Werite = We Write
 
-Werite is a simple CMS using golang and HTMX. Let's write anything you want!
+Werite is an open source content management system (CMS). Let's write anything you want!
 
 Golang + Go Fiber + HTMX
+
+Module include: 
 
 - Article
 - Page
