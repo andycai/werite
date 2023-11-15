@@ -4,7 +4,6 @@ import (
 	"math"
 
 	"github.com/andycai/werite/library/authentication"
-	"github.com/andycai/werite/v2/dao"
 	"github.com/andycai/werite/v2/model"
 	"github.com/andycai/werite/v2/system"
 	"github.com/gofiber/fiber/v2"
@@ -77,21 +76,8 @@ func HTMXHomeGlobalFeed(c *Ctx) error {
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
-	a := dao.Article
-	count, _ = a.Count()
-	a.Offset(page * numPerPage).Limit(numPerPage).Order(a.CreatedAt.Desc()).Scan(&articles)
-
-	// db := database.Get()
-	// db.Debug().Model(&articles).
-	// 	// Preload("Tags", func(db *gorm.DB) *gorm.DB {
-	// 	// return db.Order("tags.name asc")
-	// 	// }).
-	// 	Limit(numPerPage).
-	// 	Offset(page * numPerPage).
-	// 	Order("created_at desc").
-	// 	Find(&articles)
-
-	// db.Model(&articles).Count(&count)
+	count = system.Article.Count()
+	articles = system.Article.GetListByPage(page, numPerPage)
 
 	feedNavbarItems := []fiber.Map{
 		{
