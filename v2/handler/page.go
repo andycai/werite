@@ -13,7 +13,6 @@ import (
 func PageDetailPage(c *Ctx) error {
 	var page *model.Page
 	var authenticatedUser model.User
-	isSelf := false
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
@@ -30,13 +29,10 @@ func PageDetailPage(c *Ctx) error {
 	}
 
 	return Render(c, "pages/show", fiber.Map{
-		"PageTitle":          page.Title + " — Werite",
-		"Page":               page,
-		"FiberCtx":           c,
-		"IsOob":              false,
-		"IsSelf":             isSelf,
-		"IsArticleFavorited": false,
-		"AuthenticatedUser":  authenticatedUser,
+		"PageTitle":         page.Title + " — Werite",
+		"Page":              page,
+		"FiberCtx":          c,
+		"AuthenticatedUser": authenticatedUser,
 	}, "layouts/app")
 }
 
@@ -44,7 +40,6 @@ func PageDetailPage(c *Ctx) error {
 
 func HTMXHomePageDetailPage(c *Ctx) error {
 	var page *model.Page
-	isSelf := false
 	var authenticatedUser *model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
@@ -62,14 +57,11 @@ func HTMXHomePageDetailPage(c *Ctx) error {
 	}
 
 	return Render(c, "pages/htmx--page", fiber.Map{
-		"PageTitle":          page.Title,
-		"NavBarActive":       "none",
-		"Page":               page,
-		"IsOob":              false,
-		"IsSelf":             isSelf,
-		"IsArticleFavorited": false,
-		"AuthenticatedUser":  authenticatedUser,
-		"FiberCtx":           c,
+		"PageTitle":         page.Title,
+		"NavBarActive":      "none",
+		"Page":              page,
+		"AuthenticatedUser": authenticatedUser,
+		"FiberCtx":          c,
 	}, "layouts/app-htmx")
 }
 
