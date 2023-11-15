@@ -17,15 +17,17 @@ func SignInPage(c *fiber.Ctx) error {
 		return c.Redirect("/")
 	}
 
-	return render(c, "sign-in/index", fiber.Map{
+	return Render(c, "sign-in/index", fiber.Map{
 		"PageTitle":    "Sign In — Werite",
 		"FiberCtx":     c,
 		"NavBarActive": "sign-in",
 	}, "layouts/app")
 }
 
+//#region HMTX interface
+
 func HTMXSignInPage(c *fiber.Ctx) error {
-	return c.Render("sign-in/htmx-sign-in-page", fiber.Map{
+	return Render(c, "sign-in/htmx-sign-in-page", fiber.Map{
 		"PageTitle":    "Sign In",
 		"NavBarActive": "sign-in",
 		"FiberCtx":     c,
@@ -38,7 +40,7 @@ func HTMXSignInAction(c *fiber.Ctx) error {
 	password := c.FormValue("password")
 
 	if email == "" || password == "" {
-		return c.Render("sign-in/partials/sign-in-form", fiber.Map{
+		return Render(c, "sign-in/partials/sign-in-form", fiber.Map{
 			"Errors": []string{
 				"Email or password cannot be null.",
 			},
@@ -54,7 +56,7 @@ func HTMXSignInAction(c *fiber.Ctx) error {
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return c.Render("sign-in/partials/sign-in-form", fiber.Map{
+			return Render(c, "sign-in/partials/sign-in-form", fiber.Map{
 				"Errors": []string{
 					"Email and password did not match.",
 				},
@@ -63,7 +65,7 @@ func HTMXSignInAction(c *fiber.Ctx) error {
 	}
 
 	if !CheckPassword(user.Password, password) {
-		return c.Render("sign-in/partials/sign-in-form", fiber.Map{
+		return Render(c, "sign-in/partials/sign-in-form", fiber.Map{
 			"Errors": []string{
 				"Email and password did not match.",
 			},
@@ -86,3 +88,5 @@ func HTMXSignOut(c *fiber.Ctx) error {
 
 	return HTMXRedirectTo("/", "/htmx/home", c)
 }
+
+//#endregion

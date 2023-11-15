@@ -14,15 +14,17 @@ func SignUpPage(c *fiber.Ctx) error {
 		return c.Redirect("/")
 	}
 
-	return render(c, "sign-up/index", fiber.Map{
+	return Render(c, "sign-up/index", fiber.Map{
 		"PageTitle":    "Sign Up — Werite",
 		"FiberCtx":     c,
 		"NavBarActive": "sign-up",
 	}, "layouts/app")
 }
 
+//#region HTMX interface
+
 func HTMXSignUpPage(c *fiber.Ctx) error {
-	return c.Render("sign-up/htmx-sign-up-page", fiber.Map{
+	return Render(c, "sign-up/htmx-sign-up-page", fiber.Map{
 		"PageTitle":    "Sign Up",
 		"NavBarActive": "sign-up",
 		"FiberCtx":     c,
@@ -36,7 +38,7 @@ func HTMXSignUpAction(c *fiber.Ctx) error {
 
 	if email == "" || username == "" || password == "" {
 
-		return c.Render("sign-up/partials/sign-up-form", fiber.Map{
+		return Render(c, "sign-up/partials/sign-up-form", fiber.Map{
 			"Errors": []string{
 				"Username, email, and password cannot be null.",
 			},
@@ -54,3 +56,5 @@ func HTMXSignUpAction(c *fiber.Ctx) error {
 
 	return HTMXRedirectTo("/", "/htmx/home", c)
 }
+
+//#endregion

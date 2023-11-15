@@ -73,6 +73,6 @@ func HTMXRedirectTo(HXURL string, HXGETURL string, c *fiber.Ctx) error {
 	}, "layouts/app-htmx")
 }
 
-func render(c *Ctx, name string, bind interface{}, layouts ...string) error {
+func Render(c *Ctx, name string, bind interface{}, layouts ...string) error {
 	return c.Render(fmt.Sprintf("%s", name), bind, layouts...)
 }

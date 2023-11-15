@@ -14,7 +14,6 @@ func ArticleDetailPage(c *Ctx) error {
 	var article model.Article
 	var authenticatedUser model.User
 	isSelf := false
-	isFollowed := false
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
@@ -36,23 +35,23 @@ func ArticleDetailPage(c *Ctx) error {
 			First(&authenticatedUser)
 	}
 
-	return c.Render("articles/show", fiber.Map{
+	return Render(c, "articles/show", fiber.Map{
 		"PageTitle":          article.Title + " — Werite",
 		"Article":            article,
 		"FiberCtx":           c,
 		"IsOob":              false,
 		"IsSelf":             isSelf,
-		"IsFollowed":         isFollowed,
 		"IsArticleFavorited": false,
 		"AuthenticatedUser":  authenticatedUser,
 	}, "layouts/app")
 }
 
+//#region HTMX interface
+
 // HTMXHomeArticleDetailPage detail page
 func HTMXHomeArticleDetailPage(c *Ctx) error {
 	var article model.Article
 	isSelf := false
-	isFollowed := false
 	var authenticatedUser model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
@@ -75,15 +74,16 @@ func HTMXHomeArticleDetailPage(c *Ctx) error {
 		}
 	}
 
-	return c.Render("articles/htmx-article-page", fiber.Map{
+	return Render(c, "articles/htmx-article-page", fiber.Map{
 		"PageTitle":          article.Title,
 		"NavBarActive":       "none",
 		"Article":            article,
 		"IsOob":              false,
 		"IsSelf":             isSelf,
-		"IsFollowed":         isFollowed,
 		"IsArticleFavorited": false,
 		"AuthenticatedUser":  authenticatedUser,
 		"FiberCtx":           c,
 	}, "layouts/app-htmx")
 }
+
+//#endregion

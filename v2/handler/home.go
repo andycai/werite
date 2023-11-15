@@ -21,7 +21,7 @@ func HomePage(c *Ctx) error {
 			First(&authenticatedUser)
 	}
 
-	return render(c, "home/index", fiber.Map{
+	return Render(c, "home/index", fiber.Map{
 		"PageTitle":         "Home Page - Werite",
 		"FiberCtx":          c,
 		"NavBarActive":      "home",
@@ -29,6 +29,8 @@ func HomePage(c *Ctx) error {
 		"CurrentPage":       c.QueryInt("page"),
 	}, "layouts/app")
 }
+
+//#region HTMX interface
 
 // HTMXHomePage home page
 func HTMXHomePage(c *Ctx) error {
@@ -43,7 +45,7 @@ func HTMXHomePage(c *Ctx) error {
 			First(&authenticatedUser)
 	}
 
-	return render(c, "home/htmx-home-page", fiber.Map{
+	return Render(c, "home/htmx-home-page", fiber.Map{
 		"PageTitle":         "Home",
 		"NavBarActive":      "home",
 		"FiberCtx":          c,
@@ -57,7 +59,7 @@ func HTMXHomeTagList(c *Ctx) error {
 		tags    []model.Tag
 		hasTags bool
 	)
-	return render(c, "home/partials/tag-item-list", fiber.Map{
+	return Render(c, "home/partials/tag-item-list", fiber.Map{
 		"Tags":    tags,
 		"HasTags": hasTags,
 	}, "layouts/app-htmx")
@@ -128,7 +130,7 @@ func HTMXHomeGlobalFeed(c *Ctx) error {
 		hasArticles = true
 	}
 
-	return render(c, "home/htmx-home-feed", fiber.Map{
+	return Render(c, "home/htmx-home-feed", fiber.Map{
 		"HasArticles":         hasArticles,
 		"Articles":            articles,
 		"FeedNavbarItems":     feedNavbarItems,
@@ -139,3 +141,5 @@ func HTMXHomeGlobalFeed(c *Ctx) error {
 		"PathPagination":      "global-feed",
 	}, "layouts/app-htmx")
 }
+
+//#endregion

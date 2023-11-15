@@ -16,7 +16,7 @@ var Admin = new(AdminHandler)
 
 // Login login to admin
 func (ah AdminHandler) Login(c *Ctx) error {
-	return render(c, "admin/login", fiber.Map{})
+	return Render(c, "admin/login", fiber.Map{})
 }
 
 //#endregion
