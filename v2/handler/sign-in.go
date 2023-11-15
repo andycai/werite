@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	"github.com/andycai/werite/library/authentication"
-	"github.com/andycai/werite/library/database"
 	"github.com/andycai/werite/v2/model"
+	"github.com/andycai/werite/v2/system"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
@@ -48,11 +48,7 @@ func HTMXSignInAction(c *fiber.Ctx) error {
 		}, "layouts/app-htmx")
 	}
 
-	db := database.Get()
-
-	db.Model(&user)
-	err := db.Where(&model.User{Email: email}).
-		First(&user).Error
+	err := system.User.FindByEmail(email)
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -78,7 +74,6 @@ func HTMXSignInAction(c *fiber.Ctx) error {
 }
 
 func HTMXSignOut(c *fiber.Ctx) error {
-
 	isAuthenticated, _ := authentication.AuthGet(c)
 	if !isAuthenticated {
 		return c.Redirect("/")

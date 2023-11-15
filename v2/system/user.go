@@ -15,3 +15,18 @@ func (us UserSystem) GetByID(id uint) *model.User {
 
 	return &user
 }
+
+func (us UserSystem) FindByEmail(email string) error {
+	var user model.User
+	db.Model(&user)
+	err := db.Where(&model.User{Email: email}).
+		First(&user).Error
+
+	return err
+}
+
+func (us UserSystem) Create(user *model.User) error {
+	db.Create(user)
+
+	return nil
+}

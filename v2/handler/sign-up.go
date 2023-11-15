@@ -2,13 +2,12 @@ package handler
 
 import (
 	"github.com/andycai/werite/library/authentication"
-	"github.com/andycai/werite/library/database"
 	"github.com/andycai/werite/v2/model"
+	"github.com/andycai/werite/v2/system"
 	"github.com/gofiber/fiber/v2"
 )
 
 func SignUpPage(c *fiber.Ctx) error {
-
 	isAuthenticated, _ := authentication.AuthGet(c)
 	if isAuthenticated {
 		return c.Redirect("/")
@@ -36,8 +35,8 @@ func HTMXSignUpAction(c *fiber.Ctx) error {
 	email := c.FormValue("email")
 	password := c.FormValue("password")
 
+	// TODO: validate
 	if email == "" || username == "" || password == "" {
-
 		return Render(c, "sign-up/partials/sign-up-form", fiber.Map{
 			"Errors": []string{
 				"Username, email, and password cannot be null.",
@@ -49,8 +48,11 @@ func HTMXSignUpAction(c *fiber.Ctx) error {
 	user := model.User{Username: username, Email: email, Password: password, Name: username}
 	user.Password = HashPassword(user.Password)
 
-	db := database.Get()
-	db.Create(&user)
+	err := system.User.Create(&user)
+
+	if err != nil {
+		return err
+	}
 
 	authentication.AuthStore(c, uint(user.ID))
 
