@@ -4,21 +4,18 @@ import (
 	"math"
 
 	"github.com/andycai/werite/library/authentication"
-	"github.com/andycai/werite/library/database"
 	"github.com/andycai/werite/v2/dao"
 	"github.com/andycai/werite/v2/model"
+	"github.com/andycai/werite/v2/system"
 	"github.com/gofiber/fiber/v2"
 )
 
 func HomePage(c *Ctx) error {
-	var authenticatedUser model.User
+	var authenticatedUser *model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 	if isAuthenticated {
-		db := database.Get()
-		db.Model(&authenticatedUser).
-			Where("id = ?", userID).
-			First(&authenticatedUser)
+		authenticatedUser = system.User.GetByID(userID)
 	}
 
 	return Render(c, "home/index", fiber.Map{
@@ -34,15 +31,12 @@ func HomePage(c *Ctx) error {
 
 // HTMXHomePage home page
 func HTMXHomePage(c *Ctx) error {
-	var authenticatedUser model.User
+	var authenticatedUser *model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
 	if isAuthenticated {
-		db := database.Get()
-		db.Model(&authenticatedUser).
-			Where("id = ?", userID).
-			First(&authenticatedUser)
+		authenticatedUser = system.User.GetByID(userID)
 	}
 
 	return Render(c, "home/htmx-home-page", fiber.Map{
@@ -115,7 +109,6 @@ func HTMXHomeGlobalFeed(c *Ctx) error {
 	}
 
 	if isAuthenticated {
-
 		feedNavbarItems = append([]fiber.Map{
 			{
 				"Title":     "Your Feed",

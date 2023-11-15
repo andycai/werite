@@ -11,6 +11,7 @@ import (
 	"github.com/andycai/werite/v2/dao"
 	"github.com/andycai/werite/v2/middleware"
 	"github.com/andycai/werite/v2/router"
+	"github.com/andycai/werite/v2/system"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
@@ -31,6 +32,7 @@ func main() {
 		panic(err)
 	}
 	dao.SetDefault(db)
+	system.SetDB(db)
 	authentication.SessionStart()
 
 	// Middleware

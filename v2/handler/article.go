@@ -4,24 +4,20 @@ import (
 	"errors"
 
 	"github.com/andycai/werite/library/authentication"
-	"github.com/andycai/werite/library/database"
 	"github.com/andycai/werite/v2/model"
+	"github.com/andycai/werite/v2/system"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
 func ArticleDetailPage(c *Ctx) error {
-	var article model.Article
+	var article *model.Article
 	var authenticatedUser model.User
 	isSelf := false
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
-	db := database.Get()
-
-	err := db.Model(&article).
-		Where("slug = ?", c.Params("slug")).
-		Find(&article).Error
+	article, err := system.Article.GetBySlug(c.Params("slug"))
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -30,9 +26,7 @@ func ArticleDetailPage(c *Ctx) error {
 	}
 
 	if isAuthenticated {
-		db.Model(&authenticatedUser).
-			Where("id = ?", userID).
-			First(&authenticatedUser)
+		authenticatedUser = *system.User.GetByID(userID)
 	}
 
 	return Render(c, "articles/show", fiber.Map{
@@ -50,23 +44,17 @@ func ArticleDetailPage(c *Ctx) error {
 
 // HTMXHomeArticleDetailPage detail page
 func HTMXHomeArticleDetailPage(c *Ctx) error {
-	var article model.Article
+	var article *model.Article
 	isSelf := false
-	var authenticatedUser model.User
+	var authenticatedUser *model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
-	db := database.Get()
-
 	if isAuthenticated {
-		db.Model(&authenticatedUser).
-			Where("id = ?", userID).
-			First(&authenticatedUser)
+		authenticatedUser = system.User.GetByID(userID)
 	}
 
-	err := db.Model(&article).
-		Where("slug = ?", c.Params("slug")).
-		Find(&article).Error
+	article, err := system.Article.GetBySlug(c.Params("slug"))
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
