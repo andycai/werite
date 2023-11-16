@@ -23,6 +23,7 @@ func initNoCheckRouter(r fiber.Router) {
 	{
 		admin.Get("/login", LoginPage)
 		admin.Post("/login", LoginAction)
+		admin.Get("/logout", LogoutAction)
 
 		admin.Get("/profile", ProfilePage)
 		admin.Post("/profile", ProfileAction)

@@ -57,7 +57,18 @@ func LoginAction(c *fiber.Ctx) error {
 
 	authentication.AuthStore(c, uint(userVo.ID))
 
-	return core.Render(c, "admin/profile", fiber.Map{})
+	return c.Redirect("/admin/profile")
+}
+
+func LogoutAction(c *fiber.Ctx) error {
+	isAuthenticated, _ := authentication.AuthGet(c)
+	if !isAuthenticated {
+		return core.Render(c, "admin/login", fiber.Map{})
+	}
+
+	authentication.AuthDestroy(c)
+
+	return core.Render(c, "admin/login", fiber.Map{})
 }
 
 func ProfilePage(c *fiber.Ctx) error {
@@ -68,9 +79,8 @@ func ProfilePage(c *fiber.Ctx) error {
 	// }
 
 	return core.Render(c, "admin/profile", fiber.Map{
-		"PageTitle": "Profile",
+		"PageTitle": "dashboard",
 		"Path":      "admin/profile",
-		"Console":   true,
 		"Profile": fiber.Map{
 			"BlogName":     "Werite",
 			"BlogSubTitle": "Content Management System",
