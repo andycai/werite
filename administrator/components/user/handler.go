@@ -2,7 +2,6 @@ package user
 
 import (
 	"errors"
-	"time"
 
 	"github.com/andycai/werite/components/user"
 	"github.com/andycai/werite/components/user/model"
@@ -23,7 +22,7 @@ func LoginPage(c *fiber.Ctx) error {
 }
 
 func LoginAction(c *fiber.Ctx) error {
-	var userVo model.User
+	var userVo *model.User
 	email := c.FormValue("email")
 	password := c.FormValue("password")
 
@@ -55,36 +54,40 @@ func LoginAction(c *fiber.Ctx) error {
 		})
 	}
 
+	user.Dao.UpdateLoginTime(uint(userVo.ID))
 	authentication.AuthStore(c, uint(userVo.ID))
 
 	return c.Redirect("/admin/profile")
 }
 
 func LogoutAction(c *fiber.Ctx) error {
-	isAuthenticated, _ := authentication.AuthGet(c)
+	isAuthenticated, userID := authentication.AuthGet(c)
 	if !isAuthenticated {
 		return core.Render(c, "admin/login", fiber.Map{})
 	}
 
+	user.Dao.UpdateLogoutTime(userID)
 	authentication.AuthDestroy(c)
 
 	return core.Render(c, "admin/login", fiber.Map{})
 }
 
 func ProfilePage(c *fiber.Ctx) error {
-	// isAuthenticated, _ := authentication.AuthGet(c)
+	var authenticatedUser *model.User
+	isAuthenticated, userID := authentication.AuthGet(c)
 
-	// if isAuthenticated {
-	// 	return core.Render(c, "admin/profile", fiber.Map{})
-	// }
+	if isAuthenticated {
+		authenticatedUser = user.Dao.GetByID(userID)
+	}
 
 	return core.Render(c, "admin/profile", fiber.Map{
-		"PageTitle": "dashboard",
+		"PageTitle": "DashBoard",
 		"Path":      "admin/profile",
+		"UserName":  authenticatedUser.Name,
 		"Profile": fiber.Map{
 			"BlogName":     "Werite",
 			"BlogSubTitle": "Content Management System",
-			"LoginAt":      time.Now(),
+			"LoginAt":      authenticatedUser.LoginAt,
 		},
 	}, "admin/layouts/app")
 }

@@ -13,7 +13,6 @@ import (
 //#region sign in
 
 func SignInPage(c *fiber.Ctx) error {
-
 	isAuthenticated, _ := authentication.AuthGet(c)
 	if isAuthenticated {
 		return c.Redirect("/")
@@ -35,7 +34,7 @@ func HTMXSignInPage(c *fiber.Ctx) error {
 }
 
 func HTMXSignInAction(c *fiber.Ctx) error {
-	var user model.User
+	var userVo *model.User
 	email := c.FormValue("email")
 	password := c.FormValue("password")
 
@@ -48,7 +47,7 @@ func HTMXSignInAction(c *fiber.Ctx) error {
 		}, "layouts/app-htmx")
 	}
 
-	err, user := Dao.FindByEmail(email)
+	err, userVo := Dao.FindByEmail(email)
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -60,7 +59,7 @@ func HTMXSignInAction(c *fiber.Ctx) error {
 		}
 	}
 
-	if !core.CheckPassword(user.Password, password) {
+	if !core.CheckPassword(userVo.Password, password) {
 		return core.Render(c, "sign-in/partials/sign-in-form", fiber.Map{
 			"Errors": []string{
 				"Email and password did not match.",
@@ -68,17 +67,19 @@ func HTMXSignInAction(c *fiber.Ctx) error {
 		}, "layouts/app-htmx")
 	}
 
-	authentication.AuthStore(c, uint(user.ID))
+	Dao.UpdateLoginTime(uint(userVo.ID))
+	authentication.AuthStore(c, uint(userVo.ID))
 
 	return core.HTMXRedirectTo("/", "/htmx/home", c)
 }
 
 func HTMXSignOut(c *fiber.Ctx) error {
-	isAuthenticated, _ := authentication.AuthGet(c)
+	isAuthenticated, userID := authentication.AuthGet(c)
 	if !isAuthenticated {
 		return c.Redirect("/")
 	}
 
+	Dao.UpdateLogoutTime(userID)
 	authentication.AuthDestroy(c)
 
 	return core.HTMXRedirectTo("/", "/htmx/home", c)
@@ -124,16 +125,16 @@ func HTMXSignUpAction(c *fiber.Ctx) error {
 		}, "layouts/app-htmx")
 	}
 
-	user := model.User{Username: username, Email: email, Password: password, Name: username}
-	user.Password = core.HashPassword(user.Password)
+	userVo := model.User{Username: username, Email: email, Password: password, Name: username}
+	userVo.Password = core.HashPassword(userVo.Password)
 
-	err := Dao.Create(&user)
+	err := Dao.Create(&userVo)
 
 	if err != nil {
 		return err
 	}
 
-	authentication.AuthStore(c, uint(user.ID))
+	authentication.AuthStore(c, uint(userVo.ID))
 
 	return core.HTMXRedirectTo("/", "/htmx/home", c)
 }
