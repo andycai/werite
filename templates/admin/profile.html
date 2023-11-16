@@ -1,103 +1,103 @@
 <div class="body container">
-    <div class="typecho-page-title">
-        <h2>User Infomation</h2>
+  <div class="typecho-page-title">
+    <h2>User Infomation</h2>
+  </div>
+  {{with .Profile}}
+  <div class="row typecho-page-main">
+    <div class="col-mb-12 col-tb-3">
+      <p>
+        <img class="profile-avatar" src="/static/img/avatar.png" alt="{{.BlogName}}" />
+      </p>
+      <h2>{{.BlogName}}</h2>
+      <p>{{.BlogSubTitle}}</p>
+      <p>Last Sign in at: {{dateformat .LoginAt "2006/01/02 15:04"}}</p>
     </div>
-    {{with .Profile}}
-    <div class="row typecho-page-main">
-        <div class="col-mb-12 col-tb-3">
-            <p>
-	    <img class="profile-avatar" src="/static/img/avatar.png" alt="{{.BlogName}}" />
-            </p>
-            <h2>{{.BlogName}}</h2>
-            <p>{{.BlogSubTitle}}</p>
-            <p>Last Sign in at: {{dateformat .LoginAt "2006/01/02 15:04"}}</p>
-        </div>
-        <div class="col-mb-12 col-tb-6 col-tb-offset-1 typecho-content-panel" role="form">
-            <section>
-                <h3>Profile</h3>
-                <form action="/admin/profile" method="post" enctype="application/x-www-form-urlencoded">
-                    <ul class="typecho-option">
-                        <li>
-                            <label class="typecho-label" for="info-0-1">E-Mail</label>
-                            <input id="info-0-1" name="email" type="text" class="text" value="" />
-                            <p class="description">Example: werite@gmail.com.</p>
-                        </li>
-                    </ul>
-                    <ul class="typecho-option">
-                        <li>
-                            <label class="typecho-label" for="info-0-2">Phone</label>
-                            <input id="info-0-2" name="phoneNumber" type="text" class="text" value="" />
-                            <p class="description">Example: ＋8618123456789.</p>
-                        </li>
-                    </ul>
-                    <ul class="typecho-option">
-                        <li>
-                            <label class="typecho-label" for="info-0-3">Address</label>
-                            <input id="info-0-3" name="address" type="text" class="text" value="" />
-                            <p class="description">Example: 123 Street 2 Block.</p>
-                        </li>
-                    </ul>
-                    <ul class="typecho-option typecho-option-submit">
-                        <li>
-                            <button type="submit" class="btn primary">Update</button>
-                        </li>
-                    </ul>
-                </form>
-            </section>
-            <br>
-            <section>
-                <h3>Blog Infomation</h3>
-                <form action="/admin/blog" method="post" enctype="application/x-www-form-urlencoded">
-                    <ul class="typecho-option">
-                        <li>
-                            <label class="typecho-label" for="blog-0-1">Blog Name</label>
-                            <input id="blog-0-1" name="blogName" type="text" class="text" value="" />
-                        </li>
-                    </ul>
-                    <ul class="typecho-option">
-                        <li>
-                            <label class="typecho-label" for="blog-0-2">Title</label>
-                            <input id="blog-0-2" name="bTitle" type="text" class="text" value="" />
-                            <p class="description">Form all page meta title</p>
-                        </li>
-                    </ul>
-                    <ul class="typecho-option typecho-option-submit" id="typecho-option-item-submit-4">
-                        <li>
-                            <button type="submit" class="btn primary">Update</button>
-                        </li>
-                    </ul>
-                </form>
-            </section>
-            <br>
-            <section id="change-password">
-                <h3>Changing Password</h3>
-                <form action="/admin/password" method="post" enctype="application/x-www-form-urlencoded">
-                    <ul class="typecho-option" id="typecho-option-item-oldpwd-11">
-                        <li>
-                            <label class="typecho-label" for="password-0-11">Current password</label>
-                            <input id="password-0-11" name="old" type="password" class="w-60" />
-                        </li>
-                    </ul>
-                    <ul class="typecho-option" id="typecho-option-item-newpwd-12">
-                        <li>
-                            <label class="typecho-label" for="password-0-12">New password</label>
-                            <input id="password-0-12" name="new" type="password" class="w-60" />
-                        </li>
-                    </ul>
-                    <ul class="typecho-option" id="typecho-option-item-confirm-13">
-                        <li>
-                            <label class="typecho-label" for="confirm-0-13">Confirm password</label>
-                            <input id="confirm-0-13" name="confirm" type="password" class="w-60" />
-                        </li>
-                    </ul>
-                    <ul class="typecho-option typecho-option-submit" id="typecho-option-item-submit-14">
-                        <li>
-                            <button type="submit" class="btn primary">Update</button>
-                        </li>
-                    </ul>
-                </form>
-            </section>
-        </div>
+    <div class="col-mb-12 col-tb-6 col-tb-offset-1 typecho-content-panel" role="form">
+      <section>
+        <h3>Profile</h3>
+        <form action="/admin/profile" method="post" enctype="application/x-www-form-urlencoded">
+          <ul class="typecho-option">
+            <li>
+              <label class="typecho-label" for="info-0-1">E-Mail</label>
+              <input id="info-0-1" name="email" type="text" class="text" value="" />
+              <p class="description">Example: werite@gmail.com.</p>
+            </li>
+          </ul>
+          <ul class="typecho-option">
+            <li>
+              <label class="typecho-label" for="info-0-2">Phone</label>
+              <input id="info-0-2" name="phoneNumber" type="text" class="text" value="" />
+              <p class="description">Example: ＋8618123456789.</p>
+            </li>
+          </ul>
+          <ul class="typecho-option">
+            <li>
+              <label class="typecho-label" for="info-0-3">Address</label>
+              <input id="info-0-3" name="address" type="text" class="text" value="" />
+              <p class="description">Example: 123 Street 2 Block.</p>
+            </li>
+          </ul>
+          <ul class="typecho-option typecho-option-submit">
+            <li>
+              <button type="submit" class="btn primary">Update</button>
+            </li>
+          </ul>
+        </form>
+      </section>
+      <br>
+      <section>
+        <h3>Blog Infomation</h3>
+        <form action="/admin/blog" method="post" enctype="application/x-www-form-urlencoded">
+          <ul class="typecho-option">
+            <li>
+              <label class="typecho-label" for="blog-0-1">Blog Name</label>
+              <input id="blog-0-1" name="blogName" type="text" class="text" value="" />
+            </li>
+          </ul>
+          <ul class="typecho-option">
+            <li>
+              <label class="typecho-label" for="blog-0-2">Title</label>
+              <input id="blog-0-2" name="bTitle" type="text" class="text" value="" />
+              <p class="description">Form all page meta title</p>
+            </li>
+          </ul>
+          <ul class="typecho-option typecho-option-submit" id="typecho-option-item-submit-4">
+            <li>
+              <button type="submit" class="btn primary">Update</button>
+            </li>
+          </ul>
+        </form>
+      </section>
+      <br>
+      <section id="change-password">
+        <h3>Changing Password</h3>
+        <form action="/admin/password" method="post" enctype="application/x-www-form-urlencoded">
+          <ul class="typecho-option" id="typecho-option-item-oldpwd-11">
+            <li>
+              <label class="typecho-label" for="password-0-11">Current password</label>
+              <input id="password-0-11" name="old" type="password" class="w-60" />
+            </li>
+          </ul>
+          <ul class="typecho-option" id="typecho-option-item-newpwd-12">
+            <li>
+              <label class="typecho-label" for="password-0-12">New password</label>
+              <input id="password-0-12" name="new" type="password" class="w-60" />
+            </li>
+          </ul>
+          <ul class="typecho-option" id="typecho-option-item-confirm-13">
+            <li>
+              <label class="typecho-label" for="confirm-0-13">Confirm password</label>
+              <input id="confirm-0-13" name="confirm" type="password" class="w-60" />
+            </li>
+          </ul>
+          <ul class="typecho-option typecho-option-submit" id="typecho-option-item-submit-14">
+            <li>
+              <button type="submit" class="btn primary">Update</button>
+            </li>
+          </ul>
+        </form>
+      </section>
     </div>
-    {{end}}
+  </div>
+  {{end}}
 </div>
