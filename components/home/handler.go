@@ -4,15 +4,17 @@ import (
 	"math"
 
 	"github.com/andycai/werite/components/article"
+	ma "github.com/andycai/werite/components/article/model"
+	mt "github.com/andycai/werite/components/tag/model"
 	"github.com/andycai/werite/components/user"
+	mu "github.com/andycai/werite/components/user/model"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
-	"github.com/andycai/werite/v2/model"
 	"github.com/gofiber/fiber/v2"
 )
 
 func HomePage(c *fiber.Ctx) error {
-	var authenticatedUser *model.User
+	var authenticatedUser *mu.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 	if isAuthenticated {
@@ -32,7 +34,7 @@ func HomePage(c *fiber.Ctx) error {
 
 // HTMXHomePage home page
 func HTMXHomePage(c *fiber.Ctx) error {
-	var authenticatedUser *model.User
+	var authenticatedUser *mu.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
@@ -51,7 +53,7 @@ func HTMXHomePage(c *fiber.Ctx) error {
 // HTMXHomeTagList tag list
 func HTMXHomeTagList(c *fiber.Ctx) error {
 	var (
-		tags    []model.Tag
+		tags    []mt.Tag
 		hasTags bool
 	)
 	return core.Render(c, "home/partials/tag-item-list", fiber.Map{
@@ -63,7 +65,7 @@ func HTMXHomeTagList(c *fiber.Ctx) error {
 // HTMXHomeGlobalFeed global feed
 func HTMXHomeGlobalFeed(c *fiber.Ctx) error {
 	var (
-		articles        []model.Article
+		articles        []ma.Article
 		hasArticles     bool
 		hasPagination   bool
 		totalPagination int

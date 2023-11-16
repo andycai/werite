@@ -14,7 +14,6 @@ import (
 	"github.com/andycai/werite/library/renderer"
 	"github.com/andycai/werite/log"
 	"github.com/andycai/werite/middlewares"
-	"github.com/andycai/werite/v2/dao"
 	"gorm.io/gorm"
 
 	"github.com/gofiber/fiber/v2"
@@ -35,8 +34,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	dao.SetDefault(db)
-	core.SetupDatabase([]*gorm.DB{db})
+	// dao.SetDefault(db)
+	dbs := []*gorm.DB{db}
+	core.AutoMigrate(dbs)
+	core.SetupDatabase(dbs)
 	authentication.SessionStart()
 
 	// Middleware

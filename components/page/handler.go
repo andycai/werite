@@ -3,17 +3,18 @@ package page
 import (
 	"errors"
 
+	"github.com/andycai/werite/components/page/model"
 	"github.com/andycai/werite/components/user"
+	mu "github.com/andycai/werite/components/user/model"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
-	"github.com/andycai/werite/v2/model"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
 func PageDetailPage(c *fiber.Ctx) error {
 	var page *model.Page
-	var authenticatedUser model.User
+	var authenticatedUser mu.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
@@ -41,7 +42,7 @@ func PageDetailPage(c *fiber.Ctx) error {
 
 func HTMXHomePageDetailPage(c *fiber.Ctx) error {
 	var page *model.Page
-	var authenticatedUser *model.User
+	var authenticatedUser *mu.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 

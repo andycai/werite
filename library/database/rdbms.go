@@ -1,7 +1,6 @@
 package database
 
 import (
-	"github.com/andycai/werite/v2/model"
 	"gorm.io/driver/clickhouse"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -52,17 +51,6 @@ func InitRDBMS(name, source string) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	// auto migrate
-	gormDB.AutoMigrate(
-		&model.User{},
-		&model.Blogger{},
-		&model.Article{},
-		&model.ArticleTag{},
-		&model.Page{},
-		&model.Tag{},
-		&model.Comment{},
-		&model.Serie{},
-	)
 
 	db = gormDB
 

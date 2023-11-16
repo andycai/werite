@@ -3,17 +3,18 @@ package article
 import (
 	"errors"
 
+	"github.com/andycai/werite/components/article/model"
 	"github.com/andycai/werite/components/user"
+	mu "github.com/andycai/werite/components/user/model"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
-	"github.com/andycai/werite/v2/model"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
 func ArticleDetailPage(c *fiber.Ctx) error {
 	var article *model.Article
-	var authenticatedUser model.User
+	var authenticatedUser mu.User
 	isSelf := false
 
 	isAuthenticated, userID := authentication.AuthGet(c)
@@ -47,7 +48,7 @@ func ArticleDetailPage(c *fiber.Ctx) error {
 func HTMXHomeArticleDetailPage(c *fiber.Ctx) error {
 	var article *model.Article
 	isSelf := false
-	var authenticatedUser *model.User
+	var authenticatedUser *mu.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 

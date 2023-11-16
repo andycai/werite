@@ -1,6 +1,6 @@
 package user
 
-import "github.com/andycai/werite/v2/model"
+import "github.com/andycai/werite/components/user/model"
 
 type UserDao struct{}
 

@@ -1,6 +1,6 @@
 package article
 
-import "github.com/andycai/werite/v2/model"
+import "github.com/andycai/werite/components/article/model"
 
 type ArticleDao struct{}
 
