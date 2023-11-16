@@ -13,19 +13,24 @@
     <div class="typecho-login-wrap">
         <div class="typecho-login">
             <h1><a href="/">Werite</a></h1>
+            {{ if .Errors }}
+            <div class="error-messages">
+              <ul>
+                {{ range $error := .Errors }}
+                  <li>{{ $error }}</li>
+                {{ end }}
+              </ul>
+            </div>
+            {{ end }}
             <form action="/admin/login" method=post>
                 <p>
                     <label for=user class="sr-only">User Name</label>
-                    <input type=text id=user name=user placeholder="user name" class="text-l w-100">
+                    <input type=text id=email name=email placeholder="email" class="text-l w-100">
                 </p>
                 <p>
                     <label for=password class="sr-only">Password</label>
                     <input type=password id=password name=password class="text-l w-100" placeholder="password">
                 </p>
-                <!-- <p>
-                    <label for=code class="sr-only">两步验证</label>
-                    <input type=text id=code name=code class="text-l w-100" placeholder="两步验证">
-                </p> -->
                 <p class=submit>
                     <button type=submit class="btn btn-l w-100 primary">Login</button>
                 </p>

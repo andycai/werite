@@ -15,13 +15,13 @@ func (ud UserDao) GetByID(id uint) *model.User {
 	return &user
 }
 
-func (ud UserDao) FindByEmail(email string) error {
+func (ud UserDao) FindByEmail(email string) (error, model.User) {
 	var user model.User
 	db.Model(&user)
 	err := db.Where(&model.User{Email: email}).
 		First(&user).Error
 
-	return err
+	return err, user
 }
 
 func (ud UserDao) Create(user *model.User) error {

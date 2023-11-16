@@ -3,10 +3,17 @@ package renderer
 import (
 	"errors"
 	"strings"
+	"time"
+
+	htmpl "html/template"
 
 	"github.com/andycai/werite/library/authentication"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
+)
+
+var (
+	TimeLocation = time.UTC
 )
 
 func ViewEngineStart() *html.Engine {
@@ -44,6 +51,18 @@ func ViewEngineStart() *html.Engine {
 
 	viewEngine.AddFunc("join", func(a []string, sep string) string {
 		return strings.Join(a, sep)
+	})
+
+	viewEngine.AddFunc("dateformat", func(t time.Time, layout string) string {
+		return t.In(TimeLocation).Format(layout)
+	})
+
+	viewEngine.AddFunc("isnotzero", func(t time.Time) bool {
+		return !t.IsZero()
+	})
+
+	viewEngine.AddFunc("str2html", func(raw string) htmpl.HTML {
+		return htmpl.HTML(raw)
 	})
 
 	return viewEngine

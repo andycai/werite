@@ -48,7 +48,7 @@ func HTMXSignInAction(c *fiber.Ctx) error {
 		}, "layouts/app-htmx")
 	}
 
-	err := Dao.FindByEmail(email)
+	err, user := Dao.FindByEmail(email)
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {

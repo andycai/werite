@@ -21,7 +21,11 @@ func initDB(dbs []*gorm.DB) {
 func initNoCheckRouter(r fiber.Router) {
 	admin := r.Group("/admin")
 	{
-		admin.Get("/login", Login)
+		admin.Get("/login", LoginPage)
+		admin.Post("/login", LoginAction)
+
+		admin.Get("/profile", ProfilePage)
+		admin.Post("/profile", ProfileAction)
 	}
 }
 
