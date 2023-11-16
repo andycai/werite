@@ -3,6 +3,10 @@ package main
 import (
 	"path/filepath"
 
+	_ "github.com/andycai/werite/components/article"
+	_ "github.com/andycai/werite/components/home"
+	_ "github.com/andycai/werite/components/page"
+	_ "github.com/andycai/werite/components/user"
 	"github.com/andycai/werite/conf"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"

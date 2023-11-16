@@ -1,8 +1,6 @@
 package page
 
 import (
-	"log"
-
 	"github.com/andycai/werite/core"
 	"github.com/gofiber/fiber/v2"
 )
@@ -21,6 +19,5 @@ func initNoCheckRouter(r fiber.Router) {
 }
 
 func init() {
-	log.Println("=======home init")
 	core.RegisterNoCheckRouter(KeyHomeNoCheckRouter, initNoCheckRouter)
 }
