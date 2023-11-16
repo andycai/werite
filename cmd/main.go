@@ -30,7 +30,11 @@ func main() {
 	conf.ReadConf()
 
 	// database open and init
-	db, err := database.InitRDBMS(viper.GetString("db.type"), viper.GetString("db.dsn"))
+	db, err := database.InitRDBMS(viper.GetString("db.type"),
+		viper.GetString("db.dsn"),
+		viper.GetInt("db.active"),
+		viper.GetInt("db.idle"),
+		viper.GetInt("db.idletimeout"))
 	if err != nil {
 		panic(err)
 	}
@@ -43,7 +47,7 @@ func main() {
 	// Middleware
 	middlewares.Use(app)
 
-	app.Static("/static", filepath.Join("", "assets"))
+	app.Static("/static", filepath.Join("", viper.GetString("app.static")))
 
 	// router
 	core.SetupRouter(app)

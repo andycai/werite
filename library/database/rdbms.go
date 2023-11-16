@@ -1,6 +1,8 @@
 package database
 
 import (
+	"time"
+
 	"gorm.io/driver/clickhouse"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -27,7 +29,7 @@ import (
 var db *gorm.DB
 
 // Init database init
-func InitRDBMS(name, source string) (*gorm.DB, error) {
+func InitRDBMS(name, source string, active, idle, idleTimeout int) (*gorm.DB, error) {
 	var (
 		gormDB *gorm.DB
 		err    error
@@ -53,6 +55,12 @@ func InitRDBMS(name, source string) (*gorm.DB, error) {
 	}
 
 	db = gormDB
+
+	dd, _ := db.DB()
+
+	dd.SetMaxOpenConns(active)
+	dd.SetMaxIdleConns(idle)
+	dd.SetConnMaxLifetime(time.Duration(idleTimeout) * time.Second)
 
 	return gormDB, nil
 }
