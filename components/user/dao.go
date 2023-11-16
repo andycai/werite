@@ -1,13 +1,12 @@
-package system
+package user
 
 import "github.com/andycai/werite/v2/model"
 
-type UserSystem struct {
-}
+type UserDao struct{}
 
-var User = new(UserSystem)
+var Dao = new(UserDao)
 
-func (us UserSystem) GetByID(id uint) *model.User {
+func (ud UserDao) GetByID(id uint) *model.User {
 	var user model.User
 	db.Model(&user).
 		Where("id = ?", id).
@@ -16,7 +15,7 @@ func (us UserSystem) GetByID(id uint) *model.User {
 	return &user
 }
 
-func (us UserSystem) FindByEmail(email string) error {
+func (ud UserDao) FindByEmail(email string) error {
 	var user model.User
 	db.Model(&user)
 	err := db.Where(&model.User{Email: email}).
@@ -25,7 +24,7 @@ func (us UserSystem) FindByEmail(email string) error {
 	return err
 }
 
-func (us UserSystem) Create(user *model.User) error {
+func (ud UserDao) Create(user *model.User) error {
 	db.Create(user)
 
 	return nil

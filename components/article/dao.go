@@ -1,13 +1,12 @@
-package system
+package article
 
 import "github.com/andycai/werite/v2/model"
 
-type ArticleSystem struct {
-}
+type ArticleDao struct{}
 
-var Article = new(ArticleSystem)
+var Dao = new(ArticleDao)
 
-func (us ArticleSystem) GetBySlug(slug string) (*model.Article, error) {
+func (ad ArticleDao) GetBySlug(slug string) (*model.Article, error) {
 	var article model.Article
 	err := db.Model(&article).
 		Where("slug = ?", slug).
@@ -16,7 +15,7 @@ func (us ArticleSystem) GetBySlug(slug string) (*model.Article, error) {
 	return &article, err
 }
 
-func (as ArticleSystem) Count() int64 {
+func (ad ArticleDao) Count() int64 {
 	// db := database.Get()
 	// db.Debug().Model(&articles).
 	// 	// Preload("Tags", func(db *gorm.DB) *gorm.DB {
@@ -34,7 +33,7 @@ func (as ArticleSystem) Count() int64 {
 	return count
 }
 
-func (as ArticleSystem) GetListByPage(page, numPerPage int) []model.Article {
+func (ad ArticleDao) GetListByPage(page, numPerPage int) []model.Article {
 	var articles []model.Article
 	db.Debug().Model(&articles).
 		// Preload("Tags", func(db *gorm.DB) *gorm.DB {

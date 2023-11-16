@@ -11,7 +11,7 @@ import (
 
 func ViewEngineStart() *html.Engine {
 
-	viewEngine := html.New("./views", ".html")
+	viewEngine := html.New("./templates", ".html")
 
 	viewEngine.AddFunc("IsAuthenticated", func(c *fiber.Ctx) bool {
 		isAuthenticated, _ := authentication.AuthGet(c)

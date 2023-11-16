@@ -1,22 +1,23 @@
-package handler
+package page
 
 import (
 	"errors"
 
+	"github.com/andycai/werite/components/user"
+	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
 	"github.com/andycai/werite/v2/model"
-	"github.com/andycai/werite/v2/system"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
-func PageDetailPage(c *Ctx) error {
+func PageDetailPage(c *fiber.Ctx) error {
 	var page *model.Page
 	var authenticatedUser model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
-	page, err := system.Page.GetBySlug(c.Params("slug"))
+	page, err := Dao.GetBySlug(c.Params("slug"))
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -25,10 +26,10 @@ func PageDetailPage(c *Ctx) error {
 	}
 
 	if isAuthenticated {
-		authenticatedUser = *system.User.GetByID(userID)
+		authenticatedUser = *user.Dao.GetByID(userID)
 	}
 
-	return Render(c, "pages/show", fiber.Map{
+	return core.Render(c, "pages/show", fiber.Map{
 		"PageTitle":         page.Title + " — Werite",
 		"Page":              page,
 		"FiberCtx":          c,
@@ -38,17 +39,17 @@ func PageDetailPage(c *Ctx) error {
 
 //#region HTMX interface
 
-func HTMXHomePageDetailPage(c *Ctx) error {
+func HTMXHomePageDetailPage(c *fiber.Ctx) error {
 	var page *model.Page
 	var authenticatedUser *model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
 	if isAuthenticated {
-		authenticatedUser = system.User.GetByID(userID)
+		authenticatedUser = user.Dao.GetByID(userID)
 	}
 
-	page, err := system.Page.GetBySlug(c.Params("slug"))
+	page, err := Dao.GetBySlug(c.Params("slug"))
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -56,7 +57,7 @@ func HTMXHomePageDetailPage(c *Ctx) error {
 		}
 	}
 
-	return Render(c, "pages/htmx--page", fiber.Map{
+	return core.Render(c, "pages/htmx--page", fiber.Map{
 		"PageTitle":         page.Title,
 		"NavBarActive":      "none",
 		"Page":              page,

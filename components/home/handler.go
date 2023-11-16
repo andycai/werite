@@ -1,23 +1,25 @@
-package handler
+package page
 
 import (
 	"math"
 
+	"github.com/andycai/werite/components/article"
+	"github.com/andycai/werite/components/user"
+	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
 	"github.com/andycai/werite/v2/model"
-	"github.com/andycai/werite/v2/system"
 	"github.com/gofiber/fiber/v2"
 )
 
-func HomePage(c *Ctx) error {
+func HomePage(c *fiber.Ctx) error {
 	var authenticatedUser *model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 	if isAuthenticated {
-		authenticatedUser = system.User.GetByID(userID)
+		authenticatedUser = user.Dao.GetByID(userID)
 	}
 
-	return Render(c, "home/index", fiber.Map{
+	return core.Render(c, "home/index", fiber.Map{
 		"PageTitle":         "Home Page - Werite",
 		"FiberCtx":          c,
 		"NavBarActive":      "home",
@@ -29,16 +31,16 @@ func HomePage(c *Ctx) error {
 //#region HTMX interface
 
 // HTMXHomePage home page
-func HTMXHomePage(c *Ctx) error {
+func HTMXHomePage(c *fiber.Ctx) error {
 	var authenticatedUser *model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
 	if isAuthenticated {
-		authenticatedUser = system.User.GetByID(userID)
+		authenticatedUser = user.Dao.GetByID(userID)
 	}
 
-	return Render(c, "home/htmx-home-page", fiber.Map{
+	return core.Render(c, "home/htmx-home-page", fiber.Map{
 		"PageTitle":         "Home",
 		"NavBarActive":      "home",
 		"FiberCtx":          c,
@@ -47,19 +49,19 @@ func HTMXHomePage(c *Ctx) error {
 }
 
 // HTMXHomeTagList tag list
-func HTMXHomeTagList(c *Ctx) error {
+func HTMXHomeTagList(c *fiber.Ctx) error {
 	var (
 		tags    []model.Tag
 		hasTags bool
 	)
-	return Render(c, "home/partials/tag-item-list", fiber.Map{
+	return core.Render(c, "home/partials/tag-item-list", fiber.Map{
 		"Tags":    tags,
 		"HasTags": hasTags,
 	}, "layouts/app-htmx")
 }
 
 // HTMXHomeGlobalFeed global feed
-func HTMXHomeGlobalFeed(c *Ctx) error {
+func HTMXHomeGlobalFeed(c *fiber.Ctx) error {
 	var (
 		articles        []model.Article
 		hasArticles     bool
@@ -76,8 +78,8 @@ func HTMXHomeGlobalFeed(c *Ctx) error {
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
-	count = system.Article.Count()
-	articles = system.Article.GetListByPage(page, numPerPage)
+	count = article.Dao.Count()
+	articles = article.Dao.GetListByPage(page, numPerPage)
 
 	feedNavbarItems := []fiber.Map{
 		{
@@ -88,7 +90,7 @@ func HTMXHomeGlobalFeed(c *Ctx) error {
 		},
 	}
 
-	if count > 0 && (count/5 > 0) {
+	if count > 0 && (count/int64(numPerPage) > 0) {
 		pageDivision := float64(count) / float64(5)
 		totalPagination = int(math.Ceil(pageDivision))
 		hasPagination = true
@@ -109,7 +111,7 @@ func HTMXHomeGlobalFeed(c *Ctx) error {
 		hasArticles = true
 	}
 
-	return Render(c, "home/htmx-home-feed", fiber.Map{
+	return core.Render(c, "home/htmx-home-feed", fiber.Map{
 		"HasArticles":         hasArticles,
 		"Articles":            articles,
 		"FeedNavbarItems":     feedNavbarItems,

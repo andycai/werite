@@ -1,23 +1,24 @@
-package handler
+package article
 
 import (
 	"errors"
 
+	"github.com/andycai/werite/components/user"
+	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
 	"github.com/andycai/werite/v2/model"
-	"github.com/andycai/werite/v2/system"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
-func ArticleDetailPage(c *Ctx) error {
+func ArticleDetailPage(c *fiber.Ctx) error {
 	var article *model.Article
 	var authenticatedUser model.User
 	isSelf := false
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
-	article, err := system.Article.GetBySlug(c.Params("slug"))
+	article, err := Dao.GetBySlug(c.Params("slug"))
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -26,10 +27,10 @@ func ArticleDetailPage(c *Ctx) error {
 	}
 
 	if isAuthenticated {
-		authenticatedUser = *system.User.GetByID(userID)
+		authenticatedUser = *user.Dao.GetByID(userID)
 	}
 
-	return Render(c, "articles/show", fiber.Map{
+	return core.Render(c, "articles/show", fiber.Map{
 		"PageTitle":          article.Title + " — Werite",
 		"Article":            article,
 		"FiberCtx":           c,
@@ -43,7 +44,7 @@ func ArticleDetailPage(c *Ctx) error {
 //#region HTMX interface
 
 // HTMXHomeArticleDetailPage detail page
-func HTMXHomeArticleDetailPage(c *Ctx) error {
+func HTMXHomeArticleDetailPage(c *fiber.Ctx) error {
 	var article *model.Article
 	isSelf := false
 	var authenticatedUser *model.User
@@ -51,10 +52,10 @@ func HTMXHomeArticleDetailPage(c *Ctx) error {
 	isAuthenticated, userID := authentication.AuthGet(c)
 
 	if isAuthenticated {
-		authenticatedUser = system.User.GetByID(userID)
+		authenticatedUser = user.Dao.GetByID(userID)
 	}
 
-	article, err := system.Article.GetBySlug(c.Params("slug"))
+	article, err := Dao.GetBySlug(c.Params("slug"))
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -62,7 +63,7 @@ func HTMXHomeArticleDetailPage(c *Ctx) error {
 		}
 	}
 
-	return Render(c, "articles/htmx-article-page", fiber.Map{
+	return core.Render(c, "articles/htmx-article-page", fiber.Map{
 		"PageTitle":          article.Title,
 		"NavBarActive":       "none",
 		"Article":            article,

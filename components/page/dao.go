@@ -1,13 +1,13 @@
-package system
+package page
 
 import "github.com/andycai/werite/v2/model"
 
-type PageSystem struct {
+type PageDao struct {
 }
 
-var Page = new(PageSystem)
+var Dao = new(PageDao)
 
-func (ps PageSystem) GetBySlug(slug string) (*model.Page, error) {
+func (pd PageDao) GetBySlug(slug string) (*model.Page, error) {
 	var page model.Page
 	err := db.Model(&page).
 		Where("slug = ?", slug).
