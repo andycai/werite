@@ -15,7 +15,7 @@ type Article struct {
 	Title       string         `gorm:"column:title;not null" json:"title"`
 	Description string         `gorm:"column:description;not null" json:"description"`
 	Body        string         `gorm:"column:body;not null" json:"body"`
-	TopicID     int32          `gorm:"column:topic_id" json:"topic_id"`
+	CategoryID  int32          `gorm:"column:category_id" json:"category_id"`
 	IsDraft     int32          `gorm:"column:is_draft" json:"is_draft"`
 	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 	UpdatedAt   time.Time      `gorm:"column:updated_at;not null;default:current_timestamp" json:"updated_at"`

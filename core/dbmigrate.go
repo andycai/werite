@@ -18,7 +18,7 @@ func AutoMigrate(dbs []*gorm.DB) {
 			&mp.Page{},
 			&mt.Tag{},
 			&mc.Comment{},
-			&ma.Topic{},
+			&ma.Category{},
 		)
 	}
 }
