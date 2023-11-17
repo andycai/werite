@@ -15,7 +15,7 @@ func LoginPage(c *fiber.Ctx) error {
 	isAuthenticated, _ := authentication.AuthGet(c)
 
 	if isAuthenticated {
-		return c.Redirect("/admin/profile")
+		return c.Redirect("/admin/dashboard")
 	}
 
 	return core.Render(c, "admin/login", fiber.Map{})
@@ -57,7 +57,7 @@ func LoginAction(c *fiber.Ctx) error {
 	user.Dao.UpdateLoginTime(uint(userVo.ID))
 	authentication.AuthStore(c, uint(userVo.ID))
 
-	return c.Redirect("/admin/profile")
+	return c.Redirect("/admin/dashboard")
 }
 
 func LogoutAction(c *fiber.Ctx) error {
@@ -72,6 +72,26 @@ func LogoutAction(c *fiber.Ctx) error {
 	return core.Render(c, "admin/login", fiber.Map{})
 }
 
+func DashBoardPage(c *fiber.Ctx) error {
+	var authenticatedUser *model.User
+	isAuthenticated, userID := authentication.AuthGet(c)
+
+	if isAuthenticated {
+		authenticatedUser = user.Dao.GetByID(userID)
+	}
+
+	return core.Render(c, "admin/dashboard", fiber.Map{
+		"PageTitle": "DashBoard",
+		"Path":      "admin/dashboard",
+		"UserName":  authenticatedUser.Name,
+		"Info": fiber.Map{
+			"BlogName":     "Werite",
+			"BlogSubTitle": "Content Management System",
+			"LoginAt":      authenticatedUser.LoginAt,
+		},
+	}, "admin/layouts/app")
+}
+
 func ProfilePage(c *fiber.Ctx) error {
 	var authenticatedUser *model.User
 	isAuthenticated, userID := authentication.AuthGet(c)
@@ -81,10 +101,10 @@ func ProfilePage(c *fiber.Ctx) error {
 	}
 
 	return core.Render(c, "admin/profile", fiber.Map{
-		"PageTitle": "DashBoard",
+		"PageTitle": "Profile",
 		"Path":      "admin/profile",
 		"UserName":  authenticatedUser.Name,
-		"Profile": fiber.Map{
+		"Info": fiber.Map{
 			"BlogName":     "Werite",
 			"BlogSubTitle": "Content Management System",
 			"LoginAt":      authenticatedUser.LoginAt,

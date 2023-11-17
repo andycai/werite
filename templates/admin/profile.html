@@ -2,12 +2,9 @@
   <div class="typecho-page-title">
     <h2>User Infomation</h2>
   </div>
-  {{with .Profile}}
+  {{with .Info}}
   <div class="row typecho-page-main">
     <div class="col-mb-12 col-tb-3">
-      <p>
-        <img class="profile-avatar" src="/static/img/avatar.png" alt="{{.BlogName}}" />
-      </p>
       <h2>{{.BlogName}}</h2>
       <p>{{.BlogSubTitle}}</p>
       <p>Last log in at: {{dateformat .LoginAt "2006/01/02 15:04"}}</p>
@@ -58,7 +55,7 @@
             <li>
               <label class="typecho-label" for="blog-0-2">Title</label>
               <input id="blog-0-2" name="bTitle" type="text" class="text" value="" />
-              <p class="description">Form all page meta title</p>
+              <p class="description">Meta title of page meta.</p>
             </li>
           </ul>
           <ul class="typecho-option typecho-option-submit" id="typecho-option-item-submit-4">

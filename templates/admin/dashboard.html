@@ -1,0 +1,19 @@
+<div class="body container">
+  <div class="typecho-page-title">
+    <h2>Dash Board</h2>
+  </div>
+  {{with .Info}}
+  <div class="row typecho-page-main">
+    <div class="col-mb-12 col-tb-3">
+      <h2>{{.BlogName}}</h2>
+      <p>{{.BlogSubTitle}}</p>
+      <p>Last log in at: {{dateformat .LoginAt "2006/01/02 15:04"}}</p>
+    </div>
+    <div class="col-mb-12 col-tb-6 col-tb-offset-1 typecho-content-panel" role="form">
+      <section>
+        <h3>Wecome to Werite Administrator</h3>
+      </section>
+    </div>
+  </div>
+  {{end}}
+</div>
