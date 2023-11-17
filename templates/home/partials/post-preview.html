@@ -1,6 +1,6 @@
 <div id="feed-post-preview" hx-swap-oob="true">
-  {{ if .HasArticles }}
-    {{ range $article := .Articles }}
+  {{ if .HasPosts }}
+    {{ range $article := .Posts }}
 
     <div class="post-preview">
       <div class="post-meta">
@@ -8,9 +8,9 @@
           <span class="date">{{ $article.CreatedAt.Format "2006-01-02" }}</span>
         </div>
       </div>
-      <a href="/articles/{{ $article.Slug }}"
-        hx-push-url="/articles/{{ $article.Slug }}"
-        hx-get="/htmx/articles/{{ $article.Slug }}"
+      <a href="/posts/{{ $article.Slug }}"
+        hx-push-url="/posts/{{ $article.Slug }}"
+        hx-get="/htmx/posts/{{ $article.Slug }}"
         hx-target="#app-body"
         class="preview-link"
       >
@@ -25,10 +25,10 @@
     {{ end }}
   {{ end }}
   
-  {{ if not .HasArticles }}
+  {{ if not .HasPosts }}
   <div class="post-preview">
     <div class="alert alert-warning" role="alert">
-      No articles are here... yet.
+      No posts are here... yet.
     </div>
   </div>
   {{ end }}

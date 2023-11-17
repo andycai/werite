@@ -25,13 +25,13 @@ func main() {
 
 	//g.ApplyInterface(func(querier Querier) {}, model.User{}, model.Group{}, model.Activity{})
 
-	// article := g.GenerateModel("article", gen.FieldRelateModel(field.HasMany, "Tags", model.Tag{},
+	// post := g.GenerateModel("post", gen.FieldRelateModel(field.HasMany, "Tags", model.Tag{},
 	// 	&field.RelateConfig{
 	// 		// RelateSlice: true,
 	// 		GORMTag: field.GormTag{"foreignKey": []string{"CustomerRefer"}, "references": []string{"ID"}},
 	// 	}),
 	// )
-	// g.ApplyBasic(article)
+	// g.ApplyBasic(post)
 
 	g.Execute()
 }

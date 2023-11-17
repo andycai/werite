@@ -1,4 +1,4 @@
-package page
+package post
 
 import (
 	"github.com/andycai/werite/core"
@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	KeyDB            = "admin.page.gorm.db"
-	KeyNoCheckRouter = "admin.page.router.nocheck"
-	KeyCheckRouter   = "admin.page.router.check"
+	KeyDB            = "admin.post.gorm.db"
+	KeyNoCheckRouter = "admin.post.router.nocheck"
+	KeyCheckRouter   = "admin.post.router.check"
 )
 
 var db *gorm.DB
@@ -19,16 +19,13 @@ func initDB(dbs []*gorm.DB) {
 }
 
 func initNoCheckRouter(r fiber.Router) {
-	// admin := r.Group("/admin")
-	// {
-	// }
 }
 
 func initCheckRouter(r fiber.Router) {
 	admin := r.Group("/admin")
 	{
-		admin.Get("/pages", PagesPage)
-		admin.Get("/page", PagePage)
+		admin.Get("/posts", PostsPage)
+		admin.Get("/post", PostPage)
 	}
 }
 

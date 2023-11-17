@@ -3,8 +3,8 @@ package page
 import (
 	"math"
 
-	"github.com/andycai/werite/components/article"
-	ma "github.com/andycai/werite/components/article/model"
+	"github.com/andycai/werite/components/post"
+	ma "github.com/andycai/werite/components/post/model"
 	mt "github.com/andycai/werite/components/tag/model"
 	"github.com/andycai/werite/components/user"
 	mu "github.com/andycai/werite/components/user/model"
@@ -65,8 +65,8 @@ func HTMXHomeTagList(c *fiber.Ctx) error {
 // HTMXHomeGlobalFeed global feed
 func HTMXHomeGlobalFeed(c *fiber.Ctx) error {
 	var (
-		articles        []ma.Article
-		hasArticles     bool
+		posts           []ma.Post
+		hasPosts        bool
 		hasPagination   bool
 		totalPagination int
 		count           int64
@@ -80,8 +80,8 @@ func HTMXHomeGlobalFeed(c *fiber.Ctx) error {
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
-	count = article.Dao.Count()
-	articles = article.Dao.GetListByPage(page, numPerPage)
+	count = post.Dao.Count()
+	posts = post.Dao.GetListByPage(page, numPerPage)
 
 	feedNavbarItems := []fiber.Map{
 		{
@@ -109,13 +109,13 @@ func HTMXHomeGlobalFeed(c *fiber.Ctx) error {
 		}, feedNavbarItems...)
 	}
 
-	if len(articles) > 0 {
-		hasArticles = true
+	if len(posts) > 0 {
+		hasPosts = true
 	}
 
 	return core.Render(c, "home/htmx-home-feed", fiber.Map{
-		"HasArticles":         hasArticles,
-		"Articles":            articles,
+		"HasPosts":            hasPosts,
+		"Posts":               posts,
 		"FeedNavbarItems":     feedNavbarItems,
 		"AuthenticatedUserID": userID,
 		"TotalPagination":     totalPagination,

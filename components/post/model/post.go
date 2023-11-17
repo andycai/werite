@@ -6,9 +6,9 @@ import (
 	"gorm.io/gorm"
 )
 
-const TableNameArticle = "article"
+const TableNamePost = "post"
 
-type Article struct {
+type Post struct {
 	ID          int32          `gorm:"column:id;primaryKey" json:"id"`
 	UserID      int32          `gorm:"column:user_id;not null" json:"user_id"`
 	Slug        string         `gorm:"column:slug;not null" json:"slug"`
@@ -22,6 +22,6 @@ type Article struct {
 	CreatedAt   time.Time      `gorm:"column:created_at;not null;default:current_timestamp" json:"created_at"`
 }
 
-func (*Article) TableName() string {
-	return TableNameArticle
+func (*Post) TableName() string {
+	return TableNamePost
 }

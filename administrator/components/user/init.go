@@ -24,17 +24,14 @@ func initNoCheckRouter(r fiber.Router) {
 		admin.Get("/login", LoginPage)
 		admin.Post("/login", LoginAction)
 		admin.Get("/logout", LogoutAction)
-
-		admin.Get("/dashboard", DashBoardPage)
-		admin.Get("/profile", ProfilePage)
-		admin.Post("/profile", ProfileAction)
 	}
 }
 
 func initCheckRouter(r fiber.Router) {
-	// admin := r.Group("/admin")
-	// {
-	// }
+	admin := r.Group("/admin")
+	{
+		admin.Get("/dashboard", DashBoardPage)
+	}
 }
 
 func init() {

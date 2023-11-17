@@ -6,7 +6,7 @@ Golang + Go Fiber + HTMX
 
 Module include: 
 
-- Article
+- Post
 - Page
 - Comment
 - Tag

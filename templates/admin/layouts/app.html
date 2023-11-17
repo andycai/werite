@@ -18,23 +18,23 @@
         <li class="parent"><a target="_self" href="/admin/dashboard">DashBoard</a></dt></li>
       </ul>
       <ul class="root {{ if eq .NavBarActive "posts" }}focus{{end}}">
-        <li class="parent"><a target="_self" href="/admin/manage-posts">Posts</a></dt></li>
+        <li class="parent"><a target="_self" href="/admin/posts">Posts</a></dt></li>
         <ul class="child">
-          <li {{if eq .Path "/admin/manage-posts" }}class="focus" {{end}}><a target="_self" href="/admin/manage-posts">All Posts</a></li>
-          <li class="last {{if eq .Path "/admin/write-post"}}focus{{end}}"><a target="_self" href="/admin/write-post">Add New</a></li>
-          <li {{if eq .Path "/admin/manage-categories" }}class="focus" {{end}}><a target="_self" href="/admin/manage-categories">Categories</a></li>
-          <li class="last {{if eq .Path "/admin/manage-tags"}}focus{{end}}"><a target="_self" href="/admin/manage-tags">Tags</a></li>
-          <li class="last {{if eq .Path "/admin/manage-draft"}}focus{{end}}"><a target="_self" href="/admin/manage-draft">Drafts</a></li>
-          <li class="last {{if eq .Path "/admin/manage-trash"}}focus{{end}}"><a target="_self" href="/admin/manage-trash">Trash</a></li>
+          <li {{if eq .Path "/admin/posts" }}class="focus" {{end}}><a target="_self" href="/admin/posts">All Posts</a></li>
+          <li class="last {{if eq .Path "/admin/post"}}focus{{end}}"><a target="_self" href="/admin/post">Add New</a></li>
+          <li {{if eq .Path "/admin/categories" }}class="focus" {{end}}><a target="_self" href="/admin/categories">Categories</a></li>
+          <li class="last {{if eq .Path "/admin/tags"}}focus{{end}}"><a target="_self" href="/admin/tags">Tags</a></li>
+          <li class="last {{if eq .Path "/admin/draft"}}focus{{end}}"><a target="_self" href="/admin/drafts">Drafts</a></li>
+          <li class="last {{if eq .Path "/admin/trash"}}focus{{end}}"><a target="_self" href="/admin/trash">Trash</a></li>
         </ul>
       </ul>
       <ul class="root {{ if eq .NavBarActive "pages" }}focus{{end}}">
-        <li class="parent"><a target="_self" href="/admin/manage-pages">Pages</a></dt></li>
+        <li class="parent"><a target="_self" href="/admin/pages">Pages</a></dt></li>
         <ul class="child">
-          <li {{if eq .Path "/admin/manage-pages" }}class="focus" {{end}}><a target="_self" href="/admin/manage-pages">All Pages</a></li>
-          <li class="last {{if eq .Path "/admin/write-page"}}focus{{end}}"><a target="_self" href="/admin/write-page">Add New</a></li>
-          <li {{if eq .Path "/admin/manage-categories" }}class="focus" {{end}}><a target="_self" href="/admin/manage-categories">Categories</a></li>
-          <li class="last {{if eq .Path "/admin/manage-tags"}}focus{{end}}"><a target="_self" href="/admin/manage-tags">Tags</a></li>
+          <li {{if eq .Path "/admin/pages" }}class="focus" {{end}}><a target="_self" href="/admin/pages">All Pages</a></li>
+          <li class="last {{if eq .Path "/admin/page"}}focus{{end}}"><a target="_self" href="/admin/page">Add New</a></li>
+          <li {{if eq .Path "/admin/categories" }}class="focus" {{end}}><a target="_self" href="/admin/categories">Categories</a></li>
+          <li class="last {{if eq .Path "/admin/tags"}}focus{{end}}"><a target="_self" href="/admin/tags">Tags</a></li>
         </ul>
       </ul>
       <ul class="root {{ if eq .NavBarActive "settings" }}focus{{end}}">
