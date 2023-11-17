@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"time"
 
 	"github.com/andycai/werite/components/user"
 	"github.com/andycai/werite/components/user/model"
@@ -76,18 +77,23 @@ func DashBoardPage(c *fiber.Ctx) error {
 	var authenticatedUser *model.User
 	isAuthenticated, userID := authentication.AuthGet(c)
 
+	name := ""
+	loginAt := time.Now()
 	if isAuthenticated {
 		authenticatedUser = user.Dao.GetByID(userID)
+		name = authenticatedUser.Name
+		loginAt = authenticatedUser.LoginAt
 	}
 
 	return core.Render(c, "admin/dashboard", fiber.Map{
-		"PageTitle": "DashBoard",
-		"Path":      "admin/dashboard",
-		"UserName":  authenticatedUser.Name,
+		"PageTitle":    "DashBoard",
+		"NavBarActive": "dashboard",
+		"Path":         "/admin/dashboard",
+		"UserName":     name,
 		"Info": fiber.Map{
 			"BlogName":     "Werite",
 			"BlogSubTitle": "Content Management System",
-			"LoginAt":      authenticatedUser.LoginAt,
+			"LoginAt":      loginAt,
 		},
 	}, "admin/layouts/app")
 }

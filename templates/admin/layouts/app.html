@@ -9,6 +9,9 @@
   <title>{{.PageTitle}} - Werite</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="/static/admin/style.css">
+  <script src="/static/admin/jquery.js"></script>
+  <script src="/static/admin/jquery-ui.js"></script>
+  <script src="/static/admin/typecho.js"></script>
 </head>
 
 <body>
@@ -24,8 +27,6 @@
           <li class="last {{if eq .Path "/admin/post"}}focus{{end}}"><a target="_self" href="/admin/post">Add New</a></li>
           <li {{if eq .Path "/admin/categories" }}class="focus" {{end}}><a target="_self" href="/admin/categories">Categories</a></li>
           <li class="last {{if eq .Path "/admin/tags"}}focus{{end}}"><a target="_self" href="/admin/tags">Tags</a></li>
-          <li class="last {{if eq .Path "/admin/draft"}}focus{{end}}"><a target="_self" href="/admin/drafts">Drafts</a></li>
-          <li class="last {{if eq .Path "/admin/trash"}}focus{{end}}"><a target="_self" href="/admin/trash">Trash</a></li>
         </ul>
       </ul>
       <ul class="root {{ if eq .NavBarActive "pages" }}focus{{end}}">
@@ -33,11 +34,9 @@
         <ul class="child">
           <li {{if eq .Path "/admin/pages" }}class="focus" {{end}}><a target="_self" href="/admin/pages">All Pages</a></li>
           <li class="last {{if eq .Path "/admin/page"}}focus{{end}}"><a target="_self" href="/admin/page">Add New</a></li>
-          <li {{if eq .Path "/admin/categories" }}class="focus" {{end}}><a target="_self" href="/admin/categories">Categories</a></li>
-          <li class="last {{if eq .Path "/admin/tags"}}focus{{end}}"><a target="_self" href="/admin/tags">Tags</a></li>
         </ul>
       </ul>
-      <ul class="root {{ if eq .NavBarActive "settings" }}focus{{end}}">
+      <ul class="root {{ if eq .NavBarActive "setting" }}focus{{end}}">
         <li class="parent"><a target="_self" href="/admin/profile">Settings</a></dt></li>
         <ul class="child">
           <li {{if eq .Path "/admin/profile" }}class="focus" {{end}}><a target="_self" href="/admin/profile">Profile</a></li>
@@ -56,19 +55,15 @@
   </div>
   <div class="typecho-foot" role="contentinfo">
     <div class="copyright">
-      <a href="http://typecho.org" class="i-logo-s">Typecho</a>
       <p>This theme from <a href="http://typecho.org">Typecho</a></p>
     </div>
   </div>
-  <script src="/static/admin/jquery.js"></script>
-  <script src="/static/admin/jquery-ui.js"></script>
-  <script src="/static/admin/typecho.js"></script>
   <script>
     (function () {
       $(document).ready(function () {
         (function () {
           cookies = {
-            notice: $.cookie('notice'),
+            notice: $.cookie('notice') || '[]',
             noticeType: $.cookie('notice_type'),
             highlight: $.cookie('notice_highlight')
           },

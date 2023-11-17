@@ -15,3 +15,17 @@ func (pd PageDao) GetBySlug(slug string) (*model.Page, error) {
 
 	return &page, err
 }
+
+func (pd PageDao) GetListByPage(page, numPerPage int) []model.Page {
+	var pages []model.Page
+	db.Debug().Model(&pages).
+		// Preload("Tags", func(db *gorm.DB) *gorm.DB {
+		// return db.Order("tags.name asc")
+		// }).
+		Limit(numPerPage).
+		Offset(page * numPerPage).
+		Order("created_at desc").
+		Find(&pages)
+
+	return pages
+}
