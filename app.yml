@@ -1,7 +1,7 @@
 app:
   name: "werite"
   version: 1 # 0=debug 1=release
-  static: "assets"
+  static: "static"
   cacheDir: "./cache/"
 httpserver:
   addr: ":8888"
