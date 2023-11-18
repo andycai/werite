@@ -39,5 +39,5 @@ func PostsPage(c *fiber.Ctx) error {
 func PostPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/posts/post", fiber.Map{
 		//
-	})
+	}, "admin/layouts/app")
 }

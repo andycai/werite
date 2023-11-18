@@ -34,5 +34,7 @@ func PagesPage(c *fiber.Ctx) error {
 }
 
 func PagePage(c *fiber.Ctx) error {
-	return nil
+	return core.Render(c, "admin/pages/page", fiber.Map{
+		//
+	}, "admin/layouts/app")
 }
