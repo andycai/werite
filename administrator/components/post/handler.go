@@ -18,14 +18,14 @@ func PostsPage(c *fiber.Ctx) error {
 	}
 
 	// count = post.Dao.Count()
-	posts := post.Dao.GetListByPage(curPage, numPerPage)
+	voList := post.Dao.GetListByPage(curPage, numPerPage)
 
 	categories := []*model.Category{}
 	return core.Render(c, "admin/posts/posts", fiber.Map{
 		"PageTitle":    "All Posts",
 		"NavBarActive": "posts",
 		"Path":         "/admin/posts",
-		"Posts":        posts,
+		"Posts":        voList,
 		"Categories":   categories,
 		"Q":            q,
 		"QC":           qc,
@@ -43,4 +43,29 @@ func PostPage(c *fiber.Ctx) error {
 		"Path":         "/admin/post",
 		"Domain":       "127.0.0.1",
 	}, "admin/layouts/app")
+}
+
+func EditorPage(c *fiber.Ctx) error {
+	var postVo model.Post
+	hasPost := false
+
+	if c.Params("slug") != "" {
+		slug := c.Params("slug")
+		hasPost = true
+		vo, _ := post.Dao.GetBySlug(slug)
+		postVo = *vo
+	}
+
+	return core.Render(c, "admin/posts/post", fiber.Map{
+		"PageTitle":    "Post Editor",
+		"NavBarActive": "posts",
+		"Path":         "/admin/post",
+		"Domain":       "127.0.0.1",
+		"HasPost":      hasPost,
+		"Post":         postVo,
+	}, "admin/layouts/app")
+}
+
+func EditorAction(c *fiber.Ctx) error {
+	return c.Redirect("/admin/posts")
 }

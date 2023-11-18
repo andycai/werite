@@ -1,30 +1,32 @@
 <div class="body container">
   <div class="typecho-page-title">
-    {{if .Edit}}<h2>Edit {{.Edit.Title}}</h2>{{else}}<h2>Add New Post</h2>{{end}}
+    {{ if .HasPost }}
+    <h2>Edit {{ .Post.Title }}</h2>
+    {{ else }}
+    <h2>Add New Post</h2>
+    {{ end }}
   </div>
   <div class="row typecho-page-main typecho-post-area" role="form">
-    <form action="/admin/post-add" method="post" name="write_post">
+    <form action="/admin/post" method="post" name="write_post">
       <div class="col-mb-12 col-tb-9" role="main">
-        {{if .Edit.IsDraft}}<cite class="edit-draft-notice">You are editing a draft, and you can <a
-            href="/admin/draft-delete?cid={{.Edit.ID}}">delete it</a></cite>{{end}}
+        {{if .Post.IsDraft}}<cite class="edit-draft-notice">You are editing a draft, and you can <a
+            href="/admin/draft-delete?cid={{.Post.ID}}">delete it</a></cite>{{end}}
         <p class="title">
           <label for="title" class="sr-only">Title</label>
-          <input type="text" id="title" name="title" autocomplete="off" {{with .Edit}}value="{{.Title}}" {{end}}
-            placeholder="Title" class="w-100 text title" />
+          <input type="text" id="title" name="title" autocomplete="off" value="{{ .Post.Title }}" placeholder="Post Title" class="w-100 text title" />
         </p>
         <p class="mono url-slug">
           <label for="slug" class="sr-only">Slug</label>
-          https://{{.Domain}}/post/<input type="text" id="slug" name="slug" autocomplete="off" {{with
-            .Edit}}value="{{.Slug}}" {{end}} class="mono" />.html
+          https://{{.Domain}}/post/<input type="text" id="slug" name="slug" autocomplete="off" value="{{ .Post.Slug }}" class="mono" />.html
         </p>
         <p>
           <label for="text" class="sr-only">Content</label>
-          <textarea style="height: 350px" autocomplete="off" id="text" name="text"
-            class="w-100 mono">{{with .Edit}}{{.Content}}{{end}}</textarea>
+          <textarea style="height: 350px" autocomplete="off" id="text" name="text" placeholder="Write your post (in markdown)" 
+            class="w-100 mono">{{ .Post.Body }}</textarea>
         </p>
         <p class="submit clearfix">
           <span class="right">
-            <input type="hidden" name="cid" {{with .Edit}}value="{{.ID}}" {{end}} />
+            <input type="hidden" name="id" value="{{ .Post.ID }}" />
             <button type="submit" name="do" value="save" id="btn-save" class="btn">Save Draft</button>
             <button type="submit" name="do" value="publish" class="btn primary" id="btn-submit">Publish</button>
           </span>
@@ -39,20 +41,23 @@
           <section class="typecho-post-option" role="application">
             <label for="date" class="typecho-label">Published Date</label>
             <p>
-              <input class="typecho-date w-100" type="text" name="date" id="date" {{with
-                .Edit}}value="{{.CreatedAt.Format " 2006-01-02 15:04"}}"{{end}} />
+              <input class="typecho-date w-100" type="text" name="date" id="date" 
+              {{ if .HasPost }}
+              value="{{ .Post.CreatedAt.Format " 2006-01-02 15:04" }}"
+              {{ end }}
+              />
             </p>
           </section>
           <section class="typecho-post-option category-option">
             <label class="typecho-label">Category</label>
             <ul>
               <li>
-                <input type="radio" id="serie-0" value="0" name="serie" checked="true" />
+                <input type="radio" id="serie-0" value="0" name="category" checked="true" />
                 <label for="serie-0">Default</label>
               </li>
-              {{range $k,$v:=.Series}}
+              {{range $k,$v:=.Categories}}
               <li>
-                <input type="radio" id="serie-{{$v.ID}}" value="{{$v.ID}}" name="serie" {{with $.Edit}}{{if eq .SerieID
+                <input type="radio" id="serie-{{$v.ID}}" value="{{$v.ID}}" name="category" {{with $.Edit}}{{if eq .Category.ID
                   $v.ID}}checked="true" {{end}}{{end}} />
                 <label for="serie-{{$v.ID}}">{{$v.Name}}</label>
               </li>
@@ -62,7 +67,7 @@
           <section class="typecho-post-option">
             <label for="token-input-tags" class="typecho-label">Tags</label>
             <p>
-              <input id="tags" name="tags" type="text" {{with .Edit}}value="{{join .Tags " ,"}}"{{end}}
+              <input id="tags" name="tags" type="text" placeholder="Enter tags" {{with .Edit}}value="{{join .Tags " ,"}}"{{end}}
                 class="w-100 text" />
             </p>
           </section>
@@ -180,7 +185,7 @@
           searchDelay: 0,
             preventDuplicates: true,
               animateDropdown: false,
-                hintText: 'Input tag name',
+                hintText: 'Enter tag name',
                   noResultsText: 'This is not a valid tag, and click enter to create',
                     prePopulate: tagsPre,
 
