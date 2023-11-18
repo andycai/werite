@@ -17,6 +17,7 @@ type Post struct {
 	Body        string         `gorm:"column:body;not null" json:"body"`
 	CategoryID  int32          `gorm:"column:category_id" json:"category_id"`
 	IsDraft     int32          `gorm:"column:is_draft" json:"is_draft"`
+	PublishAt   time.Time      `gorm:"column:publish_at;not null;default:current_timestamp" json:"publish_at"`
 	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 	UpdatedAt   time.Time      `gorm:"column:updated_at;not null;default:current_timestamp" json:"updated_at"`
 	CreatedAt   time.Time      `gorm:"column:created_at;not null;default:current_timestamp" json:"created_at"`

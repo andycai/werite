@@ -5,6 +5,8 @@ import (
 	"github.com/andycai/werite/components/post/model"
 	"github.com/andycai/werite/core"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gosimple/slug"
+	"github.com/spf13/cast"
 )
 
 func ManagerPage(c *fiber.Ctx) error {
@@ -57,6 +59,68 @@ func EditorPage(c *fiber.Ctx) error {
 	}, "admin/layouts/app")
 }
 
-func EditorAction(c *fiber.Ctx) error {
-	return c.Redirect("/admin/posts")
+func StorePage(c *fiber.Ctx) error {
+	id := cast.ToInt32(c.FormValue("id"))
+	slugVal := c.FormValue("slug")
+	title := c.FormValue("title")
+	description := c.FormValue("description")
+	isDraft := cast.ToInt32(c.FormValue("isDraft"))
+
+	if slugVal == "" {
+		slugVal = slug.Make(title)
+	}
+
+	content := c.FormValue("content")
+	publishAt := core.ParseDate(c.FormValue("publish_at"))
+
+	post := &model.Post{
+		ID:          id,
+		Slug:        slugVal,
+		Title:       title,
+		Description: description,
+		IsDraft:     isDraft,
+		Body:        content,
+		PublishAt:   publishAt,
+	}
+
+	err := core.Validate(post)
+	if err != nil {
+		return err
+	}
+
+	db.Create(post)
+
+	return c.Redirect("admin/posts/manager")
+}
+
+func UpdatePage(c *fiber.Ctx) error {
+	id := cast.ToInt32(c.FormValue("id"))
+	slugVal := c.FormValue("slug")
+	title := c.FormValue("title")
+	description := c.FormValue("description")
+
+	if slugVal == "" {
+		slugVal = slug.Make(title)
+	}
+
+	content := c.FormValue("content")
+	publishAt := core.ParseDate(c.FormValue("publish_at"))
+
+	post := &model.Post{
+		ID:          id,
+		Slug:        slugVal,
+		Title:       title,
+		Description: description,
+		Body:        content,
+		PublishAt:   publishAt,
+	}
+
+	err := core.Validate(post)
+	if err != nil {
+		return err
+	}
+
+	db.Save(post)
+
+	return c.Redirect("admin/posts/manager")
 }
