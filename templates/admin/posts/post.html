@@ -48,7 +48,7 @@
             <ul>
               <li>
                 <input type="radio" id="serie-0" value="0" name="serie" checked="true" />
-                <label for="serie-0">Default Category</label>
+                <label for="serie-0">Default</label>
               </li>
               {{range $k,$v:=.Series}}
               <li>
@@ -121,30 +121,30 @@
   $(document).ready(function () {
     // 日期时间控件
     $('#date').mask('9999-99-99 99:99').datetimepicker({
-      currentText: '现在',
-      prevText: '上一月',
-      nextText: '下一月',
-      monthNames: ['一月', '二月', '三月', '四月',
-        '五月', '六月', '七月', '八月',
-        '九月', '十月', '十一月', '十二月'
+      currentText: 'Now',
+      prevText: 'Last',
+      nextText: 'Next',
+      monthNames: ['Jan', 'Feb', 'Mat', 'Apr',
+        'May', 'Jun', 'Jul', 'Aug',
+        'Set', 'Oct', 'Nov', 'Dec'
       ],
-      dayNames: ['星期日', '星期一', '星期二',
-        '星期三', '星期四', '星期五', '星期六'
+      dayNames: ['Sunday', 'Monday', 'Tuesday',
+        'Wednesday', 'Thursday', 'Friday', 'Saturday'
       ],
-      dayNamesShort: ['周日', '周一', '周二', '周三',
-        '周四', '周五', '周六'
+      dayNamesShort: ['Sun', 'Mon', 'Tue',
+        'Wed', 'Thu', 'Fri', 'Sat'
       ],
-      dayNamesMin: ['日', '一', '二', '三',
-        '四', '五', '六'
+      dayNamesMin: ['Sun', 'Mon', 'Tue',
+        'Wed', 'Thu', 'Fri', 'Sat'
       ],
-      closeText: '完成',
-      timeOnlyTitle: '选择时间',
-      timeText: '时间',
-      hourText: '时',
-      amNames: ['上午', 'A'],
-      pmNames: ['下午', 'P'],
-      minuteText: '分',
-      secondText: '秒',
+      closeText: 'OK',
+      timeOnlyTitle: 'Select Date',
+      timeText: 'Time',
+      hourText: 'Hour',
+      amNames: ['AM', 'A'],
+      pmNames: ['PM', 'P'],
+      minuteText: 'Minute',
+      secondText: 'Second',
 
       dateFormat: 'yy-mm-dd',
       hour: (new Date()).getHours(),

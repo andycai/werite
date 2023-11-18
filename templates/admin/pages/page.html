@@ -5,8 +5,6 @@
   <div class="row typecho-page-main typecho-post-area" role="form">
     <form action="/admin/page-add" method="post" name="write_post">
       <div class="col-mb-12 col-tb-9" role="main">
-        {{if .Edit.IsDraft}}<cite class="edit-draft-notice">You are editing a draft, and you can <a
-            href="/admin/draft-delete?cid={{.Edit.ID}}">delete it</a></cite>{{end}}
         <p class="title">
           <label for="title" class="sr-only">Title</label>
           <input type="text" id="title" name="title" autocomplete="off" {{with .Edit}}value="{{.Title}}" {{end}}
@@ -14,7 +12,7 @@
         </p>
         <p class="mono url-slug">
           <label for="slug" class="sr-only">Slug</label>
-          https://{{.Domain}}/post/<input type="text" id="slug" name="slug" autocomplete="off" {{with
+          https://{{.Domain}}/page/<input type="text" id="slug" name="slug" autocomplete="off" {{with
             .Edit}}value="{{.Slug}}" {{end}} class="mono" />.html
         </p>
         <p>
@@ -25,7 +23,6 @@
         <p class="submit clearfix">
           <span class="right">
             <input type="hidden" name="cid" {{with .Edit}}value="{{.ID}}" {{end}} />
-            <button type="submit" name="do" value="save" id="btn-save" class="btn">Save Draft</button>
             <button type="submit" name="do" value="publish" class="btn primary" id="btn-submit">Publish</button>
           </span>
         </p>
@@ -98,30 +95,30 @@
   $(document).ready(function () {
     // 日期时间控件
     $('#date').mask('9999-99-99 99:99').datetimepicker({
-      currentText: '现在',
-      prevText: '上一月',
-      nextText: '下一月',
-      monthNames: ['一月', '二月', '三月', '四月',
-        '五月', '六月', '七月', '八月',
-        '九月', '十月', '十一月', '十二月'
+      currentText: 'Now',
+      prevText: 'Last',
+      nextText: 'Next',
+      monthNames: ['Jan', 'Feb', 'Mat', 'Apr',
+        'May', 'Jun', 'Jul', 'Aug',
+        'Set', 'Oct', 'Nov', 'Dec'
       ],
-      dayNames: ['星期日', '星期一', '星期二',
-        '星期三', '星期四', '星期五', '星期六'
+      dayNames: ['Sunday', 'Monday', 'Tuesday',
+        'Wednesday', 'Thursday', 'Friday', 'Saturday'
       ],
-      dayNamesShort: ['周日', '周一', '周二', '周三',
-        '周四', '周五', '周六'
+      dayNamesShort: ['Sun', 'Mon', 'Tue',
+        'Wed', 'Thu', 'Fri', 'Sat'
       ],
-      dayNamesMin: ['日', '一', '二', '三',
-        '四', '五', '六'
+      dayNamesMin: ['Sun', 'Mon', 'Tue',
+        'Wed', 'Thu', 'Fri', 'Sat'
       ],
-      closeText: '完成',
-      timeOnlyTitle: '选择时间',
-      timeText: '时间',
-      hourText: '时',
-      amNames: ['上午', 'A'],
-      pmNames: ['下午', 'P'],
-      minuteText: '分',
-      secondText: '秒',
+      closeText: 'OK',
+      timeOnlyTitle: 'Select Date',
+      timeText: 'Time',
+      hourText: 'Hour',
+      amNames: ['AM', 'A'],
+      pmNames: ['PM', 'P'],
+      minuteText: 'Minute',
+      secondText: 'Second',
 
       dateFormat: 'yy-mm-dd',
       hour: (new Date()).getHours(),
@@ -130,64 +127,6 @@
 
     // 聚焦
     $('#title').select();
-
-    // tag autocomplete 提示
-    var tags = $('#tags'),
-      tagsPre = [];
-
-    if (tags.length > 0) {
-      var items = tags.val().split(','),
-        result = [];
-      for (var i = 0; i < items.length; i++) {
-        var tag = items[i];
-
-        if (!tag) {
-          continue;
-        }
-
-        tagsPre.push({
-          id: tag,
-          tags: tag
-        });
-      }
-
-      tags.tokenInput({{ .Tags }}, {
-      propertyToSearch: 'tags',
-        tokenValue: 'tags',
-          searchDelay: 0,
-            preventDuplicates: true,
-              animateDropdown: false,
-                hintText: 'Input tag name',
-                  noResultsText: 'This is not a valid tag, and click enter to create',
-                    prePopulate: tagsPre,
-
-                      onResult: function(result, query) {
-                        if (!query) {
-                          return result;
-                        }
-
-                        if (!result) {
-                          result = [];
-                        }
-
-                        if (!result[0] || result[0]['id'] != query) {
-                          result.unshift({
-                            id: query,
-                            tags: query
-                          });
-                        }
-
-                        return result.slice(0, 5);
-                      }
-    });
-
-  // tag autocomplete 提示宽度设置
-  $('#token-input-tags').focus(function () {
-    var t = $('.token-input-dropdown'),
-      offset = t.outerWidth() - t.width();
-    t.width($('.token-input-list').outerWidth() - offset);
-  });
-    }
 
   // 缩略名自适应宽度
   var slug = $('#slug');
@@ -325,14 +264,6 @@
     }
   });
 
-  // 草稿删除确认
-  $('.edit-draft-notice a').click(function () {
-    if (confirm('Confirm to delete the draft?')) {
-      window.location.href = $(this).attr('href');
-    }
-
-    return false;
-  });
 });
 </script>
 <script src="/static/admin/hyperdown.js"></script>
