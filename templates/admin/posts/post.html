@@ -1,16 +1,16 @@
 <div class="body container">
   <div class="typecho-page-title">
-    {{if .Edit}}<h2>Edit {{.Edit.Title}}</h2>{{else}}<h2>Add</h2>{{end}}
+    {{if .Edit}}<h2>Edit {{.Edit.Title}}</h2>{{else}}<h2>Add New Post</h2>{{end}}
   </div>
   <div class="row typecho-page-main typecho-post-area" role="form">
-    <form action="/admin/api/post-add" method="post" name="write_post">
+    <form action="/admin/post-add" method="post" name="write_post">
       <div class="col-mb-12 col-tb-9" role="main">
         {{if .Edit.IsDraft}}<cite class="edit-draft-notice">You are editing a draft, and you can <a
             href="/admin/draft-delete?cid={{.Edit.ID}}">delete it</a></cite>{{end}}
         <p class="title">
           <label for="title" class="sr-only">Title</label>
           <input type="text" id="title" name="title" autocomplete="off" {{with .Edit}}value="{{.Title}}" {{end}}
-            placeholder="title" class="w-100 text title" />
+            placeholder="Title" class="w-100 text title" />
         </p>
         <p class="mono url-slug">
           <label for="slug" class="sr-only">Slug</label>
@@ -630,7 +630,7 @@
       };
 
       // 编辑切换
-      var edittab = $('.editor').prepend('<div class="wmd-edittab"><a href="#wmd-editarea" class="active">Compose</a><a href="#wmd-preview">Preview</a></div>'),
+      var edittab = $('.editor').prepend('<div class="wmd-edittab"><a href="#wmd-editarea" class="active">Edit</a><a href="#wmd-preview">Preview</a></div>'),
         editarea = $(textarea.parent()).attr("id", "wmd-editarea");
 
       $(".wmd-edittab a").click(function () {

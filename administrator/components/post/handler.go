@@ -38,6 +38,9 @@ func PostsPage(c *fiber.Ctx) error {
 
 func PostPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/posts/post", fiber.Map{
-		//
+		"PageTitle":    "Post",
+		"NavBarActive": "posts",
+		"Path":         "/admin/post",
+		"Domain":       "127.0.0.1",
 	}, "admin/layouts/app")
 }

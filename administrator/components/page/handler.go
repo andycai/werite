@@ -35,6 +35,9 @@ func PagesPage(c *fiber.Ctx) error {
 
 func PagePage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/pages/page", fiber.Map{
-		//
+		"PageTitle":    "Page",
+		"NavBarActive": "pages",
+		"Path":         "/admin/page",
+		"Domain":       "127.0.0.1",
 	}, "admin/layouts/app")
 }
