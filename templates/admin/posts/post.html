@@ -7,7 +7,7 @@
     {{ end }}
   </div>
   <div class="row typecho-page-main typecho-post-area" role="form">
-    <form action="/admin/post" method="post" name="write_post">
+    <form action="/admin/posts" method="post" name="write_post">
       <div class="col-mb-12 col-tb-9" role="main">
         {{if .Post.IsDraft}}<cite class="edit-draft-notice">You are editing a draft, and you can <a
             href="/admin/draft-delete?cid={{.Post.ID}}">delete it</a></cite>{{end}}

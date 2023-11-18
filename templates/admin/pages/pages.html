@@ -1,6 +1,6 @@
 <div class="body container">
   <div class="typecho-page-title">
-    <h2>Pages <a href="/admin/page">Add New</a></h2>
+    <h2>Pages <a href="/admin/page/editor">Add New</a></h2>
   </div>
   <div class="message">error info
   </div>
@@ -54,8 +54,8 @@
                   <input type="checkbox" value="{{ .ID }}" name="cid[]" />
                 </td>
                 <td>
-                  <a href="/admin/page/{{ .Slug }}">{{ .Title }}</a>
-                  <a target="_blank" href="/page/{{ .Slug }}" title="View {{ .Title }}"><i class="i-exlink"></i></a>
+                  <a href="/admin/pages/editor/{{ .Slug }}">{{ .Title }}</a>
+                  <a target="_blank" href="/pages/{{ .Slug }}" title="View {{ .Title }}"><i class="i-exlink"></i></a>
                 </td>
                 <td>{{ .UserID }}</td>
                 <td>{{ .CreatedAt.Format "06/01/02 15:04" }}</td>

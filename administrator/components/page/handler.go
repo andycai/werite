@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func PagesPage(c *fiber.Ctx) error {
+func ManagerPage(c *fiber.Ctx) error {
 	q := c.Query("q")
 	qc := c.QueryInt("qc")
 
@@ -23,7 +23,7 @@ func PagesPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/pages/pages", fiber.Map{
 		"PageTitle":    "All Pages",
 		"NavBarActive": "pages",
-		"Path":         "/admin/pages",
+		"Path":         "/admin/pages/manager",
 		"Pages":        voList,
 		"Q":            q,
 		"QC":           qc,
@@ -31,15 +31,6 @@ func PagesPage(c *fiber.Ctx) error {
 		"Prev":         0,
 		"Next":         0,
 		"PP":           map[int]string{},
-	}, "admin/layouts/app")
-}
-
-func PagePage(c *fiber.Ctx) error {
-	return core.Render(c, "admin/pages/page", fiber.Map{
-		"PageTitle":    "Page",
-		"NavBarActive": "pages",
-		"Path":         "/admin/page",
-		"Domain":       "127.0.0.1",
 	}, "admin/layouts/app")
 }
 
@@ -57,7 +48,7 @@ func EditorPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/pages/page", fiber.Map{
 		"PageTitle":    "Page Editor",
 		"NavBarActive": "pages",
-		"Path":         "/admin/page",
+		"Path":         "/admin/pages/editor",
 		"Domain":       "127.0.0.1",
 		"HasPage":      hasPage,
 		"Page":         pageVo,

@@ -27,11 +27,11 @@ func initNoCheckRouter(r fiber.Router) {
 func initCheckRouter(r fiber.Router) {
 	admin := r.Group("/admin")
 	{
-		admin.Get("/pages", PagesPage)
-		admin.Get("/page", PagePage)
+		admin.Get("/pages/manager", ManagerPage)
 
-		admin.Get("/page/:slug", EditorPage)
-		admin.Post("/page", PageAction)
+		admin.Get("/pages/editor", EditorPage)
+		admin.Get("/pages/editor/:slug", EditorPage)
+		admin.Post("/pages/editor", PageAction)
 	}
 }
 

@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func PostsPage(c *fiber.Ctx) error {
+func ManagerPage(c *fiber.Ctx) error {
 	q := c.Query("q")
 	qc := c.QueryInt("qc")
 
@@ -24,7 +24,7 @@ func PostsPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/posts/posts", fiber.Map{
 		"PageTitle":    "All Posts",
 		"NavBarActive": "posts",
-		"Path":         "/admin/posts",
+		"Path":         "/admin/posts/manager",
 		"Posts":        voList,
 		"Categories":   categories,
 		"Q":            q,
@@ -33,15 +33,6 @@ func PostsPage(c *fiber.Ctx) error {
 		"Prev":         0,
 		"Next":         0,
 		"PP":           map[int]string{},
-	}, "admin/layouts/app")
-}
-
-func PostPage(c *fiber.Ctx) error {
-	return core.Render(c, "admin/posts/post", fiber.Map{
-		"PageTitle":    "Post",
-		"NavBarActive": "posts",
-		"Path":         "/admin/post",
-		"Domain":       "127.0.0.1",
 	}, "admin/layouts/app")
 }
 
@@ -59,7 +50,7 @@ func EditorPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/posts/post", fiber.Map{
 		"PageTitle":    "Post Editor",
 		"NavBarActive": "posts",
-		"Path":         "/admin/post",
+		"Path":         "/admin/posts/editor",
 		"Domain":       "127.0.0.1",
 		"HasPost":      hasPost,
 		"Post":         postVo,

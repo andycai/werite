@@ -1,6 +1,6 @@
 <div class="body container">
   <div class="typecho-page-title">
-    <h2>Posts <a href="/admin/post">Add New</a></h2>
+    <h2>Posts <a href="/admin/posts/editor">Add New</a></h2>
   </div>
   <div class="message">error info
   </div>
@@ -22,7 +22,7 @@
             </div>
           </div>
           <div class="search" role="search">
-            {{if or .Q (gt .QC 0)}}<a href="/admin/posts">« Cancel Filter</a>{{end}}
+            {{if or .Q (gt .QC 0)}}<a href="/admin/posts/manager">« Cancel Filter</a>{{end}}
             <input type="text" class="text-s" value="{{if .Q}}{{.Q}}{{end}}" name="q" />
             <select name="qc">
               <option value="">All Categories</option>
@@ -64,8 +64,8 @@
                   <input type="checkbox" value="{{.ID}}" name="cid[]" />
                 </td>
                 <td>
-                  <a href="/admin/post/{{ .Slug }}">{{ .Title }}</a>
-                  <a target="_blank" href="/post/{{.Slug}}" title="View {{.Title}}"><i class="i-exlink"></i></a>
+                  <a href="/admin/posts/editor/{{ .Slug }}">{{ .Title }}</a>
+                  <a target="_blank" href="/posts/{{.Slug}}" title="View {{.Title}}"><i class="i-exlink"></i></a>
                 </td>
                 <td>{{ .UserID }}</td>
                 <td>{{if gt .CategoryID 0}}Category ID:{{.CategoryID}}{{else}}--{{end}}</td>
