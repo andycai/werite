@@ -29,6 +29,9 @@ func initCheckRouter(r fiber.Router) {
 	{
 		admin.Get("/pages", PagesPage)
 		admin.Get("/page", PagePage)
+
+		admin.Get("/page/:slug", EditorPage)
+		admin.Post("/page", PageAction)
 	}
 }
 

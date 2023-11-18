@@ -2,6 +2,7 @@ package page
 
 import (
 	"github.com/andycai/werite/components/page"
+	"github.com/andycai/werite/components/page/model"
 	"github.com/andycai/werite/core"
 	"github.com/gofiber/fiber/v2"
 )
@@ -17,13 +18,13 @@ func PagesPage(c *fiber.Ctx) error {
 	}
 
 	// count = page.Dao.Count()
-	pages := page.Dao.GetListByPage(curPage, numPerPage)
+	voList := page.Dao.GetListByPage(curPage, numPerPage)
 
 	return core.Render(c, "admin/pages/pages", fiber.Map{
 		"PageTitle":    "All Pages",
 		"NavBarActive": "pages",
 		"Path":         "/admin/pages",
-		"Pages":        pages,
+		"Pages":        voList,
 		"Q":            q,
 		"QC":           qc,
 		"PG":           curPage,
@@ -40,4 +41,29 @@ func PagePage(c *fiber.Ctx) error {
 		"Path":         "/admin/page",
 		"Domain":       "127.0.0.1",
 	}, "admin/layouts/app")
+}
+
+func EditorPage(c *fiber.Ctx) error {
+	var pageVo model.Page
+	hasPage := false
+
+	if c.Params("slug") != "" {
+		slug := c.Params("slug")
+		hasPage = true
+		vo, _ := page.Dao.GetBySlug(slug)
+		pageVo = *vo
+	}
+
+	return core.Render(c, "admin/pages/page", fiber.Map{
+		"PageTitle":    "Page Editor",
+		"NavBarActive": "pages",
+		"Path":         "/admin/page",
+		"Domain":       "127.0.0.1",
+		"HasPage":      hasPage,
+		"Page":         pageVo,
+	}, "admin/layouts/app")
+}
+
+func PageAction(c *fiber.Ctx) error {
+	return c.Redirect("admin/pages")
 }

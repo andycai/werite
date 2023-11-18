@@ -1,28 +1,30 @@
 <div class="body container">
   <div class="typecho-page-title">
-    {{if .Edit}}<h2>Edit {{.Edit.Title}}</h2>{{else}}<h2>Add New Page</h2>{{end}}
+    {{ if .HasPage }}
+    <h2>Edit {{ .Page.Title }}</h2>
+    {{ else }}
+    <h2>Add New Page</h2>
+    {{ end }}
   </div>
   <div class="row typecho-page-main typecho-post-area" role="form">
-    <form action="/admin/page-add" method="post" name="write_post">
+    <form action="/admin/page" method="post" name="write_post">
       <div class="col-mb-12 col-tb-9" role="main">
         <p class="title">
           <label for="title" class="sr-only">Title</label>
-          <input type="text" id="title" name="title" autocomplete="off" {{with .Edit}}value="{{.Title}}" {{end}}
-            placeholder="Title" class="w-100 text title" />
+          <input type="text" id="title" name="title" autocomplete="off" value="{{ .Page.Title }}" placeholder="Page Title" class="w-100 text title" />
         </p>
         <p class="mono url-slug">
           <label for="slug" class="sr-only">Slug</label>
-          https://{{.Domain}}/page/<input type="text" id="slug" name="slug" autocomplete="off" {{with
-            .Edit}}value="{{.Slug}}" {{end}} class="mono" />.html
+          https://{{.Domain}}/page/<input type="text" id="slug" name="slug" autocomplete="off" value="{{ .Page.Slug }}" class="mono" />
         </p>
         <p>
           <label for="text" class="sr-only">Content</label>
-          <textarea style="height: 350px" autocomplete="off" id="text" name="text"
-            class="w-100 mono">{{with .Edit}}{{.Content}}{{end}}</textarea>
+          <textarea style="height: 350px" autocomplete="off" id="text" name="text" placeholder="Write your post (in markdown)"
+            class="w-100 mono">{{ .Page.Body }}</textarea>
         </p>
         <p class="submit clearfix">
           <span class="right">
-            <input type="hidden" name="cid" {{with .Edit}}value="{{.ID}}" {{end}} />
+            <input type="hidden" name="cid" value="{{ .Page.ID }}" />
             <button type="submit" name="do" value="publish" class="btn primary" id="btn-submit">Publish</button>
           </span>
         </p>
@@ -36,8 +38,11 @@
           <section class="typecho-post-option" role="application">
             <label for="date" class="typecho-label">Published Date</label>
             <p>
-              <input class="typecho-date w-100" type="text" name="date" id="date" {{with
-                .Edit}}value="{{.CreatedAt.Format " 2006-01-02 15:04"}}"{{end}} />
+              <input class="typecho-date w-100" type="text" name="date" id="date"
+              {{ if .HasPage }}
+              value="{{ .Page.CreatedAt.Format " 2006-01-02 15:04" }}"
+              {{ end }}
+              />
             </p>
           </section>
           <section class="typecho-post-option category-option">
@@ -326,7 +331,7 @@
     };
 
     var converter = new HyperDown(),
-      editor = new Markdown.Editor(converter, '', options),
+      editor = new Markdown.Pageor(converter, '', options),
       diffMatch = new diff_match_patch(), last = '', preview = $('#wmd-preview'),
       mark = '@mark' + Math.ceil(Math.random() * 100000000) + '@',
       span = '<span class="diff" />',
