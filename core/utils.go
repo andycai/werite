@@ -2,11 +2,18 @@ package core
 
 import (
 	"fmt"
+	"time"
 
+	"github.com/andycai/werite/library/utils"
 	"github.com/spf13/cast"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/gofiber/fiber/v2"
+)
+
+var (
+	timeLocation = time.UTC
+	validator    = utils.NewValidator()
 )
 
 type Ctx = fiber.Ctx
@@ -75,4 +82,16 @@ func HTMXRedirectTo(HXURL string, HXGETURL string, c *fiber.Ctx) error {
 
 func Render(c *Ctx, name string, bind interface{}, layouts ...string) error {
 	return c.Render(fmt.Sprintf("%s", name), bind, layouts...)
+}
+
+func ParseDate(date string) time.Time {
+	t, err := time.ParseInLocation("2006-01-02 15:04", date, timeLocation)
+	if err == nil {
+		return t.UTC()
+	}
+	return time.Now()
+}
+
+func Validate(i interface{}) error {
+	return validator.Validate(i)
 }

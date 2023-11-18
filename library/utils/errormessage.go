@@ -1,4 +1,4 @@
-package internal
+package utils
 
 func ErrorMessage(fieldName string, fieldType string) string {
 
