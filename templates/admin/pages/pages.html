@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="search" role="search">
-            {{if or .Q (gt .QC 0)}}<a href="/admin/pages">« Cancel Filter</a>{{end}}
+            {{if or .Q (gt .QC 0)}}<a href="/admin/pages/manager">« Cancel Filter</a>{{end}}
             <input type="text" class="text-s" value="{{if .Q}}{{.Q}}{{end}}" name="q" />
             <button type="submit" class="btn btn-s">Search</button>
           </div>
@@ -32,16 +32,18 @@
           <table class="typecho-list-table">
             <colgroup>
               <col width="20" />
-              <col width="60%" />
+              <col width="56%" />
               <col width="" />
               <col width="12%" />
-              <col width="14%" />
+              <col width="12%" />
+              <col width="12%" />
             </colgroup>
             <thead>
               <tr>
                 <th> </th>
                 <th>Title</th>
                 <th>Author</th>
+                <th>Publish At</th>
                 <th>Create At</th>
                 <th>Update At</th>
               </tr>
@@ -57,6 +59,7 @@
                   <a target="_blank" href="/pages/{{ .Slug }}" title="View {{ .Title }}"><i class="i-exlink"></i></a>
                 </td>
                 <td>{{ .UserID }}</td>
+                <td>{{ .PublishedAt.Format "06/01/02 15:04" }}</td>
                 <td>{{ .CreatedAt.Format "06/01/02 15:04" }}</td>
                 <td>{{ .UpdatedAt.Format "06/01/02 15:04" }}</td>
               </tr>

@@ -4,8 +4,8 @@ import (
 	"github.com/andycai/werite/components/page"
 	"github.com/andycai/werite/components/page/model"
 	"github.com/andycai/werite/core"
+	"github.com/andycai/werite/library/authentication"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gosimple/slug"
 	"github.com/spf13/cast"
 )
 
@@ -57,62 +57,31 @@ func EditorPage(c *fiber.Ctx) error {
 	}, "admin/layouts/app")
 }
 
-func StorePage(c *fiber.Ctx) error {
-	id := cast.ToInt32(c.FormValue("id"))
-	slugVal := c.FormValue("slug")
-	title := c.FormValue("title")
+func Create(c *fiber.Ctx) error {
+	var pageVo model.Page
 
-	if slugVal == "" {
-		slugVal = slug.Make(title)
-	}
-
-	content := c.FormValue("content")
-	publishAt := core.ParseDate(c.FormValue("publish_at"))
-
-	page := &model.Page{
-		ID:        id,
-		Slug:      slugVal,
-		Title:     title,
-		Body:      content,
-		PublishAt: publishAt,
-	}
-
-	err := core.Validate(page)
+	err := page.Bind(c, &pageVo)
 	if err != nil {
 		return err
 	}
 
-	db.Create(page)
+	_, userID := authentication.AuthGet(c)
+	pageVo.UserID = cast.ToInt32(userID)
 
-	return c.Redirect("admin/pages")
+	db.Create(&pageVo)
+
+	return c.Redirect("/admin/pages/manager")
 }
 
-func UpdatePage(c *fiber.Ctx) error {
-	id := cast.ToInt32(c.FormValue("id"))
-	slugVal := c.FormValue("slug")
-	title := c.FormValue("title")
+func Update(c *fiber.Ctx) error {
+	var pageVo model.Page
 
-	if slugVal == "" {
-		slugVal = slug.Make(title)
-	}
-
-	content := c.FormValue("content")
-	publishAt := core.ParseDate(c.FormValue("publish_at"))
-
-	page := &model.Page{
-		ID:        id,
-		Slug:      slugVal,
-		Title:     title,
-		Body:      content,
-		PublishAt: publishAt,
-	}
-
-	err := core.Validate(page)
+	err := page.Bind(c, &pageVo)
 	if err != nil {
 		return err
 	}
 
-	db.Save(page)
+	db.Omit("created_at", "user_id").Save(pageVo)
 
-	return c.Redirect("admin/pages")
+	return c.Redirect("/admin/pages/manager")
 }

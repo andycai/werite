@@ -59,7 +59,7 @@ func EditorPage(c *fiber.Ctx) error {
 	}, "admin/layouts/app")
 }
 
-func StorePage(c *fiber.Ctx) error {
+func Create(c *fiber.Ctx) error {
 	id := cast.ToInt32(c.FormValue("id"))
 	slugVal := c.FormValue("slug")
 	title := c.FormValue("title")
@@ -71,7 +71,7 @@ func StorePage(c *fiber.Ctx) error {
 	}
 
 	content := c.FormValue("content")
-	publishAt := core.ParseDate(c.FormValue("publish_at"))
+	publishedAt := core.ParseDate(c.FormValue("published_at"))
 
 	post := &model.Post{
 		ID:          id,
@@ -80,7 +80,7 @@ func StorePage(c *fiber.Ctx) error {
 		Description: description,
 		IsDraft:     isDraft,
 		Body:        content,
-		PublishAt:   publishAt,
+		PublishedAt: publishedAt,
 	}
 
 	err := core.Validate(post)
@@ -93,7 +93,7 @@ func StorePage(c *fiber.Ctx) error {
 	return c.Redirect("admin/posts/manager")
 }
 
-func UpdatePage(c *fiber.Ctx) error {
+func Update(c *fiber.Ctx) error {
 	id := cast.ToInt32(c.FormValue("id"))
 	slugVal := c.FormValue("slug")
 	title := c.FormValue("title")
@@ -104,7 +104,7 @@ func UpdatePage(c *fiber.Ctx) error {
 	}
 
 	content := c.FormValue("content")
-	publishAt := core.ParseDate(c.FormValue("publish_at"))
+	PublishedAt := core.ParseDate(c.FormValue("published_at"))
 
 	post := &model.Post{
 		ID:          id,
@@ -112,7 +112,7 @@ func UpdatePage(c *fiber.Ctx) error {
 		Title:       title,
 		Description: description,
 		Body:        content,
-		PublishAt:   publishAt,
+		PublishedAt: PublishedAt,
 	}
 
 	err := core.Validate(post)

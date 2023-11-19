@@ -7,7 +7,13 @@
     {{ end }}
   </div>
   <div class="row typecho-page-main typecho-post-area" role="form">
-    <form action="/admin/pages" method="post" name="write_post">
+    <form 
+    {{ if .HasPage }}
+     action="/admin/pages/editor/{{ .Page.Slug }}"
+    {{ else }}
+     action="/admin/pages/editor"
+    {{ end }}
+    method="post" name="write_post">
       <div class="col-mb-12 col-tb-9" role="main">
         <p class="title">
           <label for="title" class="sr-only">Title</label>
@@ -19,7 +25,7 @@
         </p>
         <p>
           <label for="text" class="sr-only">Content</label>
-          <textarea style="height: 350px" autocomplete="off" id="text" name="text" placeholder="Write your post (in markdown)"
+          <textarea style="height: 350px" autocomplete="off" id="body" name="body" placeholder="Write your page (in markdown)"
             class="w-100 mono">{{ .Page.Body }}</textarea>
         </p>
         <p class="submit clearfix">
@@ -38,9 +44,9 @@
           <section class="typecho-post-option" role="application">
             <label for="date" class="typecho-label">Published Date</label>
             <p>
-              <input class="typecho-date w-100" type="text" name="date" id="date"
+              <input class="typecho-date w-100" type="text" name="published_at" id="published_at"
               {{ if .HasPage }}
-              value="{{ .Page.CreatedAt.Format " 2006-01-02 15:04" }}"
+              value="{{ .Page.PublishedAt.Format "2006-01-02 15:04" }}"
               {{ end }}
               />
             </p>
@@ -99,7 +105,7 @@
 <script>
   $(document).ready(function () {
     // 日期时间控件
-    $('#date').mask('9999-99-99 99:99').datetimepicker({
+    $('#published_at').mask('9999-99-99 99:99').datetimepicker({
       currentText: 'Now',
       prevText: 'Last',
       nextText: 'Next',

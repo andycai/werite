@@ -28,7 +28,8 @@ func initCheckRouter(r fiber.Router) {
 
 		admin.Get("/posts/editor", EditorPage)
 		admin.Get("/posts/editor/:slug", EditorPage)
-		admin.Post("/posts/editor", EditorAction)
+		admin.Post("/posts/editor", Create)
+		admin.Post("/posts/editor/:slug", Update)
 	}
 }
 
