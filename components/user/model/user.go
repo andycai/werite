@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-const TableNameUser = "user"
+const TableNameUser = "users"
 
 type User struct {
 	ID       int32     `gorm:"column:id;primaryKey" json:"id"`

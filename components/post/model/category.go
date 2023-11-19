@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-const TableNameCategory = "category"
+const TableNameCategory = "categories"
 
 type Category struct {
 	ID        int32     `gorm:"column:id;primaryKey" json:"id"`

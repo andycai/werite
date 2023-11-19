@@ -6,18 +6,18 @@ import (
 	"gorm.io/gorm"
 )
 
-const TableNamePage = "page"
+const TableNamePage = "pages"
 
 type Page struct {
-	ID        int32          `gorm:"column:id;primaryKey" json:"id"`
-	UserID    int32          `gorm:"column:user_id;not null" json:"user_id"`
-	Slug      string         `gorm:"column:slug;not null" json:"slug"`
-	Title     string         `gorm:"column:title;not null" json:"title"`
-	Body      string         `gorm:"column:body;not null" json:"body"`
-	PublishAt time.Time      `gorm:"column:publish_at;not null;default:current_timestamp" json:"publish_at"`
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
-	UpdatedAt time.Time      `gorm:"column:updated_at;not null;default:current_timestamp" json:"updated_at"`
-	CreatedAt time.Time      `gorm:"column:created_at;not null;default:current_timestamp" json:"created_at"`
+	ID          int32          `gorm:"column:id;primaryKey" json:"id"`
+	UserID      int32          `gorm:"column:user_id;not null" json:"user_id"`
+	Slug        string         `gorm:"column:slug;not null" json:"slug"`
+	Title       string         `gorm:"column:title;not null" json:"title"`
+	Body        string         `gorm:"column:body;not null" json:"body"`
+	PublishedAt time.Time      `gorm:"column:published_at" json:"published_at"`
+	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
+	UpdatedAt   time.Time      `gorm:"column:updated_at;not null;default:current_timestamp" json:"updated_at"`
+	CreatedAt   time.Time      `gorm:"column:created_at;not null;default:current_timestamp" json:"created_at"`
 }
 
 func (*Page) TableName() string {

@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-const TableNameComment = "comment"
+const TableNameComment = "comments"
 
 type Comment struct {
 	ID        int32          `gorm:"column:id;primaryKey" json:"id"`

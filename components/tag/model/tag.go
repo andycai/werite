@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-const TableNameTag = "tag"
+const TableNameTag = "tags"
 
 type Tag struct {
 	ID        int32          `gorm:"column:id;primaryKey" json:"id"`
