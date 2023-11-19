@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	timeLocation = time.UTC
-	validator    = utils.NewValidator()
+	zone      = time.FixedZone("CST", 3600)
+	validator = utils.NewValidator()
 )
 
 type Ctx = fiber.Ctx
@@ -85,11 +85,23 @@ func Render(c *Ctx, name string, bind interface{}, layouts ...string) error {
 }
 
 func ParseDate(date string) time.Time {
-	t, err := time.ParseInLocation("2006-01-02 15:04", date, timeLocation)
+	t, err := time.ParseInLocation("2006-01-02 15:04", date, zone)
 	if err == nil {
-		return t.UTC()
+		return t.In(zone)
 	}
-	return time.Now()
+	return time.Now().In(zone)
+}
+
+func SetZoneOffset(offset int) {
+	zone = time.FixedZone("CST", offset*3600)
+}
+
+func DateFormat(t time.Time, layout string) string {
+	return t.In(zone).Format(layout)
+}
+
+func Now() time.Time {
+	return time.Now().In(zone)
 }
 
 func Validate(i interface{}) error {
