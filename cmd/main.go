@@ -41,6 +41,7 @@ func main() {
 	core.AutoMigrate(dbs)
 	core.SetupDatabase(dbs)
 	authentication.SessionStart()
+	core.SetZoneOffset(viper.GetInt("app.zoneoffset"))
 
 	// Middleware
 	middlewares.Use(app)

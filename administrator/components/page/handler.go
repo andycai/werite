@@ -81,7 +81,7 @@ func Update(c *fiber.Ctx) error {
 		return err
 	}
 
-	db.Omit("created_at", "user_id").Save(pageVo)
+	db.Omit("created_at", "user_id").Save(&pageVo)
 
 	return c.Redirect("/admin/pages/manager")
 }

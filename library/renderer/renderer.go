@@ -7,13 +7,10 @@ import (
 
 	htmpl "html/template"
 
+	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
-)
-
-var (
-	TimeLocation = time.UTC
 )
 
 func ViewEngineStart() *html.Engine {
@@ -54,7 +51,7 @@ func ViewEngineStart() *html.Engine {
 	})
 
 	viewEngine.AddFunc("dateformat", func(t time.Time, layout string) string {
-		return t.In(TimeLocation).Format(layout)
+		return core.DateFormat(t, layout)
 	})
 
 	viewEngine.AddFunc("isnotzero", func(t time.Time) bool {

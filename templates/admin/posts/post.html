@@ -41,7 +41,7 @@
           <section class="typecho-post-option" role="application">
             <label for="date" class="typecho-label">Published Date</label>
             <p>
-              <input class="typecho-date w-100" type="text" name="date" id="date" 
+              <input class="typecho-date w-100" type="text" name="published_at" id="published_at" 
               {{ if .HasPost }}
               value="{{ .Post.CreatedAt.Format " 2006-01-02 15:04" }}"
               {{ end }}
@@ -125,7 +125,7 @@
 <script>
   $(document).ready(function () {
     // 日期时间控件
-    $('#date').mask('9999-99-99 99:99').datetimepicker({
+    $('#published_at').mask('9999-99-99 99:99').datetimepicker({
       currentText: 'Now',
       prevText: 'Last',
       nextText: 'Next',

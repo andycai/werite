@@ -1,6 +1,7 @@
 app:
   name: "werite"
   version: 1 # 0=debug 1=release
+  zoneoffset: 8 # 时区偏移量，东8
   static: "static"
   cacheDir: "./cache/"
 httpserver:
