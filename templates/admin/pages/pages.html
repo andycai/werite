@@ -32,7 +32,7 @@
           <table class="typecho-list-table">
             <colgroup>
               <col width="20" />
-              <col width="56%" />
+              <col width="54%" />
               <col width="" />
               <col width="12%" />
               <col width="12%" />
@@ -59,9 +59,9 @@
                   <a target="_blank" href="/pages/{{ .Slug }}" title="View {{ .Title }}"><i class="i-exlink"></i></a>
                 </td>
                 <td>{{ .UserID }}</td>
-                <td>{{ .PublishedAt.Format "06/01/02 15:04" }}</td>
-                <td>{{ .CreatedAt.Format "06/01/02 15:04" }}</td>
-                <td>{{ .UpdatedAt.Format "06/01/02 15:04" }}</td>
+                <td>{{ dateformat .PublishedAt "06/01/02 15:04" }}</td>
+                <td>{{ dateformat .CreatedAt "06/01/02 15:04" }}</td>
+                <td>{{ dateformat .UpdatedAt "06/01/02 15:04" }}</td>
               </tr>
               {{end}}
             </tbody>

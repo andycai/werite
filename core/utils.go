@@ -12,6 +12,7 @@ import (
 )
 
 var (
+	zoneUTC   = time.UTC
 	zone      = time.FixedZone("CST", 3600)
 	validator = utils.NewValidator()
 )
@@ -85,11 +86,11 @@ func Render(c *Ctx, name string, bind interface{}, layouts ...string) error {
 }
 
 func ParseDate(date string) time.Time {
-	t, err := time.ParseInLocation("2006-01-02 15:04", date, zone)
+	t, err := time.ParseInLocation("2006-01-02 15:04", date, zoneUTC)
 	if err == nil {
-		return t.In(zone)
+		return t.In(zoneUTC)
 	}
-	return time.Now().In(zone)
+	return time.Now().In(zoneUTC)
 }
 
 func SetZoneOffset(offset int) {
