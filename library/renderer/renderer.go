@@ -46,6 +46,10 @@ func ViewEngineStart() *html.Engine {
 		return dict, nil
 	})
 
+	viewEngine.AddFunc("Lang", func(a []string, sep string) string {
+		return core.Lang()
+	})
+
 	viewEngine.AddFunc("join", func(a []string, sep string) string {
 		return strings.Join(a, sep)
 	})

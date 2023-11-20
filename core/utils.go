@@ -15,6 +15,7 @@ var (
 	zoneUTC   = time.UTC
 	zone      = time.FixedZone("CST", 3600)
 	validator = utils.NewValidator()
+	lang      = "en"
 )
 
 type Ctx = fiber.Ctx
@@ -85,6 +86,12 @@ func Render(c *Ctx, name string, bind interface{}, layouts ...string) error {
 	return c.Render(fmt.Sprintf("%s", name), bind, layouts...)
 }
 
+func Validate(i interface{}) error {
+	return validator.Validate(i)
+}
+
+//#region Date, Time, Zone etc
+
 func ParseDate(date string) time.Time {
 	t, err := time.ParseInLocation("2006-01-02 15:04", date, zoneUTC)
 	if err == nil {
@@ -105,6 +112,16 @@ func Now() time.Time {
 	return time.Now().In(zone)
 }
 
-func Validate(i interface{}) error {
-	return validator.Validate(i)
+//#endregion
+
+//#region I18n
+
+func SetLang(l string) {
+	lang = l
 }
+
+func Lang() string {
+	return lang
+}
+
+//#endregion

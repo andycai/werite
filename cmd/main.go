@@ -42,6 +42,7 @@ func main() {
 	core.SetupDatabase(dbs)
 	authentication.SessionStart()
 	core.SetZoneOffset(viper.GetInt("app.zoneoffset"))
+	core.SetLang(viper.GetString("app.lang"))
 
 	// Middleware
 	middlewares.Use(app)

@@ -1,7 +1,8 @@
 app:
   name: "werite"
   version: 1 # 0=debug 1=release
-  zoneoffset: 8 # 时区偏移量，东8
+  lang: "en"
+  zoneoffset: 8 # timezone offset, east 8
   static: "static"
   cacheDir: "./cache/"
 httpserver:
@@ -17,7 +18,6 @@ db:
   idletimeout: 14400
   debug: true
 redis:
-  # 发布消息 的redis地址
   addr: "127.0.0.1:6379"
   password: "i18n!@#"
   db: 0
