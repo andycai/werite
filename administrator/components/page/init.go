@@ -18,26 +18,16 @@ func initDB(dbs []*gorm.DB) {
 	db = dbs[0]
 }
 
-func initNoCheckRouter(r fiber.Router) {
-	// admin := r.Group("/admin")
-	// {
-	// }
-}
-
 func initCheckRouter(r fiber.Router) {
-	admin := r.Group("/admin")
-	{
-		admin.Get("/pages/manager", ManagerPage)
+	r.Get("/pages/manager", ManagerPage)
 
-		admin.Get("/pages/editor", EditorPage)
-		admin.Get("/pages/editor/:slug", EditorPage)
-		admin.Post("/pages/editor", Create)
-		admin.Post("/pages/editor/:slug", Update)
-	}
+	r.Get("/pages/editor", EditorPage)
+	r.Get("/pages/editor/:slug", EditorPage)
+	r.Post("/pages/editor", Create)
+	r.Post("/pages/editor/:slug", Update)
 }
 
 func init() {
 	core.RegisterDatabase(KeyDB, initDB)
-	core.RegisterNoCheckRouter(KeyNoCheckRouter, initNoCheckRouter)
-	core.RegisterCheckRouter(KeyCheckRouter, initCheckRouter)
+	core.RegisterAdminCheckRouter(KeyCheckRouter, initCheckRouter)
 }

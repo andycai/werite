@@ -6,15 +6,20 @@ import (
 )
 
 func SetupRouter(app *fiber.App) {
-	group := app.Group("/")
+	page := app.Group("/")
 	for _, f := range routerNoCheckMap {
-		f(group)
+		f(page)
 	}
 
-	app.Use(middlewares.Authorize)
+	api := app.Group("/api")
 	for _, f := range routerCheckMap {
-		f(group)
+		f(api)
 	}
 
-	app.Use(middlewares.NotFoundRoute)
+	admin := app.Group("/admin", middlewares.AuthorizePage)
+	for _, f := range routerAdminCheckMap {
+		f(admin)
+	}
+
+	app.Use(middlewares.NotFound)
 }

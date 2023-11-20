@@ -9,6 +9,7 @@ var dbMap = map[string]func([]*gorm.DB){}
 
 var routerNoCheckMap = map[string]func(fiber.Router){}
 var routerCheckMap = map[string]func(fiber.Router){}
+var routerAdminCheckMap = map[string]func(fiber.Router){}
 
 func RegisterDatabase(dbType string, f func([]*gorm.DB)) {
 	if _, ok := dbMap[dbType]; ok {
@@ -29,4 +30,11 @@ func RegisterCheckRouter(routerType string, f func(fiber.Router)) {
 		panic("duplicate router type: " + routerType)
 	}
 	routerCheckMap[routerType] = f
+}
+
+func RegisterAdminCheckRouter(routerType string, f func(fiber.Router)) {
+	if _, ok := routerAdminCheckMap[routerType]; ok {
+		panic("duplicate router type: " + routerType)
+	}
+	routerAdminCheckMap[routerType] = f
 }

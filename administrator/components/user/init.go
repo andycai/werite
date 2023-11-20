@@ -23,19 +23,16 @@ func initNoCheckRouter(r fiber.Router) {
 	{
 		admin.Get("/login", LoginPage)
 		admin.Post("/login", LoginAction)
-		admin.Get("/logout", LogoutAction)
 	}
 }
 
 func initCheckRouter(r fiber.Router) {
-	admin := r.Group("/admin")
-	{
-		admin.Get("/dashboard", DashBoardPage)
-	}
+	r.Get("/logout", LogoutAction)
+	r.Get("/dashboard", DashBoardPage)
 }
 
 func init() {
 	core.RegisterDatabase(KeyDB, initDB)
 	core.RegisterNoCheckRouter(KeyNoCheckRouter, initNoCheckRouter)
-	core.RegisterCheckRouter(KeyCheckRouter, initCheckRouter)
+	core.RegisterAdminCheckRouter(KeyCheckRouter, initCheckRouter)
 }
