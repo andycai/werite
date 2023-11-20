@@ -11,7 +11,7 @@ func SetupRouter(app *fiber.App) {
 		f(group)
 	}
 
-	// v2 := app.Group("/api", JWTAuthMiddleware)
+	app.Use(middlewares.Authorize)
 	for _, f := range routerCheckMap {
 		f(group)
 	}
