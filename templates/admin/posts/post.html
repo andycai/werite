@@ -7,32 +7,30 @@
     {{ end }}
   </div>
   <div class="row typecho-page-main typecho-post-area" role="form">
-    <form 
-      {{ if .HasPost }}
-      action="/admin/posts/editor/{{ .Post.ID }}"
-      {{ else }}
-      action="/admin/posts/editor"
-      {{ end }} 
-      method="post" name="write_post">
+    <form {{ if .HasPost }} action="/admin/posts/editor/{{ .Post.ID }}" {{ else }} action="/admin/posts/editor" {{ end
+      }} method="post" name="write_post">
       <div class="col-mb-12 col-tb-9" role="main">
         {{if .Post.IsDraft}}<cite class="edit-draft-notice">You are editing a draft, and you can <a
             href="/admin/draft-delete?cid={{.Post.ID}}">delete it</a></cite>{{end}}
         <p class="title">
           <label for="title" class="sr-only">Title</label>
-          <input type="text" id="title" name="title" autocomplete="off" value="{{ .Post.Title }}" placeholder="Post Title" class="w-100 text title" />
+          <input type="text" id="title" name="title" autocomplete="off" value="{{ .Post.Title }}"
+            placeholder="Post Title" class="w-100 text title" />
         </p>
         <p class="mono url-slug">
           <label for="slug" class="sr-only">Slug</label>
-          https://{{.Domain}}/post/<input type="text" id="slug" name="slug" autocomplete="off" value="{{ .Post.Slug }}" class="mono" />.html
+          https://{{.Domain}}/post/<input type="text" id="slug" name="slug" autocomplete="off" value="{{ .Post.Slug }}"
+            class="mono" />.html
         </p>
         <p>
           <label for="description" class="sr-only">Description</label>
-          <input type="text" id="description" name="description" autocomplete="off" value="{{ .Post.Description }}" placeholder="Post Description" class="w-100 text title" />
+          <input type="text" id="description" name="description" autocomplete="off" value="{{ .Post.Description }}"
+            placeholder="Post Description" class="w-100 text title" />
         </p>
         <p>
           <label for="text" class="sr-only">Content</label>
-          <textarea style="height: 350px" autocomplete="off" id="body" name="body" placeholder="Write your post (in markdown)" 
-            class="w-100 mono">{{ .Post.Body }}</textarea>
+          <textarea style="height: 350px" autocomplete="off" id="body" name="body"
+            placeholder="Write your post (in markdown)" class="w-100 mono">{{ .Post.Body }}</textarea>
         </p>
         <p class="submit clearfix">
           <span class="right">
@@ -51,11 +49,8 @@
           <section class="typecho-post-option" role="application">
             <label for="date" class="typecho-label">Publish</label>
             <p>
-              <input class="typecho-date w-100" type="text" name="published_at" id="published_at" 
-              {{ if .HasPost }}
-              value="{{ .Post.CreatedAt.Format "2006-01-02 15:04" }}"
-              {{ end }}
-              />
+              <input class="typecho-date w-100" type="text" name="published_at" id="published_at" {{ if .HasPost }}
+                value="{{ .Post.CreatedAt.Format " 2006-01-02 15:04" }}" {{ end }} />
             </p>
           </section>
           <section class="typecho-post-option category-option">
@@ -67,11 +62,8 @@
               </li>
               {{ range $k, $v := .Categories }}
               <li>
-                <input type="radio" id="serie-{{$v.ID}}" value="{{$v.ID}}" name="category_id" 
-                {{ if and .HasPost (eq .Category.ID $v.ID) }}
-                checked="true"
-                {{ end }}
-                />
+                <input type="radio" id="serie-{{$v.ID}}" value="{{$v.ID}}" name="category_id" {{ if and .HasPost (eq
+                  .Category.ID $v.ID) }} checked="true" {{ end }} />
                 <label for="serie-{{$v.ID}}">{{ $v.Name }}</label>
               </li>
               {{end}}
@@ -80,18 +72,16 @@
           <section class="typecho-post-option">
             <label for="token-input-tags" class="typecho-label">Tags</label>
             <p>
-            <input type="text" name="tags" class="w-100 text tagify--outside" placeholder="Enter tags"
-              {{ if .HasPost }}
-                value="{{ .Post.GetTagsAsCommaSeparated }}"
-              {{ end }}
-            >
+              <input type="text" name="tags" class="form-control tagify--outside" placeholder="Enter tags" {{ if .HasPost
+                }} value="{{ .Post.GetTagsAsCommaSeparated }}" {{ end }}>
             </p>
           </section>
         </div>
         <!-- end #tab-advance -->
         <div id="tab-files" class="tab-content hidden">
           <div id="upload-panel" class="p">
-            <div class="upload-area" draggable="true">Drag file here <br>or <a href="###" class="upload-file">Select file to upload.</a>
+            <div class="upload-area" draggable="true">Drag file here <br>or <a href="###" class="upload-file">Select
+                file to upload.</a>
             </div>
             <ul id="file-list">
             </ul>
@@ -166,151 +156,151 @@
     // 聚焦
     $('#title').select();
 
-  // 缩略名自适应宽度
-  var slug = $('#slug');
+    // 缩略名自适应宽度
+    var slug = $('#slug');
 
-  if (slug.length > 0) {
-    var wrap = $('<div />').css({
-      'position': 'relative',
-      'display': 'inline-block'
-    }),
-      justifySlug = $('<pre />').css({
-        'display': 'block',
-        'visibility': 'hidden',
-        'height': slug.height(),
-        'padding': '0 2px',
-        'margin': 0
-      }).insertAfter(slug.wrap(wrap).css({
-        'left': 0,
-        'top': 0,
-        'minWidth': '5px',
-        'position': 'absolute',
-        'width': '100%'
-      })),
-      originalWidth = slug.width();
+    if (slug.length > 0) {
+      var wrap = $('<div />').css({
+        'position': 'relative',
+        'display': 'inline-block'
+      }),
+        justifySlug = $('<pre />').css({
+          'display': 'block',
+          'visibility': 'hidden',
+          'height': slug.height(),
+          'padding': '0 2px',
+          'margin': 0
+        }).insertAfter(slug.wrap(wrap).css({
+          'left': 0,
+          'top': 0,
+          'minWidth': '5px',
+          'position': 'absolute',
+          'width': '100%'
+        })),
+        originalWidth = slug.width();
 
-    function justifySlugWidth() {
-      var val = slug.val();
-      justifySlug.text(val.length > 0 ? val : '     ');
-    }
-
-    slug.bind('input propertychange', justifySlugWidth);
-    justifySlugWidth();
-  }
-
-  // 原始的插入图片和文件
-  Typecho.insertFileToEditor = function (file, url, isImage) {
-    var textarea = $('#text'),
-      sel = textarea.getSelection(),
-      html = isImage ? '<img src="' + url + '" alt="' + file + '" />' : '<a href="' + url + '">' + file + '</a>',
-      offset = (sel ? sel.start : 0) + html.length;
-
-    textarea.replaceSelection(html);
-    textarea.setSelection(offset, offset);
-  };
-
-  var submitted = false,
-    form = $('form[name=write_post],form[name=write_page]').submit(function () {
-      submitted = true;
-    }),
-    savedData = null;
-
-  // 自动保存
-  var locked = false,
-    formAction = form.attr('action'),
-    idInput = $('input[name=cid]'),
-    cid = idInput.val(),
-    autoSave = $('<span id="auto-save-message" class="left"></span>').prependTo('.submit'),
-    autoSaveOnce = !!cid,
-    lastSaveTime = null;
-
-  function autoSaveListener() {
-    setInterval(function () {
-      var data = form.serialize();
-
-      if (savedData != data && !locked) {
-        locked = true;
-
-        autoSave.text('saving');
-        $.post(formAction, data + '&do=auto', function (o) {
-          savedData = data;
-          lastSaveTime = o.time;
-          idInput.val(o.cid);
-          autoSave.text('saved' + ' (' + o.time + ')').effect('highlight', 1000);
-          locked = false;
-        }, 'json');
+      function justifySlugWidth() {
+        var val = slug.val();
+        justifySlug.text(val.length > 0 ? val : '     ');
       }
-    }, 20000);
-  }
 
-  if (autoSaveOnce) {
-    savedData = form.serialize();
-    autoSaveListener();
-  }
-
-  $('#text').bind('input propertychange', function () {
-    if (!locked) {
-      autoSave.text("Doesn't save" + (lastSaveTime ? ' (Last saved time: ' + lastSaveTime + ')' : ''));
+      slug.bind('input propertychange', justifySlugWidth);
+      justifySlugWidth();
     }
 
-    if (!autoSaveOnce) {
-      autoSaveOnce = true;
+    // 原始的插入图片和文件
+    Typecho.insertFileToEditor = function (file, url, isImage) {
+      var textarea = $('#text'),
+        sel = textarea.getSelection(),
+        html = isImage ? '<img src="' + url + '" alt="' + file + '" />' : '<a href="' + url + '">' + file + '</a>',
+        offset = (sel ? sel.start : 0) + html.length;
+
+      textarea.replaceSelection(html);
+      textarea.setSelection(offset, offset);
+    };
+
+    var submitted = false,
+      form = $('form[name=write_post],form[name=write_page]').submit(function () {
+        submitted = true;
+      }),
+      savedData = null;
+
+    // 自动保存
+    var locked = false,
+      formAction = form.attr('action'),
+      idInput = $('input[name=cid]'),
+      cid = idInput.val(),
+      autoSave = $('<span id="auto-save-message" class="left"></span>').prependTo('.submit'),
+      autoSaveOnce = !!cid,
+      lastSaveTime = null;
+
+    function autoSaveListener() {
+      setInterval(function () {
+        var data = form.serialize();
+
+        if (savedData != data && !locked) {
+          locked = true;
+
+          autoSave.text('saving');
+          $.post(formAction, data + '&do=auto', function (o) {
+            savedData = data;
+            lastSaveTime = o.time;
+            idInput.val(o.cid);
+            autoSave.text('saved' + ' (' + o.time + ')').effect('highlight', 1000);
+            locked = false;
+          }, 'json');
+        }
+      }, 20000);
+    }
+
+    if (autoSaveOnce) {
+      savedData = form.serialize();
       autoSaveListener();
     }
+
+    $('#text').bind('input propertychange', function () {
+      if (!locked) {
+        autoSave.text("Doesn't save" + (lastSaveTime ? ' (Last saved time: ' + lastSaveTime + ')' : ''));
+      }
+
+      if (!autoSaveOnce) {
+        autoSaveOnce = true;
+        autoSaveListener();
+      }
+    });
+
+    // 自动检测离开页
+    var lastData = form.serialize();
+
+    $(window).bind('beforeunload', function () {
+      if (!!savedData) {
+        lastData = savedData;
+      }
+
+      if (form.serialize() != lastData && !submitted) {
+        return 'Content changed and not saved. Counld you confirm to leave this page?';
+      }
+    });
+
+    // 控制选项和附件的切换
+    var fileUploadInit = false;
+    $('#edit-secondary .typecho-option-tabs li').click(function () {
+      $('#edit-secondary .typecho-option-tabs li').removeClass('active');
+      $(this).addClass('active');
+      $('.tab-content').addClass('hidden');
+
+      var selected_tab = $(this).find('a').attr('href'),
+        selected_el = $(selected_tab).removeClass('hidden');
+
+      if (!fileUploadInit) {
+        selected_el.trigger('init');
+        fileUploadInit = true;
+      }
+
+      return false;
+    });
+
+    // 自动隐藏密码框
+    $('#visibility').change(function () {
+      var val = $(this).val(),
+        password = $('#post-password');
+
+      if ('password' == val) {
+        password.removeClass('hidden');
+      } else {
+        password.addClass('hidden');
+      }
+    });
+
+    // 草稿删除确认
+    $('.edit-draft-notice a').click(function () {
+      if (confirm('Confirm to delete the draft?')) {
+        window.location.href = $(this).attr('href');
+      }
+
+      return false;
+    });
   });
-
-  // 自动检测离开页
-  var lastData = form.serialize();
-
-  $(window).bind('beforeunload', function () {
-    if (!!savedData) {
-      lastData = savedData;
-    }
-
-    if (form.serialize() != lastData && !submitted) {
-      return 'Content changed and not saved. Counld you confirm to leave this page?';
-    }
-  });
-
-  // 控制选项和附件的切换
-  var fileUploadInit = false;
-  $('#edit-secondary .typecho-option-tabs li').click(function () {
-    $('#edit-secondary .typecho-option-tabs li').removeClass('active');
-    $(this).addClass('active');
-    $('.tab-content').addClass('hidden');
-
-    var selected_tab = $(this).find('a').attr('href'),
-      selected_el = $(selected_tab).removeClass('hidden');
-
-    if (!fileUploadInit) {
-      selected_el.trigger('init');
-      fileUploadInit = true;
-    }
-
-    return false;
-  });
-
-  // 自动隐藏密码框
-  $('#visibility').change(function () {
-    var val = $(this).val(),
-      password = $('#post-password');
-
-    if ('password' == val) {
-      password.removeClass('hidden');
-    } else {
-      password.addClass('hidden');
-    }
-  });
-
-  // 草稿删除确认
-  $('.edit-draft-notice a').click(function () {
-    if (confirm('Confirm to delete the draft?')) {
-      window.location.href = $(this).attr('href');
-    }
-
-    return false;
-  });
-});
 </script>
 <script src="/static/js/tagify.js"></script>
 <script src="/static/admin/hyperdown.js"></script>
@@ -804,4 +794,31 @@
       attachDeleteEvent(this);
     });
   });
+</script>
+
+<script>
+  var isTagify = null;
+
+  window.addEventListener('DOMContentLoaded', function() {
+    renderTagify();
+  });
+
+  document.body.addEventListener("htmx:afterSwap", function(evt) {
+    renderTagify();
+  });
+
+  function renderTagify() {
+    const input = document.querySelector('input[name=tags]');
+    const tagify = document.querySelector('tags[class="tagify form-control tagify--outside"]');
+
+    if (input && !tagify) {
+      new Tagify(input, {
+        whitelist: [],
+        dropdown: {
+          position: "input",
+          enabled : 0 // always opens dropdown when input gets focus
+        }
+      })
+    }
+  }
 </script>

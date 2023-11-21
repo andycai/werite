@@ -9,6 +9,29 @@
   <title>{{.PageTitle}} - Werite</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="/static/admin/style.css">
+  <link rel="stylesheet" href="/static/css/tagify.css">
+  <style>
+    .tagify--outside{
+      border: 0;
+      width: 100%;
+    }
+
+    .tagify--outside .tagify__input{
+      order: -1;
+      flex: 100%;
+      border: 1px solid var(--tags-border-color);
+      margin-bottom: 1em;
+      transition: .1s;
+    }
+
+    .tagify--outside .tagify__input:hover{ border-color:var(--tags-hover-border-color); }
+    .tagify--outside.tagify--focus .tagify__input{
+      transition:0s;
+      border-color: var(--tags-focus-border-color);
+    }
+
+    .tagify__input { border-radius: 4px; margin: 0; padding: 10px 12px; }
+  </style>
   <script src="/static/admin/jquery.js"></script>
   <script src="/static/admin/jquery-ui.js"></script>
   <script src="/static/admin/typecho.js"></script>
