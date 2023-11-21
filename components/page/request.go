@@ -10,7 +10,7 @@ import (
 )
 
 type requestCreate struct {
-	ID          int32  `json:"id"`
+	ID          uint   `json:"id"`
 	Slug        string `json:"slug"`
 	Title       string `json:"title" validate:"required"`
 	Body        string `json:"body" validate:"required"`

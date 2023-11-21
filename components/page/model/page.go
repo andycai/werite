@@ -9,8 +9,8 @@ import (
 const TableNamePage = "pages"
 
 type Page struct {
-	ID          int32          `gorm:"column:id;primaryKey" json:"id"`
-	UserID      int32          `gorm:"column:user_id;not null" json:"user_id"`
+	ID          uint           `gorm:"column:id;primaryKey" json:"id"`
+	UserID      uint           `gorm:"column:user_id;not null" json:"user_id"`
 	Slug        string         `gorm:"column:slug;not null" json:"slug"`
 	Title       string         `gorm:"column:title;not null" json:"title"`
 	Body        string         `gorm:"column:body;not null" json:"body"`

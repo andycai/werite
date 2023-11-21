@@ -4,8 +4,7 @@ import (
 	"math"
 
 	"github.com/andycai/werite/components/post"
-	ma "github.com/andycai/werite/components/post/model"
-	mt "github.com/andycai/werite/components/tag/model"
+	mpo "github.com/andycai/werite/components/post/model"
 	"github.com/andycai/werite/components/user"
 	mu "github.com/andycai/werite/components/user/model"
 	"github.com/andycai/werite/core"
@@ -53,7 +52,7 @@ func HTMXHomePage(c *fiber.Ctx) error {
 // HTMXHomeTagList tag list
 func HTMXHomeTagList(c *fiber.Ctx) error {
 	var (
-		tags    []mt.Tag
+		tags    []mpo.Tag
 		hasTags bool
 	)
 	return core.Render(c, "home/partials/tag-item-list", fiber.Map{
@@ -65,7 +64,7 @@ func HTMXHomeTagList(c *fiber.Ctx) error {
 // HTMXHomeGlobalFeed global feed
 func HTMXHomeGlobalFeed(c *fiber.Ctx) error {
 	var (
-		posts           []ma.Post
+		posts           []mpo.Post
 		hasPosts        bool
 		hasPagination   bool
 		totalPagination int

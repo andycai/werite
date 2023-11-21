@@ -7,7 +7,7 @@ import (
 const TableNameCategory = "categories"
 
 type Category struct {
-	ID        int32     `gorm:"column:id;primaryKey" json:"id"`
+	ID        uint      `gorm:"column:id;primaryKey" json:"id"`
 	Slug      string    `gorm:"column:slug;not null" json:"slug"`
 	Name      string    `gorm:"column:name;not null" json:"name"`
 	Desc      string    `gorm:"column:desc;not null" json:"desc"`

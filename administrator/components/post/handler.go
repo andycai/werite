@@ -6,7 +6,6 @@ import (
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
 	"github.com/gofiber/fiber/v2"
-	"github.com/spf13/cast"
 )
 
 func ManagerPage(c *fiber.Ctx) error {
@@ -68,11 +67,11 @@ func Create(c *fiber.Ctx) error {
 	}
 
 	_, userID := authentication.AuthGet(c)
-	postVo.UserID = cast.ToInt32(userID)
+	postVo.UserID = userID
 
 	db.Create(&postVo)
 
-	return c.Redirect("admin/posts/manager")
+	return c.Redirect("/admin/posts/manager")
 }
 
 func Update(c *fiber.Ctx) error {
@@ -85,5 +84,5 @@ func Update(c *fiber.Ctx) error {
 
 	db.Omit("created_at", "user_id").Save(&postVo)
 
-	return c.Redirect("admin/posts/manager")
+	return c.Redirect("/admin/posts/manager")
 }

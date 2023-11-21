@@ -9,18 +9,20 @@ import (
 const TableNamePost = "posts"
 
 type Post struct {
-	ID          int32          `gorm:"column:id;primaryKey" json:"id"`
-	UserID      int32          `gorm:"column:user_id;not null" json:"user_id"`
+	ID          uint           `gorm:"column:id;primaryKey" json:"id"`
+	UserID      uint           `gorm:"column:user_id;not null" json:"user_id"`
 	Slug        string         `gorm:"column:slug;not null" json:"slug"`
 	Title       string         `gorm:"column:title;not null" json:"title"`
 	Description string         `gorm:"column:description;not null" json:"description"`
 	Body        string         `gorm:"column:body;not null" json:"body"`
-	CategoryID  int32          `gorm:"column:category_id" json:"category_id"`
-	IsDraft     int32          `gorm:"column:is_draft" json:"is_draft"`
+	CategoryID  uint           `gorm:"column:category_id" json:"category_id"`
+	IsDraft     uint           `gorm:"column:is_draft" json:"is_draft"`
 	PublishedAt time.Time      `gorm:"column:published_at" json:"published_at"`
 	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 	UpdatedAt   time.Time      `gorm:"column:updated_at;not null;default:current_timestamp" json:"updated_at"`
 	CreatedAt   time.Time      `gorm:"column:created_at;not null;default:current_timestamp" json:"created_at"`
+	Comments    []Comment
+	Tags        []Tag `gorm:"many2many:post_tag"`
 }
 
 func (*Post) TableName() string {

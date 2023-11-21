@@ -6,7 +6,6 @@ import (
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
 	"github.com/gofiber/fiber/v2"
-	"github.com/spf13/cast"
 )
 
 func ManagerPage(c *fiber.Ctx) error {
@@ -66,7 +65,7 @@ func Create(c *fiber.Ctx) error {
 	}
 
 	_, userID := authentication.AuthGet(c)
-	pageVo.UserID = cast.ToInt32(userID)
+	pageVo.UserID = userID
 
 	db.Create(&pageVo)
 

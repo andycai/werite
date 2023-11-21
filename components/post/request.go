@@ -10,13 +10,13 @@ import (
 )
 
 type requestCreate struct {
-	ID          int32  `json:"id"`
+	ID          uint   `json:"id"`
 	Slug        string `json:"slug"`
 	Title       string `json:"title" validate:"required"`
 	Description string `json:"description" validate:"required"`
 	Body        string `json:"body" validate:"required"`
-	IsDraft     int32  `json:"is_draft" form:"is_draft" validate:"required"`
-	CategoryID  int32  `json:"category_id" form:"category_id" validate:"required"`
+	IsDraft     uint   `json:"is_draft" form:"is_draft" validate:"required"`
+	CategoryID  uint   `json:"category_id" form:"category_id" validate:"required"`
 	PublishedAt string `json:"published_at" form:"published_at" validate:"required"`
 }
 

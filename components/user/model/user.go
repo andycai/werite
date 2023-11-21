@@ -7,12 +7,12 @@ import (
 const TableNameUser = "users"
 
 type User struct {
-	ID       int32     `gorm:"column:id;primaryKey" json:"id"`
+	ID       uint      `gorm:"column:id;primaryKey" json:"id"`
 	Username string    `gorm:"column:username;not null" json:"username"`
 	Password string    `gorm:"column:password;not null;default:123456" json:"password"`
 	Token    string    `gorm:"column:token;not null" json:"token"`
 	Avatar   string    `gorm:"column:avatar;not null" json:"avatar"`
-	Gender   int32     `gorm:"column:gender;not null;default:1" json:"gender"`
+	Gender   uint      `gorm:"column:gender;not null;default:1" json:"gender"`
 	Phone    string    `gorm:"column:phone;not null" json:"phone"`
 	Email    string    `gorm:"column:email;not null" json:"email"`
 	Addr     string    `gorm:"column:addr;not null" json:"addr"`
