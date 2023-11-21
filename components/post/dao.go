@@ -2,6 +2,7 @@ package post
 
 import (
 	mpo "github.com/andycai/werite/components/post/model"
+	"gorm.io/gorm"
 )
 
 type PostDao struct{}
@@ -21,6 +22,9 @@ func (ad PostDao) GetByID(id uint) (*mpo.Post, error) {
 	var post mpo.Post
 	err := db.Model(&post).
 		Where("id = ?", id).
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Order("tags.name asc")
+		}).
 		Find(&post).Error
 
 	return &post, err
@@ -46,10 +50,10 @@ func (ad PostDao) Count() int64 {
 
 func (ad PostDao) GetListByPage(page, numPerPage int) []mpo.Post {
 	var posts []mpo.Post
-	db.Debug().Model(&posts).
-		// Preload("Tags", func(db *gorm.DB) *gorm.DB {
-		// return db.Order("tags.name asc")
-		// }).
+	db.Model(&posts).
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Order("tags.name asc")
+		}).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").

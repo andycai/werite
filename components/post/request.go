@@ -15,8 +15,8 @@ type requestCreate struct {
 	Title       string `json:"title" validate:"required"`
 	Description string `json:"description" validate:"required"`
 	Body        string `json:"body" validate:"required"`
-	IsDraft     uint   `json:"is_draft" form:"is_draft" validate:"required"`
-	CategoryID  uint   `json:"category_id" form:"category_id" validate:"required"`
+	IsDraft     uint   `json:"is_draft" form:"is_draft"`
+	CategoryID  uint   `json:"category_id" form:"category_id"`
 	PublishedAt string `json:"published_at" form:"published_at" validate:"required"`
 }
 
