@@ -36,18 +36,23 @@
           <li class="last {{if eq .Path "/admin/pages/editor"}}focus{{end}}"><a target="_self" href="/admin/pages/editor">Add New</a></li>
         </ul>
       </ul>
-      <ul class="root {{ if eq .NavBarActive "setting" }}focus{{end}}">
-        <li class="parent"><a target="_self" href="/admin/profile">Settings</a></dt></li>
+      <ul class="root {{ if eq .NavBarActive "users" }}focus{{end}}">
+        <li class="parent"><a target="_self" href="/admin/users/profile">Users</a></dt></li>
         <ul class="child">
-          <li {{if eq .Path "/admin/profile" }}class="focus" {{end}}><a target="_self" href="/admin/profile">Profile</a></li>
-          <li {{if eq .Path "/admin/options-general" }}class="focus" {{end}}><a target="_self" href="/admin/options-general">General</a></li>
-          <li {{if eq .Path "/admin/blog" }}class="focus" {{end}}><a target="_self" href="/admin/blog">Profile</a></li>
-          <li {{if eq .Path "/admin/change-password" }}class="focus" {{end}}><a target="_self" href="/admin/change-password">Password</a></li>
+          <li {{if eq .Path "/admin/users/profile" }}class="focus" {{end}}><a target="_self" href="/admin/users/profile">Profile</a></li>
+          <li {{if eq .Path "/admin/users/change-password" }}class="focus" {{end}}><a target="_self" href="/admin/users/change-password">Security</a></li>
+        </ul>
+      </ul>
+      <ul class="root {{ if eq .NavBarActive "setting" }}focus{{end}}">
+        <li class="parent"><a target="_self" href="/admin/settings/general">Settings</a></dt></li>
+        <ul class="child">
+          <li {{if eq .Path "/admin/settings/general" }}class="focus" {{end}}><a target="_self" href="/admin/options-general">General</a></li>
+          <li {{if eq .Path "/admin/settings/blog" }}class="focus" {{end}}><a target="_self" href="/admin/blog">Profile</a></li>
         </ul>
       </ul>
     </nav>
     <div class="operate">
-      <a target="_self" title="{{.LoginAt}}" href="/admin/profile" class="author">{{.UserName}}</a><a class="exit" href="/admin/logout">Log Out</a><a target="_blank" href="/">Home Page</a>
+      <a target="_self" title="{{.LoginAt}}" href="/admin/users/profile" class="author">{{.UserName}}</a><a class="exit" href="/admin/logout">Logout</a><a target="_blank" href="/">Home Page</a>
     </div>
   </div>
   <div class="main">

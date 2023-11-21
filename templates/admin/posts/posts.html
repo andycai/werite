@@ -27,7 +27,7 @@
               <option value="">All Categories</option>
               {{range .categories}}
               <option {{if eq $.Category .ID}}selected{{end}} value="{{.ID}}">{{.Name}}
-                {{end}}
+               {{end}}
             </select>
             <button type="submit" class="btn btn-s">Filter</button>
           </div>
@@ -38,13 +38,11 @@
           <table class="typecho-list-table">
             <colgroup>
               <col width="20" />
-              <col width="40%" />
+              <col width="50%" />
               <col width="" />
-              <col width="12%" />
-              <col width="6%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
+              <col width="8%" />
+              <col width="14%" />
+              <col width="14%" />
             </colgroup>
             <thead>
               <tr>
@@ -54,8 +52,6 @@
                 <th>Categories</th>
                 <th>Tags</th>
                 <th>Published At</th>
-                <th>Create At</th>
-                <th>Update At</th>
               </tr>
             </thead>
             <tbody>
@@ -65,15 +61,13 @@
                   <input type="checkbox" value="{{.ID}}" name="cid[]" />
                 </td>
                 <td>
-                  <a href="/admin/posts/editor/{{ .Slug }}">{{ .Title }}</a>
+                  <a href="/admin/posts/editor/{{ .ID }}">{{ .Title }}</a>
                   <a target="_blank" href="/posts/{{.Slug}}" title="View {{.Title}}"><i class="i-exlink"></i></a>
                 </td>
                 <td>{{ .UserID }}</td>
-                <td>{{if gt .CategoryID 0}}Category ID:{{.CategoryID}}{{else}}--{{end}}</td>
+                <td>{{ .CategoryID }}</td>
                 <td>...</td>
-                <td>{{ dateformat .PublishedAt.Format "06/01/02 15:04" }}</td>
-                <td>{{ dateformat .CreatedAt "06/01/02 15:04"}}</td>
-                <td>{{ dateformat .UpdatedAt "06/01/02 15:04"}}</td>
+                <td>{{ DateFormat .PublishedAt "2006-01-02 15:04" }}</td>
               </tr>
               {{end}}
             </tbody>

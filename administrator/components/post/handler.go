@@ -1,11 +1,16 @@
 package post
 
 import (
+	"encoding/json"
+	"errors"
+
 	"github.com/andycai/werite/components/post"
 	"github.com/andycai/werite/components/post/model"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
 	"github.com/gofiber/fiber/v2"
+	"github.com/spf13/cast"
+	"gorm.io/gorm"
 )
 
 func ManagerPage(c *fiber.Ctx) error {
@@ -41,10 +46,10 @@ func EditorPage(c *fiber.Ctx) error {
 	var postVo model.Post
 	hasPost := false
 
-	if c.Params("slug") != "" {
-		slug := c.Params("slug")
+	if c.Params("id") != "" {
+		id := cast.ToUint(c.Params("id"))
 		hasPost = true
-		vo, _ := post.Dao.GetBySlug(slug)
+		vo, _ := post.Dao.GetByID(id)
 		postVo = *vo
 	}
 
@@ -59,7 +64,14 @@ func EditorPage(c *fiber.Ctx) error {
 }
 
 func Create(c *fiber.Ctx) error {
-	var postVo model.Post
+	type TagItem struct {
+		Value string
+	}
+
+	var (
+		postVo   model.Post
+		tagItems []TagItem
+	)
 
 	err := post.Bind(c, &postVo)
 	if err != nil {
@@ -71,11 +83,36 @@ func Create(c *fiber.Ctx) error {
 
 	db.Create(&postVo)
 
+	if c.FormValue("tags") != "" {
+		json.Unmarshal([]byte(c.FormValue("tags")), &tagItems)
+
+		for i := 0; i < len(tagItems); i++ {
+			tagItem := tagItems[i]
+			tag := model.Tag{Name: tagItem.Value}
+
+			err := db.Model(&tag).Where("name = ?", tagItem.Value).First(&tag).Error
+			if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+				db.Create(&tag)
+			}
+
+			if err := db.Model(&postVo).Association("Tags").Append(&tag); err != nil {
+				return err
+			}
+		}
+	}
+
 	return c.Redirect("/admin/posts/manager")
 }
 
 func Update(c *fiber.Ctx) error {
-	var postVo model.Post
+	type TagItem struct {
+		Value string
+	}
+
+	var (
+		postVo   model.Post
+		tagItems []TagItem
+	)
 
 	err := post.Bind(c, &postVo)
 	if err != nil {
@@ -83,6 +120,24 @@ func Update(c *fiber.Ctx) error {
 	}
 
 	db.Omit("created_at", "user_id").Save(&postVo)
+
+	if c.FormValue("tags") != "" {
+		json.Unmarshal([]byte(c.FormValue("tags")), &tagItems)
+
+		for i := 0; i < len(tagItems); i++ {
+			tagItem := tagItems[i]
+			tag := model.Tag{Name: tagItem.Value}
+
+			err := db.Model(&tag).Where("name = ?", tagItem.Value).First(&tag).Error
+			if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+				db.Create(&tag)
+			}
+
+			if err := db.Model(&postVo).Association("Tags").Append(&tag); err != nil {
+				return err
+			}
+		}
+	}
 
 	return c.Redirect("/admin/posts/manager")
 }

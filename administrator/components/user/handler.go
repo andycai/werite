@@ -97,3 +97,28 @@ func DashBoardPage(c *fiber.Ctx) error {
 		},
 	}, "admin/layouts/app")
 }
+
+func ProfilePage(c *fiber.Ctx) error {
+	var authenticatedUser *model.User
+	isAuthenticated, userID := authentication.AuthGet(c)
+
+	if isAuthenticated {
+		authenticatedUser = user.Dao.GetByID(userID)
+	}
+
+	return core.Render(c, "admin/users/profile", fiber.Map{
+		"PageTitle":    "Profile",
+		"NavBarActive": "users",
+		"Path":         "/admin/users/profile",
+		"UserName":     authenticatedUser.Name,
+		"Info": fiber.Map{
+			"BlogName":     "Werite",
+			"BlogSubTitle": "Content Management System",
+			"LoginAt":      authenticatedUser.LoginAt,
+		},
+	}, "admin/layouts/app")
+}
+
+func ProfileAction(c *fiber.Ctx) error {
+	return nil
+}

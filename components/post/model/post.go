@@ -28,3 +28,13 @@ type Post struct {
 func (*Post) TableName() string {
 	return TableNamePost
 }
+
+func (p Post) GetTagsAsCommaSeparated() string {
+	tagsText := ""
+
+	for i := 0; i < len(p.Tags); i++ {
+		tagsText += p.Tags[i].Name + ","
+	}
+
+	return tagsText
+}

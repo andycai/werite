@@ -29,6 +29,9 @@ func initNoCheckRouter(r fiber.Router) {
 func initCheckRouter(r fiber.Router) {
 	r.Get("/logout", LogoutAction)
 	r.Get("/dashboard", DashBoardPage)
+
+	r.Get("/users/profile", ProfilePage)
+	r.Post("/users/profile", ProfileAction)
 }
 
 func init() {

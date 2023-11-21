@@ -50,11 +50,11 @@ func ViewEngineStart() *html.Engine {
 		return core.Lang()
 	})
 
-	viewEngine.AddFunc("join", func(a []string, sep string) string {
+	viewEngine.AddFunc("Join", func(a []string, sep string) string {
 		return strings.Join(a, sep)
 	})
 
-	viewEngine.AddFunc("dateformat", func(t time.Time, layout string) string {
+	viewEngine.AddFunc("DateFormat", func(t time.Time, layout string) string {
 		return core.DateFormat(t, layout)
 	})
 

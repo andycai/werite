@@ -9,7 +9,7 @@
   <div class="row typecho-page-main typecho-post-area" role="form">
     <form 
     {{ if .HasPage }}
-     action="/admin/pages/editor/{{ .Page.Slug }}"
+     action="/admin/pages/editor/{{ .Page.ID }}"
     {{ else }}
      action="/admin/pages/editor"
     {{ end }}
@@ -31,6 +31,7 @@
         <p class="submit clearfix">
           <span class="right">
             <input type="hidden" name="id" value="{{ .Page.ID }}" />
+            <button type="submit" name="do" value="save" id="btn-save" class="btn">Save Draft</button>
             <button type="submit" name="do" value="publish" class="btn primary" id="btn-submit">Publish</button>
           </span>
         </p>
@@ -42,23 +43,14 @@
         </ul>
         <div id="tab-advance" class="tab-content">
           <section class="typecho-post-option" role="application">
-            <label for="date" class="typecho-label">Published Date</label>
+            <label for="date" class="typecho-label">Publish</label>
             <p>
               <input class="typecho-date w-100" type="text" name="published_at" id="published_at"
               {{ if .HasPage }}
-              value="{{ .Page.PublishedAt.Format "2006-01-02 15:04" }}"
+              value="{{ DateFormat .Page.PublishedAt "2006-01-02 15:04" }}"
               {{ end }}
               />
             </p>
-          </section>
-          <section class="typecho-post-option category-option">
-            <label class="typecho-label">Other Options</label>
-            <ul>
-              <li>
-                <input type="checkbox" id="update" value="true" name="update" />
-                <label for="update">Update Time?</label>
-              </li>
-            </ul>
           </section>
         </div>
         <!-- end #tab-advance -->

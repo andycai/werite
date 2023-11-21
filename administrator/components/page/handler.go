@@ -6,6 +6,7 @@ import (
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
 	"github.com/gofiber/fiber/v2"
+	"github.com/spf13/cast"
 )
 
 func ManagerPage(c *fiber.Ctx) error {
@@ -39,10 +40,10 @@ func EditorPage(c *fiber.Ctx) error {
 	var pageVo model.Page
 	hasPage := false
 
-	if c.Params("slug") != "" {
-		slug := c.Params("slug")
+	if c.Params("id") != "" {
+		id := cast.ToUint(c.Params("id"))
 		hasPage = true
-		vo, _ := page.Dao.GetBySlug(slug)
+		vo, _ := page.Dao.GetByID(id)
 		pageVo = *vo
 	}
 

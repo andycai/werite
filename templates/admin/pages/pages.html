@@ -32,11 +32,9 @@
           <table class="typecho-list-table">
             <colgroup>
               <col width="20" />
-              <col width="54%" />
-              <col width="" />
-              <col width="12%" />
-              <col width="12%" />
-              <col width="12%" />
+              <col width="64%" />
+              <col width="12" />
+              <col width="16%" />
             </colgroup>
             <thead>
               <tr>
@@ -44,8 +42,6 @@
                 <th>Title</th>
                 <th>Author</th>
                 <th>Publish At</th>
-                <th>Create At</th>
-                <th>Update At</th>
               </tr>
             </thead>
             <tbody>
@@ -55,13 +51,11 @@
                   <input type="checkbox" value="{{ .ID }}" name="cid[]" />
                 </td>
                 <td>
-                  <a href="/admin/pages/editor/{{ .Slug }}">{{ .Title }}</a>
+                  <a href="/admin/pages/editor/{{ .ID }}">{{ .Title }}</a>
                   <a target="_blank" href="/pages/{{ .Slug }}" title="View {{ .Title }}"><i class="i-exlink"></i></a>
                 </td>
                 <td>{{ .UserID }}</td>
-                <td>{{ dateformat .PublishedAt "06/01/02 15:04" }}</td>
-                <td>{{ dateformat .CreatedAt "06/01/02 15:04" }}</td>
-                <td>{{ dateformat .UpdatedAt "06/01/02 15:04" }}</td>
+                <td>{{ DateFormat .PublishedAt "2006-01-02 15:04" }}</td>
               </tr>
               {{end}}
             </tbody>

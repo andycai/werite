@@ -16,6 +16,15 @@ func (pd PageDao) GetBySlug(slug string) (*model.Page, error) {
 	return &page, err
 }
 
+func (pd PageDao) GetByID(id uint) (*model.Page, error) {
+	var page model.Page
+	err := db.Model(&page).
+		Where("id = ?", id).
+		Find(&page).Error
+
+	return &page, err
+}
+
 func (pd PageDao) GetListByPage(page, numPerPage int) []model.Page {
 	var pages []model.Page
 	db.Debug().Model(&pages).

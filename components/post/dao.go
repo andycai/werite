@@ -17,6 +17,15 @@ func (ad PostDao) GetBySlug(slug string) (*mpo.Post, error) {
 	return &post, err
 }
 
+func (ad PostDao) GetByID(id uint) (*mpo.Post, error) {
+	var post mpo.Post
+	err := db.Model(&post).
+		Where("id = ?", id).
+		Find(&post).Error
+
+	return &post, err
+}
+
 func (ad PostDao) Count() int64 {
 	// db := database.Get()
 	// db.Debug().Model(&posts).

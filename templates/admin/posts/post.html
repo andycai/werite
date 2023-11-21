@@ -7,7 +7,13 @@
     {{ end }}
   </div>
   <div class="row typecho-page-main typecho-post-area" role="form">
-    <form action="/admin/posts" method="post" name="write_post">
+    <form 
+      {{ if .HasPost }}
+      action="/admin/posts/editor/{{ .Post.ID }}"
+      {{ else }}
+      action="/admin/posts/editor"
+      {{ end }} 
+      method="post" name="write_post">
       <div class="col-mb-12 col-tb-9" role="main">
         {{if .Post.IsDraft}}<cite class="edit-draft-notice">You are editing a draft, and you can <a
             href="/admin/draft-delete?cid={{.Post.ID}}">delete it</a></cite>{{end}}
@@ -18,6 +24,10 @@
         <p class="mono url-slug">
           <label for="slug" class="sr-only">Slug</label>
           https://{{.Domain}}/post/<input type="text" id="slug" name="slug" autocomplete="off" value="{{ .Post.Slug }}" class="mono" />.html
+        </p>
+        <p>
+          <label for="description" class="sr-only">Description</label>
+          <input type="text" id="description" name="description" autocomplete="off" value="{{ .Post.Description }}" placeholder="Post Description" class="w-100 text title" />
         </p>
         <p>
           <label for="text" class="sr-only">Content</label>
@@ -39,11 +49,11 @@
         </ul>
         <div id="tab-advance" class="tab-content">
           <section class="typecho-post-option" role="application">
-            <label for="date" class="typecho-label">Published Date</label>
+            <label for="date" class="typecho-label">Publish</label>
             <p>
               <input class="typecho-date w-100" type="text" name="published_at" id="published_at" 
               {{ if .HasPost }}
-              value="{{ .Post.CreatedAt.Format " 2006-01-02 15:04" }}"
+              value="{{ .Post.CreatedAt.Format "2006-01-02 15:04" }}"
               {{ end }}
               />
             </p>
@@ -52,14 +62,17 @@
             <label class="typecho-label">Category</label>
             <ul>
               <li>
-                <input type="radio" id="serie-0" value="0" name="category" checked="true" />
+                <input type="radio" id="serie-0" value="0" name="category_id" checked="true" />
                 <label for="serie-0">Default</label>
               </li>
-              {{range $k,$v:=.Categories}}
+              {{ range $k, $v := .Categories }}
               <li>
-                <input type="radio" id="serie-{{$v.ID}}" value="{{$v.ID}}" name="category" {{with $.Edit}}{{if eq .Category.ID
-                  $v.ID}}checked="true" {{end}}{{end}} />
-                <label for="serie-{{$v.ID}}">{{$v.Name}}</label>
+                <input type="radio" id="serie-{{$v.ID}}" value="{{$v.ID}}" name="category_id" 
+                {{ if and .HasPost (eq .Category.ID $v.ID) }}
+                checked="true"
+                {{ end }}
+                />
+                <label for="serie-{{$v.ID}}">{{ $v.Name }}</label>
               </li>
               {{end}}
             </ul>
@@ -67,18 +80,12 @@
           <section class="typecho-post-option">
             <label for="token-input-tags" class="typecho-label">Tags</label>
             <p>
-              <input id="tags" name="tags" type="text" placeholder="Enter tags" {{with .Edit}}value="{{join .Tags " ,"}}"{{end}}
-                class="w-100 text" />
+            <input type="text" name="tags" class="w-100 text tagify--outside" placeholder="Enter tags"
+              {{ if .HasPost }}
+                value="{{ .Post.GetTagsAsCommaSeparated }}"
+              {{ end }}
+            >
             </p>
-          </section>
-          <section class="typecho-post-option category-option">
-            <label class="typecho-label">Other Options</label>
-            <ul>
-              <li>
-                <input type="checkbox" id="update" value="true" name="update" />
-                <label for="update">Update Time?</label>
-              </li>
-            </ul>
           </section>
         </div>
         <!-- end #tab-advance -->
@@ -158,64 +165,6 @@
 
     // 聚焦
     $('#title').select();
-
-    // tag autocomplete 提示
-    var tags = $('#tags'),
-      tagsPre = [];
-
-    if (tags.length > 0) {
-      var items = tags.val().split(','),
-        result = [];
-      for (var i = 0; i < items.length; i++) {
-        var tag = items[i];
-
-        if (!tag) {
-          continue;
-        }
-
-        tagsPre.push({
-          id: tag,
-          tags: tag
-        });
-      }
-
-      tags.tokenInput({{ .Tags }}, {
-      propertyToSearch: 'tags',
-        tokenValue: 'tags',
-          searchDelay: 0,
-            preventDuplicates: true,
-              animateDropdown: false,
-                hintText: 'Enter tag name',
-                  noResultsText: 'This is not a valid tag, and click enter to create',
-                    prePopulate: tagsPre,
-
-                      onResult: function(result, query) {
-                        if (!query) {
-                          return result;
-                        }
-
-                        if (!result) {
-                          result = [];
-                        }
-
-                        if (!result[0] || result[0]['id'] != query) {
-                          result.unshift({
-                            id: query,
-                            tags: query
-                          });
-                        }
-
-                        return result.slice(0, 5);
-                      }
-    });
-
-  // tag autocomplete 提示宽度设置
-  $('#token-input-tags').focus(function () {
-    var t = $('.token-input-dropdown'),
-      offset = t.outerWidth() - t.width();
-    t.width($('.token-input-list').outerWidth() - offset);
-  });
-    }
 
   // 缩略名自适应宽度
   var slug = $('#slug');
@@ -363,6 +312,7 @@
   });
 });
 </script>
+<script src="/static/js/tagify.js"></script>
 <script src="/static/admin/hyperdown.js"></script>
 <script src="/static/admin/pagedown.js"></script>
 <script src="/static/admin/pagedown-extra.js"></script>
