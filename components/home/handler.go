@@ -4,16 +4,15 @@ import (
 	"math"
 
 	"github.com/andycai/werite/components/post"
-	mpo "github.com/andycai/werite/components/post/model"
 	"github.com/andycai/werite/components/user"
-	mu "github.com/andycai/werite/components/user/model"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
+	"github.com/andycai/werite/model"
 	"github.com/gofiber/fiber/v2"
 )
 
 func HomePage(c *fiber.Ctx) error {
-	var authenticatedUser *mu.User
+	var authenticatedUser *model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 	if isAuthenticated {
@@ -33,7 +32,7 @@ func HomePage(c *fiber.Ctx) error {
 
 // HTMXHomePage home page
 func HTMXHomePage(c *fiber.Ctx) error {
-	var authenticatedUser *mu.User
+	var authenticatedUser *model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 
@@ -52,7 +51,7 @@ func HTMXHomePage(c *fiber.Ctx) error {
 // HTMXHomeTagList tag list
 func HTMXHomeTagList(c *fiber.Ctx) error {
 	var (
-		tags    []mpo.Tag
+		tags    []model.Tag
 		hasTags bool
 	)
 	return core.Render(c, "home/partials/tag-item-list", fiber.Map{
@@ -64,7 +63,7 @@ func HTMXHomeTagList(c *fiber.Ctx) error {
 // HTMXHomeGlobalFeed global feed
 func HTMXHomeGlobalFeed(c *fiber.Ctx) error {
 	var (
-		posts           []mpo.Post
+		posts           []model.Post
 		hasPosts        bool
 		hasPagination   bool
 		totalPagination int

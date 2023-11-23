@@ -5,9 +5,9 @@ import (
 	"errors"
 
 	"github.com/andycai/werite/components/post"
-	"github.com/andycai/werite/components/post/model"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
+	"github.com/andycai/werite/model"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cast"
 	"gorm.io/gorm"

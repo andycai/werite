@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/andycai/werite/components/user"
-	"github.com/andycai/werite/components/user/model"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
+	"github.com/andycai/werite/model"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )

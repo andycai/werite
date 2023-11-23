@@ -1,6 +1,6 @@
 package page
 
-import "github.com/andycai/werite/components/page/model"
+import "github.com/andycai/werite/model"
 
 type PageDao struct {
 }

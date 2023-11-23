@@ -1,7 +1,7 @@
 package post
 
 import (
-	mpo "github.com/andycai/werite/components/post/model"
+	"github.com/andycai/werite/model"
 	"gorm.io/gorm"
 )
 
@@ -9,8 +9,8 @@ type PostDao struct{}
 
 var Dao = new(PostDao)
 
-func (ad PostDao) GetBySlug(slug string) (*mpo.Post, error) {
-	var post mpo.Post
+func (ad PostDao) GetBySlug(slug string) (*model.Post, error) {
+	var post model.Post
 	err := db.Model(&post).
 		Where("slug = ?", slug).
 		Find(&post).Error
@@ -18,8 +18,8 @@ func (ad PostDao) GetBySlug(slug string) (*mpo.Post, error) {
 	return &post, err
 }
 
-func (ad PostDao) GetByID(id uint) (*mpo.Post, error) {
-	var post mpo.Post
+func (ad PostDao) GetByID(id uint) (*model.Post, error) {
+	var post model.Post
 	err := db.Model(&post).
 		Where("id = ?", id).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
@@ -41,15 +41,15 @@ func (ad PostDao) Count() int64 {
 	// 	Order("created_at desc").
 	// 	Find(&posts)
 
-	var post mpo.Post
+	var post model.Post
 	var count int64
 	db.Model(&post).Count(&count)
 
 	return count
 }
 
-func (ad PostDao) GetListByPage(page, numPerPage int) []mpo.Post {
-	var posts []mpo.Post
+func (ad PostDao) GetListByPage(page, numPerPage int) []model.Post {
+	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")

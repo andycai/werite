@@ -3,18 +3,17 @@ package post
 import (
 	"errors"
 
-	"github.com/andycai/werite/components/post/model"
 	"github.com/andycai/werite/components/user"
-	mu "github.com/andycai/werite/components/user/model"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
+	"github.com/andycai/werite/model"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
 func PostDetailPage(c *fiber.Ctx) error {
 	var post *model.Post
-	var authenticatedUser mu.User
+	var authenticatedUser model.User
 	isSelf := false
 
 	isAuthenticated, userID := authentication.AuthGet(c)
@@ -48,7 +47,7 @@ func PostDetailPage(c *fiber.Ctx) error {
 func HTMXHomePostDetailPage(c *fiber.Ctx) error {
 	var post *model.Post
 	isSelf := false
-	var authenticatedUser *mu.User
+	var authenticatedUser *model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
 

@@ -2,14 +2,17 @@ package model
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 const TableNameUser = "users"
 
 type User struct {
-	ID       uint      `gorm:"column:id;primaryKey" json:"id"`
+	gorm.Model
 	Username string    `gorm:"column:username;not null" json:"username"`
 	Password string    `gorm:"column:password;not null;default:123456" json:"password"`
+	Name     string    `gorm:"column:name;not null" json:"name"`
 	Token    string    `gorm:"column:token;not null" json:"token"`
 	Avatar   string    `gorm:"column:avatar;not null" json:"avatar"`
 	Gender   uint      `gorm:"column:gender;not null;default:1" json:"gender"`
@@ -19,10 +22,6 @@ type User struct {
 	IP       string    `gorm:"column:ip;not null" json:"ip"`
 	LoginAt  time.Time `gorm:"column:login_at" json:"login_at"`
 	LogoutAt time.Time `gorm:"column:logout_at" json:"logout_at"`
-	CreateAt time.Time `gorm:"column:create_at;not null;default:current_timestamp" json:"create_at"`
-	UpdateAt time.Time `gorm:"column:update_at;not null;default:current_timestamp" json:"update_at"`
-	DeleteAt time.Time `gorm:"column:delete_at" json:"delete_at"`
-	Name     string    `gorm:"column:name;not null" json:"name"`
 }
 
 func (*User) TableName() string {

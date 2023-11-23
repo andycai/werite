@@ -2,9 +2,9 @@ package page
 
 import (
 	"github.com/andycai/werite/components/page"
-	"github.com/andycai/werite/components/page/model"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
+	"github.com/andycai/werite/model"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cast"
 )

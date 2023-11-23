@@ -3,8 +3,8 @@ package page
 import (
 	"time"
 
-	"github.com/andycai/werite/components/page/model"
 	"github.com/andycai/werite/core"
+	"github.com/andycai/werite/model"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gosimple/slug"
 )

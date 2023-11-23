@@ -3,7 +3,7 @@ package user
 import (
 	"time"
 
-	"github.com/andycai/werite/components/user/model"
+	"github.com/andycai/werite/model"
 )
 
 type UserDao struct{}

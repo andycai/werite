@@ -3,8 +3,8 @@ package post
 import (
 	"time"
 
-	"github.com/andycai/werite/components/post/model"
 	"github.com/andycai/werite/core"
+	"github.com/andycai/werite/model"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gosimple/slug"
 )
