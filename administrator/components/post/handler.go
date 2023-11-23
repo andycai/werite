@@ -112,6 +112,7 @@ func Update(c *fiber.Ctx) error {
 	var (
 		postVo   model.Post
 		tagItems []TagItem
+		tags     []model.Tag
 	)
 
 	err := post.Bind(c, &postVo)
@@ -133,9 +134,11 @@ func Update(c *fiber.Ctx) error {
 				db.Create(&tag)
 			}
 
-			if err := db.Model(&postVo).Association("Tags").Append(&tag); err != nil {
-				return err
-			}
+			tags = append(tags, tag)
+		}
+
+		if err := db.Model(&postVo).Association("Tags").Replace(&tags); err != nil {
+			return err
 		}
 	}
 
