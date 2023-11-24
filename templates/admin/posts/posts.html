@@ -66,7 +66,7 @@
                 </td>
                 <td>{{ .UserID }}</td>
                 <td>{{ .CategoryID }}</td>
-                <td>{{ .GetTagsAsCommaSeparated }}</td>
+                <td>{{ .GetTagsAsCharSeparated " " }}</td>
                 <td>{{ DateFormat .PublishedAt "2006-01-02 15:04" }}</td>
               </tr>
               {{end}}

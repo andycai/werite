@@ -28,10 +28,14 @@ func (*Post) TableName() string {
 }
 
 func (p Post) GetTagsAsCommaSeparated() string {
+	return p.GetTagsAsCharSeparated(",")
+}
+
+func (p Post) GetTagsAsCharSeparated(sep string) string {
 	tagsText := ""
 
 	for i := 0; i < len(p.Tags); i++ {
-		tagsText += p.Tags[i].Name + ","
+		tagsText += p.Tags[i].Name + sep
 	}
 
 	return tagsText
