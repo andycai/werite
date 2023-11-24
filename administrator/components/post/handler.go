@@ -26,7 +26,7 @@ func ManagerPage(c *fiber.Ctx) error {
 	// count = post.Dao.Count()
 	voList := post.Dao.GetListByPage(curPage, numPerPage)
 
-	categories := []*model.Category{}
+	categories := post.Dao.GetCategories()
 	return core.Render(c, "admin/posts/posts", fiber.Map{
 		"PageTitle":    "All Posts",
 		"NavBarActive": "posts",
@@ -53,6 +53,8 @@ func EditorPage(c *fiber.Ctx) error {
 		postVo = *vo
 	}
 
+	categories := post.Dao.GetCategories()
+
 	return core.Render(c, "admin/posts/post", fiber.Map{
 		"PageTitle":    "Post Editor",
 		"NavBarActive": "posts",
@@ -60,6 +62,7 @@ func EditorPage(c *fiber.Ctx) error {
 		"Domain":       "127.0.0.1",
 		"HasPost":      hasPost,
 		"Post":         postVo,
+		"Categories":   categories,
 	}, "admin/layouts/app")
 }
 

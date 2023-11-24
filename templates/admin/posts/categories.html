@@ -14,7 +14,7 @@
               <button class="btn dropdown-toggle btn-s" type="button"><i class="sr-only">Operation</i>Action <i
                   class="i-caret-down"></i></button>
               <ul class="dropdown-menu">
-                <li><a lang="此分类下的所有内容将被删除, 你确认要删除这些分类吗?" href="/admin/api/serie-delete">Delete</a></li>
+                <li><a href="/admin/categories/delete">Delete</a></li>
               </ul>
             </div>
           </div>
@@ -47,8 +47,8 @@
                 </td>
                 <td>{{.ID}}</td>
                 <td>
-                  <a href="/admin/add-serie?mid={{.ID}}">{{.Name}}</a>
-                  <a target="_blank" href="/series.html#toc-{{.ID}}" title="Views {{.Name}}"><i class="i-exlink"></i></a>
+                  <a href="/admin/categories/editor/{{.ID}}">{{.Name}}</a>
+                  <a target="_blank" href="/catetories/{{.ID}}" title="Views {{.Name}}"><i class="i-exlink"></i></a>
                 </td>
                 <td>{{ DateFormat .CreatedAt "2006/01/02 15:04"}}</td>
                 <td><a class="balloon-button left size-50" href="#"></a></td>

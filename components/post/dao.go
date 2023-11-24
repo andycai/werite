@@ -62,6 +62,14 @@ func (ad PostDao) GetListByPage(page, numPerPage int) []model.Post {
 	return posts
 }
 
+func (ad PostDao) GetCategories() []model.Category {
+	var categories []model.Category
+	db.Model(&categories).
+		Find(&categories)
+
+	return categories
+}
+
 func (ad PostDao) GetCategoriesByPage(page, numPerPage int) []model.Category {
 	var categories []model.Category
 	db.Model(&categories).

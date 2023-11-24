@@ -62,8 +62,13 @@
               </li>
               {{ range $k, $v := .Categories }}
               <li>
-                <input type="radio" id="serie-{{$v.ID}}" value="{{$v.ID}}" name="category_id" {{ if and .HasPost (eq
-                  .Category.ID $v.ID) }} checked="true" {{ end }} />
+                <input type="radio" id="serie-{{$v.ID}}" value="{{$v.ID}}" name="category_id" 
+                {{ if $.HasPost }}
+                {{ if eq $.Post.CategoryID $v.ID }}
+                 checked="true"
+                {{ end }}
+                {{ end }}
+                 />
                 <label for="serie-{{$v.ID}}">{{ $v.Name }}</label>
               </li>
               {{end}}

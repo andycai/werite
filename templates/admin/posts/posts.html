@@ -25,8 +25,8 @@
             <input type="text" class="text-s" value="{{if .Q}}{{.Q}}{{end}}" name="q" />
             <select name="qc">
               <option value="">All Categories</option>
-              {{range .categories}}
-              <option {{if eq $.Category .ID}}selected{{end}} value="{{.ID}}">{{.Name}}
+              {{range .Categories}}
+              <option {{if eq $.Category .ID}}selected{{end}} value="{{.ID}}">{{.Name}}</option>
                {{end}}
             </select>
             <button type="submit" class="btn btn-s">Filter</button>
