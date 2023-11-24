@@ -157,3 +157,24 @@ func Update(c *fiber.Ctx) error {
 
 	return c.Redirect("/admin/posts/manager")
 }
+
+func ManagerCategoryPage(c *fiber.Ctx) error {
+	numPerPage := 10
+	curPage := 0
+	if c.QueryInt("page") > 1 {
+		curPage = c.QueryInt("page") - 1
+	}
+
+	categories := post.Dao.GetCategoriesByPage(curPage, numPerPage)
+
+	return core.Render(c, "admin/posts/categories", fiber.Map{
+		"PageTitle":    "All Categories",
+		"NavBarActive": "categories",
+		"Path":         "/admin/categories/manager",
+		"Categories":   categories,
+		"Page":         curPage,
+		"Prev":         0,
+		"Next":         0,
+		"PP":           map[int]string{},
+	}, "admin/layouts/app")
+}

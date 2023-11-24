@@ -48,7 +48,7 @@
         <ul class="child">
           <li {{if eq .Path "/admin/posts/manager" }}class="focus" {{end}}><a target="_self" href="/admin/posts/manager">All Posts</a></li>
           <li class="last {{if eq .Path "/admin/posts/editor"}}focus{{end}}"><a target="_self" href="/admin/posts/editor">Add New</a></li>
-          <li {{if eq .Path "/admin/categories" }}class="focus" {{end}}><a target="_self" href="/admin/categories">Categories</a></li>
+          <li {{if eq .Path "/admin/categories/manager" }}class="focus" {{end}}><a target="_self" href="/admin/categories/manager">Categories</a></li>
           <li class="last {{if eq .Path "/admin/tags/manager"}}focus{{end}}"><a target="_self" href="/admin/tags/manager">Tags</a></li>
         </ul>
       </ul>

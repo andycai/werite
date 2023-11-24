@@ -1,20 +1,20 @@
 <div class="body container">
   <div class="typecho-page-title">
-    <h2>管理专题<a href="/admin/add-serie">新增</a></h2>
+    <h2>Categories <a href="/admin/categories/editor">Add New</a></h2>
   </div>
   <div class="row typecho-page-main manage-metas">
     <div class="col-mb-12" role="main">
       <form method="post" name="manage_categories" class="operate-form">
         <div class="typecho-list-operate clearfix">
           <div class="operate">
-            <label><i class="sr-only">全选</i>
+            <label><i class="sr-only">Select All</i>
               <input type="checkbox" class="typecho-table-select-all" />
             </label>
             <div class="btn-group btn-drop">
-              <button class="btn dropdown-toggle btn-s" type="button"><i class="sr-only">操作</i>选中项 <i
+              <button class="btn dropdown-toggle btn-s" type="button"><i class="sr-only">Operation</i>Action <i
                   class="i-caret-down"></i></button>
               <ul class="dropdown-menu">
-                <li><a lang="此分类下的所有内容将被删除, 你确认要删除这些分类吗?" href="/admin/api/serie-delete">删除</a></li>
+                <li><a lang="此分类下的所有内容将被删除, 你确认要删除这些分类吗?" href="/admin/api/serie-delete">Delete</a></li>
               </ul>
             </div>
           </div>
@@ -34,13 +34,13 @@
               <tr class="nodrag">
                 <th> </th>
                 <th>ID</th>
-                <th>名称</th>
-                <th>创建</th>
-                <th>文章数</th>
+                <th>Name</th>
+                <th>Create At</th>
+                <th>Post Count</th>
               </tr>
             </thead>
             <tbody>
-              {{range .List}}
+              {{range .Categories}}
               <tr id="mid-category-{{.ID}}">
                 <td>
                   <input type="checkbox" value="{{.ID}}" name="mid[]" />
@@ -48,10 +48,10 @@
                 <td>{{.ID}}</td>
                 <td>
                   <a href="/admin/add-serie?mid={{.ID}}">{{.Name}}</a>
-                  <a target="_blank" href="/series.html#toc-{{.ID}}" title="浏览 {{.Name}}"><i class="i-exlink"></i></a>
+                  <a target="_blank" href="/series.html#toc-{{.ID}}" title="Views {{.Name}}"><i class="i-exlink"></i></a>
                 </td>
-                <td>{{ .CreatedAt.Format "2006/01/02 15:04"}}</td>
-                <td><a class="balloon-button left size-50" href="#">{{len .Posts}}</a></td>
+                <td>{{ DateFormat .CreatedAt "2006/01/02 15:04"}}</td>
+                <td><a class="balloon-button left size-50" href="#"></a></td>
               </tr>
               {{end}}
             </tbody>
