@@ -115,7 +115,20 @@ func Update(c *fiber.Ctx) error {
 		tags     []model.Tag
 	)
 
-	err := post.Bind(c, &postVo)
+	err := db.Model(&postVo).
+		Where("id = ?", cast.ToUint(c.Params("id"))).
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Order("tags.name asc")
+		}).
+		Find(&postVo).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+		}
+	}
+
+	err = post.Bind(c, &postVo)
 	if err != nil {
 		return err
 	}
