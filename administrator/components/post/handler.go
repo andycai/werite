@@ -181,3 +181,15 @@ func ManagerCategoryPage(c *fiber.Ctx) error {
 		"PP":           map[int]string{},
 	}, "admin/layouts/app")
 }
+
+func EditorCategoryPage(c *fiber.Ctx) error {
+	return nil
+}
+
+func CreateCategory(c *fiber.Ctx) error {
+	return nil
+}
+
+func UpdateCategory(c *fiber.Ctx) error {
+	return nil
+}
