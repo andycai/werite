@@ -58,6 +58,14 @@ func ViewEngineStart() *html.Engine {
 		return core.DateFormat(t, layout)
 	})
 
+	viewEngine.AddFunc("GetErrors", func() []string {
+		return core.GetErrors()
+	})
+
+	viewEngine.AddFunc("GetMessages", func() []string {
+		return core.GetMessages()
+	})
+
 	viewEngine.AddFunc("isnotzero", func(t time.Time) bool {
 		return !t.IsZero()
 	})

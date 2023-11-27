@@ -3,6 +3,7 @@ package post
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"github.com/andycai/werite/components/post"
 	"github.com/andycai/werite/core"
@@ -235,6 +236,8 @@ func UpdateCategory(c *fiber.Ctx) error {
 	}
 
 	db.Save(&categoryVo)
+
+	core.PushMessages(fmt.Sprintf("Updated id:%d", categoryVo.ID))
 
 	return c.Redirect("/admin/categories/manager")
 }

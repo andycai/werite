@@ -12,10 +12,12 @@ import (
 )
 
 var (
-	zoneUTC   = time.UTC
-	zone      = time.FixedZone("CST", 3600)
-	validator = utils.NewValidator()
-	lang      = "en"
+	zoneUTC              = time.UTC
+	zone                 = time.FixedZone("CST", 3600)
+	validator            = utils.NewValidator()
+	lang                 = "en"
+	errorList   []string = make([]string, 0)
+	messageList []string = make([]string, 0)
 )
 
 type Ctx = fiber.Ctx
@@ -125,3 +127,25 @@ func Lang() string {
 }
 
 //#endregion
+
+func PushError(err string) {
+	errorList = append(errorList, err)
+}
+
+func GetErrors() []string {
+	list := errorList[0:]
+	errorList = []string{}
+
+	return list
+}
+
+func PushMessages(msg string) {
+	messageList = append(messageList, msg)
+}
+
+func GetMessages() []string {
+	list := messageList[0:]
+	messageList = []string{}
+
+	return list
+}

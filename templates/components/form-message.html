@@ -1,17 +1,19 @@
-  {{ if .Errors }}
+  {{ $errs := GetErrors }}
+  {{ if gt (len $errs) 0 }}
   <div class="alert alert-danger">
     <ul>
-      {{ range $error := .Errors }}
+      {{ range $error := $errs }}
         <li>{{ $error }}</li>
       {{ end }}
     </ul>
   </div>
   {{ end }}
 
-  {{ if .SuccessMessages }}
+  {{ $messages := GetMessages }}
+  {{ if gt (len $messages) 0 }}
   <div class="alert alert-success">
     <ul>
-      {{ range $message := .SuccessMessages }}
+      {{ range $message := $messages }}
         <li>{{ $message }}</li>
       {{ end }}
     </ul>
