@@ -105,6 +105,8 @@ func Create(c *fiber.Ctx) error {
 		}
 	}
 
+	core.PushMessages(fmt.Sprintf("Created post id:%d, title:%s", postVo.ID, postVo.Title))
+
 	return c.Redirect("/admin/posts/manager")
 }
 
@@ -158,6 +160,8 @@ func Update(c *fiber.Ctx) error {
 			return err
 		}
 	}
+
+	core.PushMessages(fmt.Sprintf("Updated post id:%d, title:%s", postVo.ID, postVo.Title))
 
 	return c.Redirect("/admin/posts/manager")
 }
@@ -214,6 +218,8 @@ func CreateCategory(c *fiber.Ctx) error {
 
 	db.Create(&categoryVo)
 
+	core.PushMessages(fmt.Sprintf("Created category id:%d, name:%s", categoryVo.ID, categoryVo.Name))
+
 	return c.Redirect("/admin/categories/manager")
 }
 
@@ -237,7 +243,7 @@ func UpdateCategory(c *fiber.Ctx) error {
 
 	db.Save(&categoryVo)
 
-	core.PushMessages(fmt.Sprintf("Updated id:%d", categoryVo.ID))
+	core.PushMessages(fmt.Sprintf("Updated category id:%d, name:%s", categoryVo.ID, categoryVo.Name))
 
 	return c.Redirect("/admin/categories/manager")
 }

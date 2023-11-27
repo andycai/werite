@@ -1,6 +1,8 @@
 package page
 
 import (
+	"fmt"
+
 	"github.com/andycai/werite/components/page"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
@@ -70,6 +72,8 @@ func Create(c *fiber.Ctx) error {
 
 	db.Create(&pageVo)
 
+	core.PushMessages(fmt.Sprintf("Created page id:%d, title:%s", pageVo.ID, pageVo.Title))
+
 	return c.Redirect("/admin/pages/manager")
 }
 
@@ -82,6 +86,8 @@ func Update(c *fiber.Ctx) error {
 	}
 
 	db.Omit("created_at", "user_id").Save(&pageVo)
+
+	core.PushMessages(fmt.Sprintf("Updated page id:%d, title:%s", pageVo.ID, pageVo.Title))
 
 	return c.Redirect("/admin/pages/manager")
 }
