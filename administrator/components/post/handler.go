@@ -247,3 +247,85 @@ func UpdateCategory(c *fiber.Ctx) error {
 
 	return c.Redirect("/admin/categories/manager")
 }
+
+func ManagerTagsPage(c *fiber.Ctx) error {
+	numPerPage := 10
+	curPage := 0
+	if c.QueryInt("page") > 1 {
+		curPage = c.QueryInt("page") - 1
+	}
+
+	tags := post.Dao.GetTagsByPage(curPage, numPerPage)
+
+	return core.Render(c, "admin/posts/tags", fiber.Map{
+		"PageTitle":    "All Tags",
+		"NavBarActive": "tags",
+		"Path":         "/admin/tags/manager",
+		"Tags":         tags,
+		"Page":         curPage,
+		"Prev":         0,
+		"Next":         0,
+		"PP":           map[int]string{},
+	}, "admin/layouts/app")
+}
+
+func EditorTagPage(c *fiber.Ctx) error {
+	var tagVo model.Tag
+	hasTag := false
+
+	if c.Params("id") != "" {
+		id := cast.ToUint(c.Params("id"))
+		hasTag = true
+		vo, _ := post.Dao.GetTagByID(id)
+		tagVo = *vo
+	}
+
+	return core.Render(c, "admin/posts/tag", fiber.Map{
+		"PageTitle":    "Tag Editor",
+		"NavBarActive": "tags",
+		"Path":         "/admin/tags/editor",
+		"Domain":       "127.0.0.1",
+		"HasCategory":  hasTag,
+		"Tag":          tagVo,
+	}, "admin/layouts/app")
+}
+
+func CreateTag(c *fiber.Ctx) error {
+	var tagVo model.Tag
+
+	err := post.BindTag(c, &tagVo)
+	if err != nil {
+		return err
+	}
+
+	db.Create(&tagVo)
+
+	core.PushMessages(fmt.Sprintf("Created Tag id:%d, name:%s", tagVo.ID, tagVo.Name))
+
+	return c.Redirect("/admin/tags/manager")
+}
+
+func UpdateTag(c *fiber.Ctx) error {
+	var tagVo model.Tag
+
+	err := db.Model(&tagVo).
+		Where("id = ?", cast.ToUint(c.Params("id"))).
+		Find(&tagVo).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+		}
+	}
+
+	err = post.BindTag(c, &tagVo)
+	if err != nil {
+		return err
+	}
+
+	db.Save(&tagVo)
+
+	core.PushMessages(fmt.Sprintf("Updated tag id:%d, name:%s", tagVo.ID, tagVo.Name))
+
+	return c.Redirect("/admin/tags/manager")
+}

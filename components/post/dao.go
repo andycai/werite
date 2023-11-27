@@ -81,8 +81,25 @@ func (ad PostDao) GetCategoriesByPage(page, numPerPage int) []model.Category {
 }
 
 func (ad PostDao) GetCategoryByID(id uint) (*model.Category, error) {
-	var category model.Category
-	err := db.Model(&category).Where("id = ?", id).Find(&category).Error
+	var categoryVo model.Category
+	err := db.Model(&categoryVo).Where("id = ?", id).Find(&categoryVo).Error
 
-	return &category, err
+	return &categoryVo, err
+}
+
+func (ad PostDao) GetTagsByPage(page, numPerPage int) []model.Tag {
+	var tags []model.Tag
+	db.Model(&tags).
+		Limit(numPerPage).
+		Offset(page * numPerPage).
+		Find(&tags)
+
+	return tags
+}
+
+func (ad PostDao) GetTagByID(id uint) (*model.Tag, error) {
+	var tagVo model.Tag
+	err := db.Model(&tagVo).Where("id = ?", id).Find(&tagVo).Error
+
+	return &tagVo, err
 }
