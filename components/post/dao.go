@@ -79,3 +79,10 @@ func (ad PostDao) GetCategoriesByPage(page, numPerPage int) []model.Category {
 
 	return categories
 }
+
+func (ad PostDao) GetCategoryByID(id uint) (*model.Category, error) {
+	var category model.Category
+	err := db.Model(&category).Where("id = ?", id).Find(&category).Error
+
+	return &category, err
+}

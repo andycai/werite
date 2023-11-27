@@ -183,7 +183,24 @@ func ManagerCategoryPage(c *fiber.Ctx) error {
 }
 
 func EditorCategoryPage(c *fiber.Ctx) error {
-	return nil
+	var categoryVo model.Category
+	hasCategory := false
+
+	if c.Params("id") != "" {
+		id := cast.ToUint(c.Params("id"))
+		hasCategory = true
+		vo, _ := post.Dao.GetCategoryByID(id)
+		categoryVo = *vo
+	}
+
+	return core.Render(c, "admin/posts/category", fiber.Map{
+		"PageTitle":    "Category Editor",
+		"NavBarActive": "categories",
+		"Path":         "/admin/categories/editor",
+		"Domain":       "127.0.0.1",
+		"HasCategory":  hasCategory,
+		"Category":     categoryVo,
+	}, "admin/layouts/app")
 }
 
 func CreateCategory(c *fiber.Ctx) error {
