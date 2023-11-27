@@ -26,17 +26,17 @@
             <colgroup>
               <col width="20" />
               <col width="10%" />
-              <col width="45%" />
-              <col width="30%" />
-              <col width="10%" />
+              <col width="25%" />
+              <col width="40%" />
+              <col width="20%" />
             </colgroup>
             <thead>
               <tr class="nodrag">
                 <th> </th>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Description</th>
                 <th>Create At</th>
-                <th>Post Count</th>
               </tr>
             </thead>
             <tbody>
@@ -50,8 +50,8 @@
                   <a href="/admin/categories/editor/{{.ID}}">{{.Name}}</a>
                   <a target="_blank" href="/catetories/{{.ID}}" title="Views {{.Name}}"><i class="i-exlink"></i></a>
                 </td>
+                <td><a class="balloon-button left size-50" href="#">{{ .Description }}</a></td>
                 <td>{{ DateFormat .CreatedAt "2006/01/02 15:04"}}</td>
-                <td><a class="balloon-button left size-50" href="#"></a></td>
               </tr>
               {{end}}
             </tbody>
