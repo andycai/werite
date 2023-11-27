@@ -6,7 +6,10 @@ Golang + Go Fiber + HTMX
 
 Module include: 
 
+- User
 - Post
 - Page
+- Category
 - Comment
 - Tag
+- Setting
