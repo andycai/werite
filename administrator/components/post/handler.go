@@ -204,9 +204,37 @@ func EditorCategoryPage(c *fiber.Ctx) error {
 }
 
 func CreateCategory(c *fiber.Ctx) error {
-	return nil
+	var categoryVo model.Category
+
+	err := post.BindCategory(c, &categoryVo)
+	if err != nil {
+		return err
+	}
+
+	db.Create(&categoryVo)
+
+	return c.Redirect("/admin/categories/manager")
 }
 
 func UpdateCategory(c *fiber.Ctx) error {
-	return nil
+	var categoryVo model.Category
+
+	err := db.Model(&categoryVo).
+		Where("id = ?", cast.ToUint(c.Params("id"))).
+		Find(&categoryVo).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+		}
+	}
+
+	err = post.BindCategory(c, &categoryVo)
+	if err != nil {
+		return err
+	}
+
+	db.Save(&categoryVo)
+
+	return c.Redirect("/admin/categories/manager")
 }

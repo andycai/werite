@@ -51,3 +51,33 @@ func Bind(c *fiber.Ctx, post *model.Post) error {
 
 	return nil
 }
+
+type requestCategoryCreate struct {
+	ID          uint   `json:"id"`
+	Slug        string `json:"slug"`
+	Name        string `json:"name" validate:"required"`
+	Description string `json:"description" validate:"required"`
+}
+
+func BindCategory(c *fiber.Ctx, category *model.Category) error {
+	var r requestCategoryCreate
+	if err := c.BodyParser(&r); err != nil {
+		return err
+	}
+
+	if err := core.Validate(r); err != nil {
+		return err
+	}
+
+	category.ID = r.ID
+	category.Name = r.Name
+	category.Description = r.Description
+
+	if r.Slug != "" {
+		category.Slug = r.Slug
+	} else {
+		category.Slug = slug.Make(r.Name)
+	}
+
+	return nil
+}

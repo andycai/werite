@@ -10,9 +10,9 @@
     <div class="col-mb-12 col-tb-6 col-tb-offset-3">
       <form 
       {{ if .HasCategory }}
-       action="/admin/catetories/editor/{{ .Category.Slug }}"
+       action="/admin/categories/editor/{{ .Category.ID }}"
       {{ else }}
-       action="/admin/catetories/editor"
+       action="/admin/categories/editor"
       {{ end }}
        method="post" enctype="application/x-www-form-urlencoded">
         <ul class="typecho-option" id="typecho-option-item-name-0">
@@ -31,11 +31,11 @@
         <ul class="typecho-option" id="typecho-option-item-description-3">
           <li>
             <label class="typecho-label" for="description-0-3">Description</label>
-            <textarea id="description-0-3" name="description">{{ .Category.Desc }}</textarea>
+            <textarea id="description-0-3" name="description">{{ .Category.Description }}</textarea>
             <p class="description">The description of cateory.</p>
           </li>
         </ul>
-        <input type="hidden" name="mid" value="{{ .Category.ID }}" />
+        <input type="hidden" name="id" value="{{ .Category.ID }}" />
         <ul class="typecho-option typecho-option-submit" id="typecho-option-item--6">
           <li>
             <button type="submit" class="btn primary">
