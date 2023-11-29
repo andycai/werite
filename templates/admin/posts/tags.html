@@ -56,7 +56,23 @@
           </table>
         </div>
       </form>
-      {{ template "components/pagination" . }}
+      <div class="typecho-list-operate clearfix">
+        <form method="get">
+          <div class="operate">
+            <label><i class="sr-only">Select All</i>
+              <input type="checkbox" class="typecho-table-select-all" />
+            </label>
+            <div class="btn-group btn-drop">
+              <button class="btn dropdown-toggle btn-s" type="button"><i class="sr-only">Operate</i>Action<i
+                  class="i-caret-down"></i></button>
+              <ul class="dropdown-menu">
+                <li><a lang="Confirm to delete?" href="/admin/tags/delete">Delete</a></li>
+              </ul>
+            </div>
+          </div>
+          {{ template "components/pagination" . }}
+        </form>
+      </div>
     </div>
   </div>
 </div>
