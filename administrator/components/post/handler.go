@@ -17,31 +17,41 @@ import (
 )
 
 func ManagerPage(c *fiber.Ctx) error {
+	var (
+		hasPagination   bool
+		totalPagination int
+		count           int64
+	)
 	q := c.Query("q")
 	qc := c.QueryInt("qc")
 
 	numPerPage := 10
-	curPage := 0
+	page := 0
 	if c.QueryInt("page") > 1 {
-		curPage = c.QueryInt("page") - 1
+		page = c.QueryInt("page") - 1
 	}
 
-	// count = post.Dao.Count()
-	voList := post.Dao.GetListByPage(curPage, numPerPage)
+	count = post.Dao.Count()
+	voList := post.Dao.GetListByPage(page, numPerPage)
+
+	if count > 0 && (count/int64(numPerPage) > 0) {
+		pageDivision := float64(count) / float64(numPerPage)
+		totalPagination = int(math.Ceil(pageDivision))
+		hasPagination = true
+	}
 
 	categories := post.Dao.GetCategories()
 	return core.Render(c, "admin/posts/posts", fiber.Map{
-		"PageTitle":    "All Posts",
-		"NavBarActive": "posts",
-		"Path":         "/admin/posts/manager",
-		"Posts":        voList,
-		"Categories":   categories,
-		"Q":            q,
-		"QC":           qc,
-		"Page":         curPage,
-		"Prev":         0,
-		"Next":         0,
-		"PP":           map[int]string{},
+		"PageTitle":         "All Posts",
+		"NavBarActive":      "posts",
+		"Path":              "/admin/posts/manager",
+		"Posts":             voList,
+		"Categories":        categories,
+		"Q":                 q,
+		"QC":                qc,
+		"TotalPagination":   totalPagination,
+		"HasPagination":     hasPagination,
+		"CurrentPagination": page + 1,
 	}, "admin/layouts/app")
 }
 

@@ -76,13 +76,7 @@
               </ul>
             </div>
           </div>
-          <ul class="typecho-pager">
-            {{if .Prev}}<li class="prev"><a href="/admin/manage-pages?{{html .Prev}}">Previous</a></li>{{end}}
-            {{range $k,$v := .PP}}
-            <li {{if eq $.PG $k}}class="current" {{end}}><a href="/admin/manage-pages?{{html $v}}">{{$k}}</a></li>
-            {{end}}
-            {{if .Next}}<li class="next"><a href="/admin/manage-pages?{{html .Next}}">Next</a></li>{{end}}
-          </ul>
+          {{ template "components/pagination" . }}
         </form>
       </div>
     </div>
