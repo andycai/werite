@@ -2,6 +2,7 @@ package page
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/andycai/werite/components/page"
 	"github.com/andycai/werite/core"
@@ -12,6 +13,11 @@ import (
 )
 
 func ManagerPage(c *fiber.Ctx) error {
+	var (
+		hasPagination   bool
+		totalPagination int
+		count           int64
+	)
 	q := c.Query("q")
 	qc := c.QueryInt("qc")
 
@@ -21,20 +27,25 @@ func ManagerPage(c *fiber.Ctx) error {
 		curPage = c.QueryInt("page") - 1
 	}
 
-	// count = page.Dao.Count()
+	count = page.Dao.Count()
 	voList := page.Dao.GetListByPage(curPage, numPerPage)
 
+	if count > 0 && (count/int64(numPerPage) > 0) {
+		pageDivision := float64(count) / float64(numPerPage)
+		totalPagination = int(math.Ceil(pageDivision))
+		hasPagination = true
+	}
+
 	return core.Render(c, "admin/pages/pages", fiber.Map{
-		"PageTitle":    "All Pages",
-		"NavBarActive": "pages",
-		"Path":         "/admin/pages/manager",
-		"Pages":        voList,
-		"Q":            q,
-		"QC":           qc,
-		"PG":           curPage,
-		"Prev":         0,
-		"Next":         0,
-		"PP":           map[int]string{},
+		"PageTitle":         "All Pages",
+		"NavBarActive":      "pages",
+		"Path":              "/admin/pages/manager",
+		"Pages":             voList,
+		"Q":                 q,
+		"QC":                qc,
+		"TotalPagination":   totalPagination,
+		"HasPagination":     hasPagination,
+		"CurrentPagination": curPage + 1,
 	}, "admin/layouts/app")
 }
 
