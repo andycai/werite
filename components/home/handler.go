@@ -91,7 +91,7 @@ func HTMXHomeGlobalFeed(c *fiber.Ctx) error {
 	}
 
 	if count > 0 && (count/int64(numPerPage) > 0) {
-		pageDivision := float64(count) / float64(5)
+		pageDivision := float64(count) / float64(numPerPage)
 		totalPagination = int(math.Ceil(pageDivision))
 		hasPagination = true
 	}
