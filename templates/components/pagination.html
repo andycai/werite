@@ -1,6 +1,6 @@
 {{ if .HasPagination }}
   {{ $CurrentPagination := .CurrentPagination }}
-  {{ $PathPagination := .PathPagination }}
+  {{ $PathPagination := .Path }}
   <ul class="typecho-pager">
     {{ range $index := Iterate 1 .TotalPagination }}
       <li class="page-item {{ if eq $CurrentPagination $index }} current {{ end }}">
