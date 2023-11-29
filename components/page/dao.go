@@ -7,6 +7,14 @@ type PageDao struct {
 
 var Dao = new(PageDao)
 
+func (ad PageDao) Count() int64 {
+	var page model.Page
+	var count int64
+	db.Model(&page).Count(&count)
+
+	return count
+}
+
 func (pd PageDao) GetBySlug(slug string) (*model.Page, error) {
 	var page model.Page
 	err := db.Model(&page).

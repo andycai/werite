@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math"
 
 	"github.com/andycai/werite/components/post"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
 	"github.com/andycai/werite/model"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gosimple/slug"
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
 )
@@ -93,6 +95,7 @@ func Create(c *fiber.Ctx) error {
 		for i := 0; i < len(tagItems); i++ {
 			tagItem := tagItems[i]
 			tag := model.Tag{Name: tagItem.Value}
+			tag.Slug = slug.Make(tagItem.Value)
 
 			err := db.Model(&tag).Where("name = ?", tagItem.Value).First(&tag).Error
 			if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
@@ -249,23 +252,35 @@ func UpdateCategory(c *fiber.Ctx) error {
 }
 
 func ManagerTagsPage(c *fiber.Ctx) error {
-	numPerPage := 10
-	curPage := 0
+	var (
+		hasPagination   bool
+		totalPagination int
+		count           int64
+	)
+	numPerPage := 2
+	page := 0
+
 	if c.QueryInt("page") > 1 {
-		curPage = c.QueryInt("page") - 1
+		page = c.QueryInt("page") - 1
+	}
+	count = post.Dao.TagCount()
+	tags := post.Dao.GetTagsByPage(page, numPerPage)
+
+	if count > 0 && (count/int64(numPerPage) > 0) {
+		pageDivision := float64(count) / float64(numPerPage)
+		totalPagination = int(math.Ceil(pageDivision))
+		hasPagination = true
 	}
 
-	tags := post.Dao.GetTagsByPage(curPage, numPerPage)
-
 	return core.Render(c, "admin/posts/tags", fiber.Map{
-		"PageTitle":    "All Tags",
-		"NavBarActive": "tags",
-		"Path":         "/admin/tags/manager",
-		"Tags":         tags,
-		"Page":         curPage,
-		"Prev":         0,
-		"Next":         0,
-		"PP":           map[int]string{},
+		"PageTitle":         "All Tags",
+		"NavBarActive":      "tags",
+		"Path":              "/admin/tags/manager",
+		"Tags":              tags,
+		"TotalPagination":   totalPagination,
+		"HasPagination":     hasPagination,
+		"CurrentPagination": page + 1,
+		"PathPagination":    "/admin/tags/manager",
 	}, "admin/layouts/app")
 }
 
@@ -285,7 +300,7 @@ func EditorTagPage(c *fiber.Ctx) error {
 		"NavBarActive": "tags",
 		"Path":         "/admin/tags/editor",
 		"Domain":       "127.0.0.1",
-		"HasCategory":  hasTag,
+		"HasTag":       hasTag,
 		"Tag":          tagVo,
 	}, "admin/layouts/app")
 }
@@ -301,31 +316,6 @@ func CreateTag(c *fiber.Ctx) error {
 	db.Create(&tagVo)
 
 	core.PushMessages(fmt.Sprintf("Created Tag id:%d, name:%s", tagVo.ID, tagVo.Name))
-
-	return c.Redirect("/admin/tags/manager")
-}
-
-func UpdateTag(c *fiber.Ctx) error {
-	var tagVo model.Tag
-
-	err := db.Model(&tagVo).
-		Where("id = ?", cast.ToUint(c.Params("id"))).
-		Find(&tagVo).Error
-
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return err
-		}
-	}
-
-	err = post.BindTag(c, &tagVo)
-	if err != nil {
-		return err
-	}
-
-	db.Save(&tagVo)
-
-	core.PushMessages(fmt.Sprintf("Updated tag id:%d, name:%s", tagVo.ID, tagVo.Name))
 
 	return c.Redirect("/admin/tags/manager")
 }

@@ -61,7 +61,13 @@ func (ad PostDao) GetListByPage(page, numPerPage int) []model.Post {
 
 	return posts
 }
+func (ad PostDao) CatgegoryCount() int64 {
+	var category model.Category
+	var count int64
+	db.Model(&category).Count(&count)
 
+	return count
+}
 func (ad PostDao) GetCategories() []model.Category {
 	var categories []model.Category
 	db.Model(&categories).
@@ -85,6 +91,14 @@ func (ad PostDao) GetCategoryByID(id uint) (*model.Category, error) {
 	err := db.Model(&categoryVo).Where("id = ?", id).Find(&categoryVo).Error
 
 	return &categoryVo, err
+}
+
+func (ad PostDao) TagCount() int64 {
+	var tag model.Tag
+	var count int64
+	db.Model(&tag).Count(&count)
+
+	return count
 }
 
 func (ad PostDao) GetTagsByPage(page, numPerPage int) []model.Tag {

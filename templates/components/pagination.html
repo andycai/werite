@@ -1,0 +1,12 @@
+{{ if .HasPagination }}
+  {{ $CurrentPagination := .CurrentPagination }}
+  {{ $PathPagination := .PathPagination }}
+  <ul class="typecho-pager">
+    {{ range $index := Iterate 1 .TotalPagination }}
+      <li class="page-item {{ if eq $CurrentPagination $index }} current {{ end }}">
+        <a class="page-link"
+          href="{{ $PathPagination }}?page={{ $index }}"
+        >{{ $index }}</a>
+      </li>
+    {{ end }}
+{{ end }}
