@@ -2,8 +2,9 @@ package page
 
 import (
 	"fmt"
-	"math"
 
+	"github.com/andycai/werite/administrator/enum"
+	"github.com/andycai/werite/administrator/utils"
 	"github.com/andycai/werite/components/page"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
@@ -13,28 +14,17 @@ import (
 )
 
 func ManagerPage(c *fiber.Ctx) error {
-	var (
-		hasPagination   bool
-		totalPagination int
-		count           int64
-	)
 	q := c.Query("q")
 	qc := c.QueryInt("qc")
 
-	numPerPage := 10
-	curPage := 0
+	CurrentPagination := 0
 	if c.QueryInt("page") > 1 {
-		curPage = c.QueryInt("page") - 1
+		CurrentPagination = c.QueryInt("page") - 1
 	}
 
-	count = page.Dao.Count()
-	voList := page.Dao.GetListByPage(curPage, numPerPage)
+	voList := page.Dao.GetListByPage(CurrentPagination, enum.NUM_PER_PAGE)
 
-	if count > 0 && (count/int64(numPerPage) > 0) {
-		pageDivision := float64(count) / float64(numPerPage)
-		totalPagination = int(math.Ceil(pageDivision))
-		hasPagination = true
-	}
+	totalPagination, hasPagination := utils.CalcPagination(page.Dao.Count())
 
 	return core.Render(c, "admin/pages/pages", fiber.Map{
 		"PageTitle":         "All Pages",
@@ -45,7 +35,7 @@ func ManagerPage(c *fiber.Ctx) error {
 		"QC":                qc,
 		"TotalPagination":   totalPagination,
 		"HasPagination":     hasPagination,
-		"CurrentPagination": curPage + 1,
+		"CurrentPagination": CurrentPagination + 1,
 	}, "admin/layouts/app")
 }
 

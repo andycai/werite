@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math"
 
+	"github.com/andycai/werite/administrator/enum"
+	"github.com/andycai/werite/administrator/utils"
 	"github.com/andycai/werite/components/post"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
@@ -17,28 +18,17 @@ import (
 )
 
 func ManagerPage(c *fiber.Ctx) error {
-	var (
-		hasPagination   bool
-		totalPagination int
-		count           int64
-	)
 	q := c.Query("q")
 	qc := c.QueryInt("qc")
 
-	numPerPage := 10
-	page := 0
+	currrentPagination := 0
 	if c.QueryInt("page") > 1 {
-		page = c.QueryInt("page") - 1
+		currrentPagination = c.QueryInt("page") - 1
 	}
 
-	count = post.Dao.Count()
-	voList := post.Dao.GetListByPage(page, numPerPage)
+	voList := post.Dao.GetListByPage(currrentPagination, enum.NUM_PER_PAGE)
 
-	if count > 0 && (count/int64(numPerPage) > 0) {
-		pageDivision := float64(count) / float64(numPerPage)
-		totalPagination = int(math.Ceil(pageDivision))
-		hasPagination = true
-	}
+	totalPagination, hasPagination := utils.CalcPagination(post.Dao.Count())
 
 	categories := post.Dao.GetCategories()
 	return core.Render(c, "admin/posts/posts", fiber.Map{
@@ -51,7 +41,7 @@ func ManagerPage(c *fiber.Ctx) error {
 		"QC":                qc,
 		"TotalPagination":   totalPagination,
 		"HasPagination":     hasPagination,
-		"CurrentPagination": page + 1,
+		"CurrentPagination": currrentPagination + 1,
 	}, "admin/layouts/app")
 }
 
@@ -180,25 +170,14 @@ func Update(c *fiber.Ctx) error {
 }
 
 func ManagerCategoryPage(c *fiber.Ctx) error {
-	var (
-		hasPagination   bool
-		totalPagination int
-		count           int64
-	)
-	numPerPage := 10
-	page := 0
+	currentPagination := 0
 	if c.QueryInt("page") > 1 {
-		page = c.QueryInt("page") - 1
+		currentPagination = c.QueryInt("page") - 1
 	}
 
-	count = post.Dao.CatgegoryCount()
-	categories := post.Dao.GetCategoriesByPage(page, numPerPage)
+	categories := post.Dao.GetCategoriesByPage(currentPagination, enum.NUM_PER_PAGE)
 
-	if count > 0 && (count/int64(numPerPage) > 0) {
-		pageDivision := float64(count) / float64(numPerPage)
-		totalPagination = int(math.Ceil(pageDivision))
-		hasPagination = true
-	}
+	totalPagination, hasPagination := utils.CalcPagination(post.Dao.CatgegoryCount())
 
 	return core.Render(c, "admin/posts/categories", fiber.Map{
 		"PageTitle":         "All Categories",
@@ -207,7 +186,7 @@ func ManagerCategoryPage(c *fiber.Ctx) error {
 		"Categories":        categories,
 		"TotalPagination":   totalPagination,
 		"HasPagination":     hasPagination,
-		"CurrentPagination": page + 1,
+		"CurrentPagination": currentPagination + 1,
 	}, "admin/layouts/app")
 }
 
@@ -273,25 +252,14 @@ func UpdateCategory(c *fiber.Ctx) error {
 }
 
 func ManagerTagsPage(c *fiber.Ctx) error {
-	var (
-		hasPagination   bool
-		totalPagination int
-		count           int64
-	)
-	numPerPage := 10
-	page := 0
-
+	currentPagination := 0
 	if c.QueryInt("page") > 1 {
-		page = c.QueryInt("page") - 1
+		currentPagination = c.QueryInt("page") - 1
 	}
-	count = post.Dao.TagCount()
-	tags := post.Dao.GetTagsByPage(page, numPerPage)
 
-	if count > 0 && (count/int64(numPerPage) > 0) {
-		pageDivision := float64(count) / float64(numPerPage)
-		totalPagination = int(math.Ceil(pageDivision))
-		hasPagination = true
-	}
+	tags := post.Dao.GetTagsByPage(currentPagination, enum.NUM_PER_PAGE)
+
+	totalPagination, hasPagination := utils.CalcPagination(post.Dao.TagCount())
 
 	return core.Render(c, "admin/posts/tags", fiber.Map{
 		"PageTitle":         "All Tags",
@@ -300,7 +268,7 @@ func ManagerTagsPage(c *fiber.Ctx) error {
 		"Tags":              tags,
 		"TotalPagination":   totalPagination,
 		"HasPagination":     hasPagination,
-		"CurrentPagination": page + 1,
+		"CurrentPagination": currentPagination + 1,
 	}, "admin/layouts/app")
 }
 
