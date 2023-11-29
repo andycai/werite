@@ -33,9 +33,7 @@ func initCheckRouter(r fiber.Router) {
 
 	r.Get("/tags/manager", ManagerTagsPage)
 	r.Get("/tags/editor", EditorTagPage)
-	r.Get("/tags/editor/:id", EditorTagPage)
 	r.Post("/tags/editor", CreateTag)
-	r.Post("/tags/editor/:id", UpdateTag)
 }
 
 func init() {

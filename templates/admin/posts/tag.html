@@ -1,0 +1,54 @@
+<div class="body container">
+  <div class="typecho-page-title">
+    <h2>Add New</h2>
+  </div>
+  <div class="row typecho-page-main" role="form">
+    <div class="col-mb-12 col-tb-6 col-tb-offset-3">
+      <form action="/admin/tags/editor" method="post" enctype="application/x-www-form-urlencoded">
+        <ul class="typecho-option" id="typecho-option-item-name-0">
+          <li>
+            <label class="typecho-label" for="name-0-1">Name</label>
+            <input id="name-0-1" name="name" type="text" class="text" value="" />
+          </li>
+        </ul>
+        <ul class="typecho-option" id="typecho-option-item-slug-1">
+          <li>
+            <label class="typecho-label" for="slug-0-2">Slug</label>
+            <input id="slug-0-2" name="slug" type="text" class="text" value="" />
+            <p class="description">Short name for URL.</p>
+          </li>
+        </ul>
+        <ul class="typecho-option typecho-option-submit" id="typecho-option-item--6">
+          <li>
+            <button type="submit" class="btn primary">Add New</button>
+          </li>
+        </ul>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  (function () {
+    $(document).ready(function () {
+      var error = $('.typecho-option .error:first');
+
+      if (error.length > 0) {
+        $('html,body').scrollTop(error.parents('.typecho-option').offset().top);
+      }
+
+      $('form').submit(function () {
+        if (this.submitted) {
+          return false;
+        } else {
+          this.submitted = true;
+        }
+      });
+
+      $('label input[type=text]').click(function (e) {
+        var check = $('#' + $(this).parents('label').attr('for'));
+        check.prop('checked', true);
+        return false;
+      });
+    });
+  })();
+</script>

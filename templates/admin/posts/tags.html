@@ -1,9 +1,10 @@
 <div class="body container">
   <div class="typecho-page-title">
-    <h2>All Tags</h2>
+    <h2>Tags <a href="/admin/tags/editor">Add New</a></h2>
   </div>
+  {{ template "components/form-message" }}
   <div class="row typecho-page-main manage-metas">
-    <div class="col-mb-12 col-tb-8" role="main">
+    <div class="col-mb-12" role="main">
       <form method="post" name="manage_tags" class="operate-form">
         <div class="typecho-list-operate clearfix">
           <div class="operate">
@@ -11,31 +12,82 @@
               <input type="checkbox" class="typecho-table-select-all" />
             </label>
             <div class="btn-group btn-drop">
-              <button class="btn dropdown-toggle btn-s" type="button"><i class="sr-only">Operation</i>Action<i class="i-caret-down"></i></button>
+              <button class="btn dropdown-toggle btn-s" type="button"><i class="sr-only">Operation</i>Action <i
+                  class="i-caret-down"></i></button>
               <ul class="dropdown-menu">
-              <li><a lang="Confirm to delete? " href="/admin/api/tag-delete">Delete</a></li>
+                <li><a href="/admin/tags/delete">Delete</a></li>
               </ul>
             </div>
           </div>
+          <div class="search" role="search">
+          </div>
         </div>
-        <ul class="typecho-list-notable tag-list clearfix">
-          {{range $k,$v:=.List}}
-          <li class="size-5"><input type="checkbox" name="mid[]" />{{$k}}<i class="i-edit"></i></li>
-          {{end}}
-        </ul>
+        <div class="typecho-table-wrap">
+          <table class="typecho-list-table">
+            <colgroup>
+              <col width="20" />
+              <col width="10%" />
+              <col width="65%" />
+              <col width="20%" />
+            </colgroup>
+            <thead>
+              <tr class="nodrag">
+                <th> </th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Create At</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{range .Tags}}
+              <tr id="mid-tag-{{.ID}}">
+                <td>
+                  <input type="checkbox" value="{{.ID}}" name="mid[]" />
+                </td>
+                <td>{{.ID}}</td>
+                <td>
+                  {{.Name}}
+                  <a target="_blank" href="/tags/{{.ID}}" title="Views {{.Name}}"><i class="i-exlink"></i></a>
+                </td>
+                <td>{{ DateFormat .CreatedAt "2006/01/02 15:04"}}</td>
+              </tr>
+              {{end}}
+            </tbody>
+          </table>
+        </div>
       </form>
-    </div>
-    <div class="col-mb-12 col-tb-4" role="form">
     </div>
   </div>
 </div>
 <script type="text/javascript">
   (function () {
     $(document).ready(function () {
+      var table = $('.typecho-list-table').tableDnD({
+        onDrop: function () {
+          var ids = [];
 
-      $('.typecho-list-notable').tableSelectable({
+          $('input[type=checkbox]', table).each(function () {
+            ids.push($(this).val());
+          });
+
+          $.post('/admin/api/move',
+            $.param({
+              mid: ids
+            }));
+
+          $('tr', table).each(function (i) {
+            if (i % 2) {
+              $(this).addClass('even');
+            } else {
+              $(this).removeClass('even');
+            }
+          });
+        }
+      });
+
+      table.tableSelectable({
         checkEl: 'input[type=checkbox]',
-        rowEl: 'li',
+        rowEl: 'tr',
         selectAllEl: '.typecho-table-select-all',
         actionEl: '.dropdown-menu a'
       });

@@ -85,6 +85,7 @@ func BindCategory(c *fiber.Ctx, category *model.Category) error {
 type requestTagCreate struct {
 	ID   uint   `json:"id"`
 	Name string `json:"name" validate:"required"`
+	Slug string `json:"slug"`
 }
 
 func BindTag(c *fiber.Ctx, tag *model.Tag) error {
@@ -99,6 +100,12 @@ func BindTag(c *fiber.Ctx, tag *model.Tag) error {
 
 	tag.ID = r.ID
 	tag.Name = r.Name
+
+	if r.Slug != "" {
+		tag.Slug = r.Slug
+	} else {
+		tag.Slug = slug.Make(r.Name)
+	}
 
 	return nil
 }
