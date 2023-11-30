@@ -49,7 +49,7 @@ func (ad PostDao) countByDraft(draft int) int64 {
 func (ad PostDao) CountByTrash() int64 {
 	var post model.Post
 	var count int64
-	db.Model(&post).Where("deleted_at > ?", 0).Count(&count)
+	db.Model(&post).Unscoped().Where("deleted_at IS NOT NULL").Count(&count)
 
 	return count
 }
