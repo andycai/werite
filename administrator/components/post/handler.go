@@ -28,7 +28,8 @@ func ManagerPage(c *fiber.Ctx) error {
 
 	voList := post.Dao.GetListByPage(currrentPagination, enum.NUM_PER_PAGE)
 
-	totalPagination, hasPagination := utils.CalcPagination(post.Dao.Count())
+	total := post.Dao.Count()
+	totalPagination, hasPagination := utils.CalcPagination(total)
 
 	categories := post.Dao.GetCategories()
 	return core.Render(c, "admin/posts/posts", fiber.Map{
@@ -37,6 +38,7 @@ func ManagerPage(c *fiber.Ctx) error {
 		"Path":              "/admin/posts/manager",
 		"Posts":             voList,
 		"Categories":        categories,
+		"Total":             total,
 		"Q":                 q,
 		"QC":                qc,
 		"TotalPagination":   totalPagination,
