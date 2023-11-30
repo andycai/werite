@@ -30,17 +30,31 @@ func (ad PostDao) GetByID(id uint) (*model.Post, error) {
 	return &post, err
 }
 
-func (ad PostDao) Count() int64 {
-	// db := database.Get()
-	// db.Debug().Model(&posts).
-	// 	// Preload("Tags", func(db *gorm.DB) *gorm.DB {
-	// 	// return db.Order("tags.name asc")
-	// 	// }).
-	// 	Limit(numPerPage).
-	// 	Offset(page * numPerPage).
-	// 	Order("created_at desc").
-	// 	Find(&posts)
+func (ad PostDao) CountByPublished() int64 {
+	return ad.countByDraft(0)
+}
 
+func (ad PostDao) CountByDraft() int64 {
+	return ad.countByDraft(1)
+}
+
+func (ad PostDao) countByDraft(draft int) int64 {
+	var post model.Post
+	var count int64
+	db.Model(&post).Where("isDraft = ?", draft).Count(&count)
+
+	return count
+}
+
+func (ad PostDao) CountByTrash() int64 {
+	var post model.Post
+	var count int64
+	db.Model(&post).Where("deleted_at > ?", 0).Count(&count)
+
+	return count
+}
+
+func (ad PostDao) Count() int64 {
 	var post model.Post
 	var count int64
 	db.Model(&post).Count(&count)

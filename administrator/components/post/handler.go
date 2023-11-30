@@ -18,8 +18,12 @@ import (
 )
 
 func ManagerPage(c *fiber.Ctx) error {
+	var (
+		queryParam string
+	)
 	q := c.Query("q")
-	qc := c.QueryInt("qc")
+	qc := c.QueryInt("qc") // category
+	qf := c.QueryInt("qf") // filter: published:1, draft:2 or trash:3
 
 	currrentPagination := 0
 	if c.QueryInt("page") > 1 {
@@ -29,6 +33,22 @@ func ManagerPage(c *fiber.Ctx) error {
 	voList := post.Dao.GetListByPage(currrentPagination, enum.NUM_PER_PAGE)
 
 	total := post.Dao.Count()
+	switch qf {
+	case 1:
+		total = post.Dao.CountByPublished()
+	case 2:
+		total = post.Dao.CountByDraft()
+	case 3:
+		total = post.Dao.CountByTrash()
+	}
+
+	if qf > 0 {
+		queryParam = fmt.Sprintf("%s&qf=%d", queryParam, qf)
+	}
+	if qc > 0 {
+		queryParam = fmt.Sprintf("%s&qc=%d", queryParam, qc)
+	}
+
 	totalPagination, hasPagination := utils.CalcPagination(total)
 
 	categories := post.Dao.GetCategories()
@@ -41,6 +61,8 @@ func ManagerPage(c *fiber.Ctx) error {
 		"Total":             total,
 		"Q":                 q,
 		"QC":                qc,
+		"QF":                qf,
+		"QueryParam":        queryParam,
 		"TotalPagination":   totalPagination,
 		"HasPagination":     hasPagination,
 		"CurrentPagination": currrentPagination + 1,
