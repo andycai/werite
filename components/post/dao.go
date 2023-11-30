@@ -9,6 +9,8 @@ type PostDao struct{}
 
 var Dao = new(PostDao)
 
+//#region Post
+
 func (ad PostDao) GetBySlug(slug string) (*model.Post, error) {
 	var post model.Post
 	err := db.Model(&post).
@@ -41,7 +43,7 @@ func (ad PostDao) CountByDraft() int64 {
 func (ad PostDao) countByDraft(draft int) int64 {
 	var post model.Post
 	var count int64
-	db.Model(&post).Where("isDraft = ?", draft).Count(&count)
+	db.Model(&post).Where("is_draft = ?", draft).Count(&count)
 
 	return count
 }
@@ -75,6 +77,57 @@ func (ad PostDao) GetListByPage(page, numPerPage int) []model.Post {
 
 	return posts
 }
+
+func (ad PostDao) GetPublishedListByPage(page, numPerPage int) []model.Post {
+	var posts []model.Post
+	db.Model(&posts).
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Order("tags.name asc")
+		}).
+		Where("is_draft = ?", 0).
+		Limit(numPerPage).
+		Offset(page * numPerPage).
+		Order("created_at desc").
+		Find(&posts)
+
+	return posts
+}
+
+func (ad PostDao) GetDraftListByPage(page, numPerPage int) []model.Post {
+	var posts []model.Post
+	db.Model(&posts).
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Order("tags.name asc")
+		}).
+		Where("is_draft = ?", 1).
+		Limit(numPerPage).
+		Offset(page * numPerPage).
+		Order("created_at desc").
+		Find(&posts)
+
+	return posts
+}
+
+func (ad PostDao) GetTrashListByPage(page, numPerPage int) []model.Post {
+	var posts []model.Post
+	db.Model(&posts).
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Order("tags.name asc")
+		}).
+		Unscoped().
+		Where("deleted_at IS NOT NULL").
+		Limit(numPerPage).
+		Offset(page * numPerPage).
+		Order("created_at desc").
+		Find(&posts)
+
+	return posts
+}
+
+//#endregion
+
+//#region Category
+
 func (ad PostDao) CatgegoryCount() int64 {
 	var category model.Category
 	var count int64
@@ -82,6 +135,7 @@ func (ad PostDao) CatgegoryCount() int64 {
 
 	return count
 }
+
 func (ad PostDao) GetCategories() []model.Category {
 	var categories []model.Category
 	db.Model(&categories).
@@ -107,6 +161,8 @@ func (ad PostDao) GetCategoryByID(id uint) (*model.Category, error) {
 	return &categoryVo, err
 }
 
+//#region Tag
+
 func (ad PostDao) TagCount() int64 {
 	var tag model.Tag
 	var count int64
@@ -131,3 +187,5 @@ func (ad PostDao) GetTagByID(id uint) (*model.Tag, error) {
 
 	return &tagVo, err
 }
+
+//#endregion

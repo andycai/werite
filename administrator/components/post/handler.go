@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"html/template"
 
 	"github.com/andycai/werite/administrator/enum"
 	"github.com/andycai/werite/administrator/utils"
@@ -19,7 +20,13 @@ import (
 
 func ManagerPage(c *fiber.Ctx) error {
 	var (
-		queryParam string
+		queryParam     string
+		total          int64
+		totalAll       int64
+		totalPublished int64
+		totalDraft     int64
+		totalTrash     int64
+		voList         []model.Post
 	)
 	q := c.Query("q")
 	qc := c.QueryInt("qc") // category
@@ -30,23 +37,31 @@ func ManagerPage(c *fiber.Ctx) error {
 		currrentPagination = c.QueryInt("page") - 1
 	}
 
-	voList := post.Dao.GetListByPage(currrentPagination, enum.NUM_PER_PAGE)
+	totalAll = post.Dao.Count()
+	totalPublished = post.Dao.CountByPublished()
+	totalDraft = post.Dao.CountByDraft()
+	totalTrash = post.Dao.CountByTrash()
 
-	total := post.Dao.Count()
 	switch qf {
-	case 1:
-		total = post.Dao.CountByPublished()
-	case 2:
-		total = post.Dao.CountByDraft()
-	case 3:
-		total = post.Dao.CountByTrash()
+	case 1: // published
+		voList = post.Dao.GetPublishedListByPage(currrentPagination, enum.NUM_PER_PAGE)
+		total = totalPublished
+	case 2: // draft
+		voList = post.Dao.GetDraftListByPage(currrentPagination, enum.NUM_PER_PAGE)
+		total = totalDraft
+	case 3: // trash
+		voList = post.Dao.GetTrashListByPage(currrentPagination, enum.NUM_PER_PAGE)
+		total = totalTrash
+	default: // all
+		voList = post.Dao.GetListByPage(currrentPagination, enum.NUM_PER_PAGE)
+		total = totalAll
 	}
 
 	if qf > 0 {
-		queryParam = fmt.Sprintf("%s&qf=%d", queryParam, qf)
+		queryParam += fmt.Sprintf("&qf=%d", qf)
 	}
 	if qc > 0 {
-		queryParam = fmt.Sprintf("%s&qc=%d", queryParam, qc)
+		queryParam += fmt.Sprintf("&qc=%d", qc)
 	}
 
 	totalPagination, hasPagination := utils.CalcPagination(total)
@@ -59,10 +74,14 @@ func ManagerPage(c *fiber.Ctx) error {
 		"Posts":             voList,
 		"Categories":        categories,
 		"Total":             total,
+		"TotalAll":          totalAll,
+		"TotalPublished":    totalPublished,
+		"TotalDraft":        totalDraft,
+		"TotalTrash":        totalTrash,
 		"Q":                 q,
 		"QC":                qc,
 		"QF":                qf,
-		"QueryParam":        queryParam,
+		"QueryParam":        template.URL(queryParam),
 		"TotalPagination":   totalPagination,
 		"HasPagination":     hasPagination,
 		"CurrentPagination": currrentPagination + 1,

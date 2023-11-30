@@ -6,7 +6,7 @@
   <div class="row typecho-page-main" role="main">
     <div class="col-mb-12 typecho-list">
       <div class="typecho-list-operate clearfix">
-        <div><a href="">All({{ .Total }})</a> | <a href="">Published(8)</a> | <a href="">Draft(2)</a> | <a href="">Trash(2)</a></div>
+        <div><a href="{{ .Path }}">All({{ .TotalAll }})</a> | <a href="{{ .Path }}?qf=1">Published({{ .TotalPublished }})</a> | <a href="{{ .Path }}?qf=2">Draft({{ .TotalDraft }})</a> | <a href="{{ .Path }}?qf=3">Trash({{ .TotalTrash }})</a></div>
         <form method="get">
           <div class="operate">
             <label><i class="sr-only">Select All</i>

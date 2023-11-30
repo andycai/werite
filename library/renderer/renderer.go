@@ -2,10 +2,9 @@ package renderer
 
 import (
 	"errors"
+	"net/url"
 	"strings"
 	"time"
-
-	htmpl "html/template"
 
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
@@ -66,12 +65,16 @@ func ViewEngineStart() *html.Engine {
 		return core.GetMessages()
 	})
 
-	viewEngine.AddFunc("isnotzero", func(t time.Time) bool {
-		return !t.IsZero()
+	viewEngine.AddFunc("QueryUnescape", func(s string) string {
+		query, err := url.QueryUnescape(s)
+		if err != nil {
+			return s
+		}
+		return query
 	})
 
-	viewEngine.AddFunc("str2html", func(raw string) htmpl.HTML {
-		return htmpl.HTML(raw)
+	viewEngine.AddFunc("isnotzero", func(t time.Time) bool {
+		return !t.IsZero()
 	})
 
 	return viewEngine
