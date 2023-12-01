@@ -20,19 +20,23 @@ import (
 
 func ManagerPage(c *fiber.Ctx) error {
 	var (
-		queryParam     string
-		total          int64
-		totalAll       int64
-		totalPublished int64
-		totalDraft     int64
-		totalTrash     int64
-		voList         []model.Post
+		total              int64
+		totalAll           int64
+		totalPublished     int64
+		totalDraft         int64
+		totalTrash         int64
+		voList             []model.Post
+		q                  string
+		filterCategory     int
+		status             string
+		queryParam         string
+		categories         []model.Category
+		currrentPagination int
 	)
-	q := c.Query("q")
-	qc := c.QueryInt("qc") // category
-	qf := c.QueryInt("qf") // filter: published:1, draft:2 or trash:3
+	q = c.Query("q")
+	filterCategory = c.QueryInt("filter_category") // category
+	status = c.Query("status")                     // status: publish, draft or trash
 
-	currrentPagination := 0
 	if c.QueryInt("page") > 1 {
 		currrentPagination = c.QueryInt("page") - 1
 	}
@@ -42,14 +46,14 @@ func ManagerPage(c *fiber.Ctx) error {
 	totalDraft = post.Dao.CountByDraft()
 	totalTrash = post.Dao.CountByTrash()
 
-	switch qf {
-	case 1: // published
+	switch status {
+	case "publish": // publish
 		voList = post.Dao.GetPublishedListByPage(currrentPagination, enum.NUM_PER_PAGE)
 		total = totalPublished
-	case 2: // draft
+	case "draft": // draft
 		voList = post.Dao.GetDraftListByPage(currrentPagination, enum.NUM_PER_PAGE)
 		total = totalDraft
-	case 3: // trash
+	case "trash": // trash
 		voList = post.Dao.GetTrashListByPage(currrentPagination, enum.NUM_PER_PAGE)
 		total = totalTrash
 	default: // all
@@ -57,34 +61,33 @@ func ManagerPage(c *fiber.Ctx) error {
 		total = totalAll
 	}
 
-	if qf > 0 {
-		queryParam += fmt.Sprintf("&qf=%d", qf)
+	if status != "" {
+		queryParam = fmt.Sprintf("&status=%s", status)
 	}
-	if qc > 0 {
-		queryParam += fmt.Sprintf("&qc=%d", qc)
+	if filterCategory > 0 {
+		queryParam += fmt.Sprintf("&filter_category=%d", filterCategory)
 	}
 
 	totalPagination, hasPagination := utils.CalcPagination(total)
 
-	categories := post.Dao.GetCategories()
+	categories = post.Dao.GetCategories()
 	return core.Render(c, "admin/posts/posts", fiber.Map{
 		"PageTitle":         "All Posts",
 		"NavBarActive":      "posts",
 		"Path":              "/admin/posts/manager",
 		"Posts":             voList,
 		"Categories":        categories,
+		"Q":                 q,
 		"Total":             total,
 		"TotalAll":          totalAll,
 		"TotalPublished":    totalPublished,
 		"TotalDraft":        totalDraft,
 		"TotalTrash":        totalTrash,
-		"Q":                 q,
-		"QC":                qc,
-		"QF":                qf,
-		"QueryParam":        template.URL(queryParam),
+		"FilterCategory":    filterCategory,
 		"TotalPagination":   totalPagination,
 		"HasPagination":     hasPagination,
 		"CurrentPagination": currrentPagination + 1,
+		"QueryParam":        template.URL(queryParam),
 	}, "admin/layouts/app")
 }
 
@@ -213,14 +216,19 @@ func Update(c *fiber.Ctx) error {
 }
 
 func ManagerCategoryPage(c *fiber.Ctx) error {
-	currentPagination := 0
+	var (
+		total             int64
+		currentPagination int
+		categories        []model.Category
+	)
 	if c.QueryInt("page") > 1 {
 		currentPagination = c.QueryInt("page") - 1
 	}
 
-	categories := post.Dao.GetCategoriesByPage(currentPagination, enum.NUM_PER_PAGE)
+	categories = post.Dao.GetCategoriesByPage(currentPagination, enum.NUM_PER_PAGE)
 
-	totalPagination, hasPagination := utils.CalcPagination(post.Dao.CatgegoryCount())
+	total = post.Dao.CountCatgegory()
+	totalPagination, hasPagination := utils.CalcPagination(total)
 
 	return core.Render(c, "admin/posts/categories", fiber.Map{
 		"PageTitle":         "All Categories",
@@ -295,14 +303,19 @@ func UpdateCategory(c *fiber.Ctx) error {
 }
 
 func ManagerTagsPage(c *fiber.Ctx) error {
-	currentPagination := 0
+	var (
+		total             int64
+		currentPagination int
+		tags              []model.Tag
+	)
 	if c.QueryInt("page") > 1 {
 		currentPagination = c.QueryInt("page") - 1
 	}
 
-	tags := post.Dao.GetTagsByPage(currentPagination, enum.NUM_PER_PAGE)
+	tags = post.Dao.GetTagsByPage(currentPagination, enum.NUM_PER_PAGE)
 
-	totalPagination, hasPagination := utils.CalcPagination(post.Dao.TagCount())
+	total = post.Dao.CountTag()
+	totalPagination, hasPagination := utils.CalcPagination(total)
 
 	return core.Render(c, "admin/posts/tags", fiber.Map{
 		"PageTitle":         "All Tags",
