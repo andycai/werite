@@ -16,12 +16,12 @@
               <button class="btn dropdown-toggle btn-s" type="button"><i class="sr-only">Operate</i>Action<i
                   class="i-caret-down"></i></button>
               <ul class="dropdown-menu">
-                <li><a lang="Confirm to delete?" href="/admin/post-delete">Delete</a></li>
+                <li><a lang="Confirm to delete all selected?" href="/admin/posts/delete">Delete</a></li>
               </ul>
             </div>
           </div>
           <div class="search" role="search">
-            {{if or .Q (gt .FilterCategory 0)}}<a href="/admin/posts/manager">« Cancel Filter</a>{{end}}
+            {{if or .Q (gt .FilterCategory 0)}}<a href="/admin/posts/manager">Cancel Filter</a>{{end}}
             <input type="text" class="text-s" value="{{if .Q}}{{.Q}}{{end}}" name="q" />
             <select name="qc">
               <option value="">All Categories</option>
@@ -58,7 +58,7 @@
               {{ range .Posts }}
               <tr id="post-{{.ID}}">
                 <td>
-                  <input type="checkbox" value="{{.ID}}" name="cid[]" />
+                  <input type="checkbox" value="{{.ID}}" name="id[]" />
                 </td>
                 <td>
                   <a href="/admin/posts/editor/{{ .ID }}">{{ .Title }}</a>

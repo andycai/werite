@@ -43,7 +43,7 @@ func (pd PageDao) GetByID(id uint) (*model.Page, error) {
 
 func (pd PageDao) GetListByPage(page, numPerPage int) []model.Page {
 	var pages []model.Page
-	db.Debug().Model(&pages).
+	db.Model(&pages).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").
@@ -54,7 +54,7 @@ func (pd PageDao) GetListByPage(page, numPerPage int) []model.Page {
 
 func (pd PageDao) GetTrashListByPage(page, numPerPage int) []model.Page {
 	var pages []model.Page
-	db.Debug().Model(&pages).
+	db.Model(&pages).
 		Unscoped().
 		Where("deleted_at IS NOT NULL").
 		Limit(numPerPage).
@@ -63,4 +63,12 @@ func (pd PageDao) GetTrashListByPage(page, numPerPage int) []model.Page {
 		Find(&pages)
 
 	return pages
+}
+
+func (pd PageDao) DeleteByIds(ids []uint) {
+	pages := make([]model.Page, len(ids))
+	for i, v := range ids {
+		pages[i].ID = v
+	}
+	db.Delete(&pages)
 }

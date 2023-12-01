@@ -121,3 +121,16 @@ func Update(c *fiber.Ctx) error {
 
 	return c.Redirect("/admin/pages/manager")
 }
+
+func Delete(c *fiber.Ctx) error {
+	form := &utils.FormIDArray{}
+	if err := c.BodyParser(form); err != nil {
+		return err
+	}
+	if len(form.ID) > 0 {
+		page.Dao.DeleteByIds(form.ID)
+		core.PushMessages(fmt.Sprintf("Delete pages: %v", form.ID))
+	}
+
+	return c.Redirect("/admin/pages/manager")
+}

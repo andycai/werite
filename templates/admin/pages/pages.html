@@ -16,13 +16,13 @@
               <button class="btn dropdown-toggle btn-s" type="button"><i class="sr-only">Operate</i>Action<i
                   class="i-caret-down"></i></button>
               <ul class="dropdown-menu">
-                <li><a lang="Confirm to delete?" href="/admin/pages/delete">Delete</a></li>
+                <li><a lang="Confirm to delete all selected?" href="/admin/pages/delete">Delete</a></li>
               </ul>
             </div>
           </div>
           <div class="search" role="search">
-            {{if or .Q (gt .QC 0)}}<a href="/admin/pages/manager">« Cancel Filter</a>{{end}}
-            <input type="text" class="text-s" value="{{if .Q}}{{.Q}}{{end}}" name="q" />
+            {{if .Q }}<a href="/admin/pages/manager">Cancel Filter</a>{{end}}
+            <input type="text" class="text-s" value="{{if .Q }}{{ .Q }}{{end}}" name="q" />
             <button type="submit" class="btn btn-s">Search</button>
           </div>
         </form>
@@ -48,7 +48,7 @@
               {{ range .Pages }}
               <tr id="page-{{ .ID }}">
                 <td>
-                  <input type="checkbox" value="{{ .ID }}" name="cid[]" />
+                  <input type="checkbox" value="{{ .ID }}" name="id[]" />
                 </td>
                 <td>
                   <a href="/admin/pages/editor/{{ .ID }}">{{ .Title }}</a>
