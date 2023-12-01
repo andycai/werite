@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="search" role="search">
-            {{if or .Q (gt .QC 0)}}<a href="/admin/posts/manager">« Cancel Filter</a>{{end}}
+            {{if or .Q (gt .FilterCategory 0)}}<a href="/admin/posts/manager">« Cancel Filter</a>{{end}}
             <input type="text" class="text-s" value="{{if .Q}}{{.Q}}{{end}}" name="q" />
             <select name="qc">
               <option value="">All Categories</option>

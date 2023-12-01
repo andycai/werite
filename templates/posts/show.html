@@ -3,7 +3,7 @@
   <div class="banner">
     <div class="container">
       <h1 id="article-detail__title">
-        {{ .Post.Title }}
+        {{ .Post.Title | MD2HTML }}
       </h1>
     </div>
   </div>
@@ -11,7 +11,7 @@
   <div class="article-detail container page">
     <div class="row post-content">
       <div class="col-md-12">
-        {{ .Post.Body }}
+        {{ .Post.Body | MD2HTML }}
       </div>
       <div class="col-md-12 m-t-2">
         <ul class="tag-list">

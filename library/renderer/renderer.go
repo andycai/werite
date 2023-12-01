@@ -2,6 +2,7 @@ package renderer
 
 import (
 	"errors"
+	"html/template"
 	"net/url"
 	"strings"
 	"time"
@@ -10,6 +11,9 @@ import (
 	"github.com/andycai/werite/library/authentication"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
+	"github.com/gomarkdown/markdown"
+	mdhtml "github.com/gomarkdown/markdown/html"
+	"github.com/gomarkdown/markdown/parser"
 )
 
 func ViewEngineStart() *html.Engine {
@@ -73,8 +77,27 @@ func ViewEngineStart() *html.Engine {
 		return query
 	})
 
-	viewEngine.AddFunc("isnotzero", func(t time.Time) bool {
+	viewEngine.AddFunc("IsNotZero", func(t time.Time) bool {
 		return !t.IsZero()
+	})
+
+	viewEngine.AddFunc("Str2HTML", func(s string) template.HTML {
+		return template.HTML(s)
+	})
+
+	viewEngine.AddFunc("MD2HTML", func(s string) template.HTML {
+		// create markdown parser with extensions
+		extensions := parser.CommonExtensions | parser.AutoHeadingIDs | parser.NoEmptyLineBeforeBlock
+		p := parser.NewWithExtensions(extensions)
+		doc := p.Parse([]byte(s))
+
+		// create HTML renderer with extensions
+		htmlFlags := mdhtml.CommonFlags | mdhtml.HrefTargetBlank
+		opts := mdhtml.RendererOptions{Flags: htmlFlags}
+		renderer := mdhtml.NewRenderer(opts)
+
+		return template.HTML(string(markdown.Render(doc, renderer)))
+
 	})
 
 	return viewEngine

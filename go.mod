@@ -25,6 +25,8 @@ require (
 	github.com/gofiber/template v1.8.2 // indirect
 	github.com/gofiber/utils v1.1.0 // indirect
 	github.com/golang-jwt/jwt/v4 v4.2.0 // indirect
+	github.com/gomarkdown/markdown v0.0.0-20231115200524-a660076da3fd // indirect
+	github.com/gomarkdown/mdtohtml v0.0.0-20231003162908-96ea9477ae20 // indirect
 	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
 	golang.org/x/net v0.10.0 // indirect
