@@ -15,6 +15,14 @@ func (ad PageDao) Count() int64 {
 	return count
 }
 
+func (ad PageDao) CountTrash() int64 {
+	var page model.Page
+	var count int64
+	db.Model(&page).Unscoped().Where("deleted_at IS NOT NULL").Count(&count)
+
+	return count
+}
+
 func (pd PageDao) GetBySlug(slug string) (*model.Page, error) {
 	var page model.Page
 	err := db.Model(&page).
@@ -36,9 +44,19 @@ func (pd PageDao) GetByID(id uint) (*model.Page, error) {
 func (pd PageDao) GetListByPage(page, numPerPage int) []model.Page {
 	var pages []model.Page
 	db.Debug().Model(&pages).
-		// Preload("Tags", func(db *gorm.DB) *gorm.DB {
-		// return db.Order("tags.name asc")
-		// }).
+		Limit(numPerPage).
+		Offset(page * numPerPage).
+		Order("created_at desc").
+		Find(&pages)
+
+	return pages
+}
+
+func (pd PageDao) GetTrashListByPage(page, numPerPage int) []model.Page {
+	var pages []model.Page
+	db.Debug().Model(&pages).
+		Unscoped().
+		Where("deleted_at IS NOT NULL").
 		Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").

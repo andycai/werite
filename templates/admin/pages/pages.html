@@ -6,7 +6,7 @@
   <div class="row typecho-page-main" role="main">
     <div class="col-mb-12 typecho-list">
       <div class="typecho-list-operate clearfix">
-        <div><a href="">All(10)</a> | <a href="">Published(8)</a></div>
+        <div><a href="{{ .Path }}">All({{ .TotalAll }})</a> | <a href="{{ .Path }}?status=trash">Trash({{ .TotalTrash }})</a></div>
         <form method="get">
           <div class="operate">
             <label><i class="sr-only">Select All</i>
@@ -16,7 +16,7 @@
               <button class="btn dropdown-toggle btn-s" type="button"><i class="sr-only">Operate</i>Action<i
                   class="i-caret-down"></i></button>
               <ul class="dropdown-menu">
-                <li><a lang="Confirm to delete?" href="/admin/page-delete">Delete</a></li>
+                <li><a lang="Confirm to delete?" href="/admin/pages/delete">Delete</a></li>
               </ul>
             </div>
           </div>
@@ -41,7 +41,7 @@
                 <th> </th>
                 <th>Title</th>
                 <th>Author</th>
-                <th>Publish At</th>
+                <th>Date</th>
               </tr>
             </thead>
             <tbody>

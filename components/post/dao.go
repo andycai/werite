@@ -128,7 +128,7 @@ func (ad PostDao) GetTrashListByPage(page, numPerPage int) []model.Post {
 
 //#region Category
 
-func (ad PostDao) CatgegoryCount() int64 {
+func (ad PostDao) CountCatgegory() int64 {
 	var category model.Category
 	var count int64
 	db.Model(&category).Count(&count)
@@ -163,7 +163,7 @@ func (ad PostDao) GetCategoryByID(id uint) (*model.Category, error) {
 
 //#region Tag
 
-func (ad PostDao) TagCount() int64 {
+func (ad PostDao) CountTag() int64 {
 	var tag model.Tag
 	var count int64
 	db.Model(&tag).Count(&count)

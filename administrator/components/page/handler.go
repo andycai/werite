@@ -2,6 +2,7 @@ package page
 
 import (
 	"fmt"
+	"html/template"
 
 	"github.com/andycai/werite/administrator/enum"
 	"github.com/andycai/werite/administrator/utils"
@@ -14,17 +15,42 @@ import (
 )
 
 func ManagerPage(c *fiber.Ctx) error {
-	q := c.Query("q")
-	qc := c.QueryInt("qc")
+	var (
+		total             int64
+		totalAll          int64
+		totalTrash        int64
+		voList            []model.Page
+		q                 string
+		status            string
+		queryParam        string
+		CurrentPagination int
+	)
+	q = c.Query("q")
+	status = c.Query("status")
 
-	CurrentPagination := 0
 	if c.QueryInt("page") > 1 {
 		CurrentPagination = c.QueryInt("page") - 1
 	}
 
-	voList := page.Dao.GetListByPage(CurrentPagination, enum.NUM_PER_PAGE)
+	voList = page.Dao.GetListByPage(CurrentPagination, enum.NUM_PER_PAGE)
 
-	totalPagination, hasPagination := utils.CalcPagination(page.Dao.Count())
+	totalAll = page.Dao.Count()
+	totalTrash = page.Dao.CountTrash()
+
+	switch status {
+	case "trash":
+		voList = page.Dao.GetTrashListByPage(CurrentPagination, enum.NUM_PER_PAGE)
+		total = totalTrash
+	default:
+		voList = page.Dao.GetListByPage(CurrentPagination, enum.NUM_PER_PAGE)
+		total = totalAll
+	}
+
+	if status != "" {
+		queryParam = fmt.Sprintf("&status=%s", status)
+	}
+
+	totalPagination, hasPagination := utils.CalcPagination(total)
 
 	return core.Render(c, "admin/pages/pages", fiber.Map{
 		"PageTitle":         "All Pages",
@@ -32,10 +58,13 @@ func ManagerPage(c *fiber.Ctx) error {
 		"Path":              "/admin/pages/manager",
 		"Pages":             voList,
 		"Q":                 q,
-		"QC":                qc,
+		"Total":             total,
+		"TotalAll":          totalAll,
+		"TotalTrash":        totalTrash,
 		"TotalPagination":   totalPagination,
 		"HasPagination":     hasPagination,
 		"CurrentPagination": CurrentPagination + 1,
+		"QueryParam":        template.URL(queryParam),
 	}, "admin/layouts/app")
 }
 
