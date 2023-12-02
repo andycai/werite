@@ -79,7 +79,7 @@ func HTMXHomeGlobalFeed(c *fiber.Ctx) error {
 	isAuthenticated, userID := authentication.AuthGet(c)
 
 	count = post.Dao.Count()
-	posts = post.Dao.GetListByPage(page, numPerPage)
+	posts = post.Dao.GetAllByPage(page, numPerPage)
 
 	feedNavbarItems := []fiber.Map{
 		{

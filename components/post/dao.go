@@ -13,7 +13,7 @@ var Dao = new(PostDao)
 
 //#region Post
 
-func (ad PostDao) GetBySlug(slug string) (*model.Post, error) {
+func (pd PostDao) GetBySlug(slug string) (*model.Post, error) {
 	var post model.Post
 	err := db.Model(&post).
 		Where("slug = ?", slug).
@@ -22,7 +22,7 @@ func (ad PostDao) GetBySlug(slug string) (*model.Post, error) {
 	return &post, err
 }
 
-func (ad PostDao) GetByID(id uint) (*model.Post, error) {
+func (pd PostDao) GetByID(id uint) (*model.Post, error) {
 	var post model.Post
 	err := db.Model(&post).
 		Where("id = ?", id).
@@ -34,15 +34,15 @@ func (ad PostDao) GetByID(id uint) (*model.Post, error) {
 	return &post, err
 }
 
-func (ad PostDao) CountByPublished() int64 {
-	return ad.countByDraft(0)
+func (pd PostDao) CountByPublished() int64 {
+	return pd.countByDraft(0)
 }
 
-func (ad PostDao) CountByDraft() int64 {
-	return ad.countByDraft(1)
+func (pd PostDao) CountByDraft() int64 {
+	return pd.countByDraft(1)
 }
 
-func (ad PostDao) countByDraft(draft int) int64 {
+func (pd PostDao) countByDraft(draft int) int64 {
 	var post model.Post
 	var count int64
 	db.Model(&post).Where("is_draft = ?", draft).Count(&count)
@@ -50,7 +50,7 @@ func (ad PostDao) countByDraft(draft int) int64 {
 	return count
 }
 
-func (ad PostDao) CountByTrash() int64 {
+func (pd PostDao) CountByTrash() int64 {
 	var post model.Post
 	var count int64
 	db.Model(&post).Unscoped().Where("deleted_at IS NOT NULL").Count(&count)
@@ -58,7 +58,7 @@ func (ad PostDao) CountByTrash() int64 {
 	return count
 }
 
-func (ad PostDao) Count() int64 {
+func (pd PostDao) Count() int64 {
 	var post model.Post
 	var count int64
 	db.Model(&post).Count(&count)
@@ -66,7 +66,11 @@ func (ad PostDao) Count() int64 {
 	return count
 }
 
-func (ad PostDao) GetListByPage(page, numPerPage int, category int, q string) []model.Post {
+func (pd PostDao) GetAllByPage(page, numPerPage int) []model.Post {
+	return pd.GetListByPage(page, numPerPage, 0, "")
+}
+
+func (pd PostDao) GetListByPage(page, numPerPage int, category int, q string) []model.Post {
 	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
@@ -82,7 +86,7 @@ func (ad PostDao) GetListByPage(page, numPerPage int, category int, q string) []
 	return posts
 }
 
-func (ad PostDao) GetPublishedListByPage(page, numPerPage int, category int, q string) []model.Post {
+func (pd PostDao) GetPublishedListByPage(page, numPerPage int, category int, q string) []model.Post {
 	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
@@ -99,7 +103,7 @@ func (ad PostDao) GetPublishedListByPage(page, numPerPage int, category int, q s
 	return posts
 }
 
-func (ad PostDao) GetDraftListByPage(page, numPerPage int, category int, q string) []model.Post {
+func (pd PostDao) GetDraftListByPage(page, numPerPage int, category int, q string) []model.Post {
 	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
@@ -116,7 +120,7 @@ func (ad PostDao) GetDraftListByPage(page, numPerPage int, category int, q strin
 	return posts
 }
 
-func (ad PostDao) GetTrashListByPage(page, numPerPage int, category int, q string) []model.Post {
+func (pd PostDao) GetTrashListByPage(page, numPerPage int, category int, q string) []model.Post {
 	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
@@ -146,7 +150,7 @@ func (pd PostDao) DeleteByIds(ids []uint) {
 
 //#region Category
 
-func (ad PostDao) CountCatgegory() int64 {
+func (pd PostDao) CountCatgegory() int64 {
 	var category model.Category
 	var count int64
 	db.Model(&category).Count(&count)
@@ -154,7 +158,7 @@ func (ad PostDao) CountCatgegory() int64 {
 	return count
 }
 
-func (ad PostDao) GetCategories() []model.Category {
+func (pd PostDao) GetCategories() []model.Category {
 	var categories []model.Category
 	db.Model(&categories).
 		Find(&categories)
@@ -162,7 +166,7 @@ func (ad PostDao) GetCategories() []model.Category {
 	return categories
 }
 
-func (ad PostDao) GetCategoriesByPage(page, numPerPage int) []model.Category {
+func (pd PostDao) GetCategoriesByPage(page, numPerPage int) []model.Category {
 	var categories []model.Category
 	db.Model(&categories).
 		Limit(numPerPage).
@@ -172,7 +176,7 @@ func (ad PostDao) GetCategoriesByPage(page, numPerPage int) []model.Category {
 	return categories
 }
 
-func (ad PostDao) GetCategoryByID(id uint) (*model.Category, error) {
+func (pd PostDao) GetCategoryByID(id uint) (*model.Category, error) {
 	var categoryVo model.Category
 	err := db.Model(&categoryVo).Where("id = ?", id).Find(&categoryVo).Error
 
@@ -189,7 +193,7 @@ func (pd PostDao) DeleteCategoriesByIds(ids []uint) {
 
 //#region Tag
 
-func (ad PostDao) CountTag() int64 {
+func (pd PostDao) CountTag() int64 {
 	var tag model.Tag
 	var count int64
 	db.Model(&tag).Count(&count)
@@ -197,7 +201,7 @@ func (ad PostDao) CountTag() int64 {
 	return count
 }
 
-func (ad PostDao) GetTagsByPage(page, numPerPage int) []model.Tag {
+func (pd PostDao) GetTagsByPage(page, numPerPage int) []model.Tag {
 	var tags []model.Tag
 	db.Model(&tags).
 		Limit(numPerPage).
@@ -207,7 +211,7 @@ func (ad PostDao) GetTagsByPage(page, numPerPage int) []model.Tag {
 	return tags
 }
 
-func (ad PostDao) GetTagByID(id uint) (*model.Tag, error) {
+func (pd PostDao) GetTagByID(id uint) (*model.Tag, error) {
 	var tagVo model.Tag
 	err := db.Model(&tagVo).Where("id = ?", id).Find(&tagVo).Error
 
