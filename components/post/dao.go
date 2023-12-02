@@ -1,6 +1,8 @@
 package post
 
 import (
+	"fmt"
+
 	"github.com/andycai/werite/model"
 	"gorm.io/gorm"
 )
@@ -64,12 +66,14 @@ func (ad PostDao) Count() int64 {
 	return count
 }
 
-func (ad PostDao) GetListByPage(page, numPerPage int) []model.Post {
+func (ad PostDao) GetListByPage(page, numPerPage int, category int, q string) []model.Post {
 	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
+		Where("category = ?", category).
+		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").
@@ -78,13 +82,15 @@ func (ad PostDao) GetListByPage(page, numPerPage int) []model.Post {
 	return posts
 }
 
-func (ad PostDao) GetPublishedListByPage(page, numPerPage int) []model.Post {
+func (ad PostDao) GetPublishedListByPage(page, numPerPage int, category int, q string) []model.Post {
 	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
 		Where("is_draft = ?", 0).
+		Where("category = ?", category).
+		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").
@@ -93,13 +99,15 @@ func (ad PostDao) GetPublishedListByPage(page, numPerPage int) []model.Post {
 	return posts
 }
 
-func (ad PostDao) GetDraftListByPage(page, numPerPage int) []model.Post {
+func (ad PostDao) GetDraftListByPage(page, numPerPage int, category int, q string) []model.Post {
 	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
 		Where("is_draft = ?", 1).
+		Where("category = ?", category).
+		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").
@@ -108,7 +116,7 @@ func (ad PostDao) GetDraftListByPage(page, numPerPage int) []model.Post {
 	return posts
 }
 
-func (ad PostDao) GetTrashListByPage(page, numPerPage int) []model.Post {
+func (ad PostDao) GetTrashListByPage(page, numPerPage int, category int, q string) []model.Post {
 	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
@@ -116,6 +124,8 @@ func (ad PostDao) GetTrashListByPage(page, numPerPage int) []model.Post {
 		}).
 		Unscoped().
 		Where("deleted_at IS NOT NULL").
+		Where("category = ?", category).
+		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").

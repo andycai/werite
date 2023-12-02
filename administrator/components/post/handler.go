@@ -48,16 +48,16 @@ func ManagerPage(c *fiber.Ctx) error {
 
 	switch status {
 	case "publish": // publish
-		voList = post.Dao.GetPublishedListByPage(currrentPagination, enum.NUM_PER_PAGE)
+		voList = post.Dao.GetPublishedListByPage(currrentPagination, enum.NUM_PER_PAGE, filterCategory, q)
 		total = totalPublished
 	case "draft": // draft
-		voList = post.Dao.GetDraftListByPage(currrentPagination, enum.NUM_PER_PAGE)
+		voList = post.Dao.GetDraftListByPage(currrentPagination, enum.NUM_PER_PAGE, filterCategory, q)
 		total = totalDraft
 	case "trash": // trash
-		voList = post.Dao.GetTrashListByPage(currrentPagination, enum.NUM_PER_PAGE)
+		voList = post.Dao.GetTrashListByPage(currrentPagination, enum.NUM_PER_PAGE, filterCategory, q)
 		total = totalTrash
 	default: // all
-		voList = post.Dao.GetListByPage(currrentPagination, enum.NUM_PER_PAGE)
+		voList = post.Dao.GetListByPage(currrentPagination, enum.NUM_PER_PAGE, filterCategory, q)
 		total = totalAll
 	}
 
