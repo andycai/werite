@@ -23,6 +23,7 @@
           <div class="search" role="search">
             {{if .Q }}<a href="/admin/pages/manager">Cancel Filter</a>{{end}}
             <input type="text" class="text-s" value="{{if .Q }}{{ .Q }}{{end}}" name="q" />
+            <input type="hidden" name="status" value="{{ .Status }}" />
             <button type="submit" class="btn btn-s">Search</button>
           </div>
         </form>

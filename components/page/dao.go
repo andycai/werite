@@ -1,6 +1,10 @@
 package page
 
-import "github.com/andycai/werite/model"
+import (
+	"fmt"
+
+	"github.com/andycai/werite/model"
+)
 
 type PageDao struct {
 }
@@ -41,10 +45,15 @@ func (pd PageDao) GetByID(id uint) (*model.Page, error) {
 	return &page, err
 }
 
-func (pd PageDao) GetListByPage(page, numPerPage int) []model.Page {
+func (pd PageDao) GetAllByPage(page, numPerPage int) []model.Page {
+	return pd.GetListByPage(page, numPerPage, "")
+}
+
+func (pd PageDao) GetListByPage(page, numPerPage int, q string) []model.Page {
 	var pages []model.Page
 	db.Model(&pages).
 		Limit(numPerPage).
+		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Offset(page * numPerPage).
 		Order("created_at desc").
 		Find(&pages)
@@ -52,11 +61,12 @@ func (pd PageDao) GetListByPage(page, numPerPage int) []model.Page {
 	return pages
 }
 
-func (pd PageDao) GetTrashListByPage(page, numPerPage int) []model.Page {
+func (pd PageDao) GetTrashListByPage(page, numPerPage int, q string) []model.Page {
 	var pages []model.Page
 	db.Model(&pages).
 		Unscoped().
 		Where("deleted_at IS NOT NULL").
+		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").

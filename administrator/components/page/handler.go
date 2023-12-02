@@ -32,17 +32,15 @@ func ManagerPage(c *fiber.Ctx) error {
 		CurrentPagination = c.QueryInt("page") - 1
 	}
 
-	voList = page.Dao.GetListByPage(CurrentPagination, enum.NUM_PER_PAGE)
-
 	totalAll = page.Dao.Count()
 	totalTrash = page.Dao.CountTrash()
 
 	switch status {
 	case "trash":
-		voList = page.Dao.GetTrashListByPage(CurrentPagination, enum.NUM_PER_PAGE)
+		voList = page.Dao.GetTrashListByPage(CurrentPagination, enum.NUM_PER_PAGE, q)
 		total = totalTrash
 	default:
-		voList = page.Dao.GetListByPage(CurrentPagination, enum.NUM_PER_PAGE)
+		voList = page.Dao.GetListByPage(CurrentPagination, enum.NUM_PER_PAGE, q)
 		total = totalAll
 	}
 
@@ -58,6 +56,7 @@ func ManagerPage(c *fiber.Ctx) error {
 		"Path":              "/admin/pages/manager",
 		"Pages":             voList,
 		"Q":                 q,
+		"Status":            status,
 		"Total":             total,
 		"TotalAll":          totalAll,
 		"TotalTrash":        totalTrash,
