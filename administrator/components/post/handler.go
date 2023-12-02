@@ -389,3 +389,16 @@ func CreateTag(c *fiber.Ctx) error {
 
 	return c.Redirect("/admin/tags/manager")
 }
+
+func DeleteTags(c *fiber.Ctx) error {
+	form := &utils.FormIDArray{}
+	if err := c.BodyParser(form); err != nil {
+		return err
+	}
+	if len(form.ID) > 0 {
+		post.Dao.DeleteTagsByIds(form.ID)
+		core.PushMessages(fmt.Sprintf("Delete tags: %v", form.ID))
+	}
+
+	return c.Redirect("/admin/tags/manager")
+}
