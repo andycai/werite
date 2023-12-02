@@ -124,6 +124,14 @@ func (ad PostDao) GetTrashListByPage(page, numPerPage int) []model.Post {
 	return posts
 }
 
+func (pd PostDao) DeleteByIds(ids []uint) {
+	posts := make([]model.Post, len(ids))
+	for i, v := range ids {
+		posts[i].ID = v
+	}
+	db.Delete(&posts)
+}
+
 //#endregion
 
 //#region Category
@@ -161,6 +169,14 @@ func (ad PostDao) GetCategoryByID(id uint) (*model.Category, error) {
 	return &categoryVo, err
 }
 
+func (pd PostDao) DeleteCategoriesByIds(ids []uint) {
+	categories := make([]model.Category, len(ids))
+	for i, v := range ids {
+		categories[i].ID = v
+	}
+	db.Delete(&categories)
+}
+
 //#region Tag
 
 func (ad PostDao) CountTag() int64 {
@@ -186,6 +202,14 @@ func (ad PostDao) GetTagByID(id uint) (*model.Tag, error) {
 	err := db.Model(&tagVo).Where("id = ?", id).Find(&tagVo).Error
 
 	return &tagVo, err
+}
+
+func (pd PostDao) DeleteTagsByIds(ids []uint) {
+	tags := make([]model.Tag, len(ids))
+	for i, v := range ids {
+		tags[i].ID = v
+	}
+	db.Delete(&tags)
 }
 
 //#endregion

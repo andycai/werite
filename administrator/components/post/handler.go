@@ -215,6 +215,19 @@ func Update(c *fiber.Ctx) error {
 	return c.Redirect("/admin/posts/manager")
 }
 
+func Delete(c *fiber.Ctx) error {
+	form := &utils.FormIDArray{}
+	if err := c.BodyParser(form); err != nil {
+		return err
+	}
+	if len(form.ID) > 0 {
+		post.Dao.DeleteByIds(form.ID)
+		core.PushMessages(fmt.Sprintf("Delete posts: %v", form.ID))
+	}
+
+	return c.Redirect("/admin/posts/manager")
+}
+
 func ManagerCategoryPage(c *fiber.Ctx) error {
 	var (
 		total             int64
@@ -298,6 +311,19 @@ func UpdateCategory(c *fiber.Ctx) error {
 	db.Save(&categoryVo)
 
 	core.PushMessages(fmt.Sprintf("Updated category id:%d, name:%s", categoryVo.ID, categoryVo.Name))
+
+	return c.Redirect("/admin/categories/manager")
+}
+
+func DeleteCategories(c *fiber.Ctx) error {
+	form := &utils.FormIDArray{}
+	if err := c.BodyParser(form); err != nil {
+		return err
+	}
+	if len(form.ID) > 0 {
+		post.Dao.DeleteCategoriesByIds(form.ID)
+		core.PushMessages(fmt.Sprintf("Delete categories: %v", form.ID))
+	}
 
 	return c.Redirect("/admin/categories/manager")
 }
