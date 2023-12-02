@@ -76,9 +76,10 @@ func (pd PageDao) GetTrashListByPage(page, numPerPage int, q string) []model.Pag
 }
 
 func (pd PageDao) DeleteByIds(ids []uint) {
-	pages := make([]model.Page, len(ids))
-	for i, v := range ids {
-		pages[i].ID = v
-	}
-	db.Delete(&pages)
+	var page model.Page
+	// pages := make([]model.Page, len(ids))
+	// for i, v := range ids {
+	// 	pages[i].ID = v
+	// }
+	db.Where(ids).Delete(&page)
 }

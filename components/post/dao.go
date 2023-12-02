@@ -139,11 +139,8 @@ func (pd PostDao) GetTrashListByPage(page, numPerPage int, category int, q strin
 }
 
 func (pd PostDao) DeleteByIds(ids []uint) {
-	posts := make([]model.Post, len(ids))
-	for i, v := range ids {
-		posts[i].ID = v
-	}
-	db.Delete(&posts)
+	var post model.Post
+	db.Where(ids).Delete(&post)
 }
 
 //#endregion
@@ -184,11 +181,12 @@ func (pd PostDao) GetCategoryByID(id uint) (*model.Category, error) {
 }
 
 func (pd PostDao) DeleteCategoriesByIds(ids []uint) {
-	categories := make([]model.Category, len(ids))
-	for i, v := range ids {
-		categories[i].ID = v
-	}
-	db.Delete(&categories)
+	var category model.Category
+	// categories := make([]model.Category, len(ids))
+	// for i, v := range ids {
+	// 	categories[i].ID = v
+	// }
+	db.Where(ids).Delete(&category)
 }
 
 //#region Tag
@@ -219,11 +217,12 @@ func (pd PostDao) GetTagByID(id uint) (*model.Tag, error) {
 }
 
 func (pd PostDao) DeleteTagsByIds(ids []uint) {
-	tags := make([]model.Tag, len(ids))
-	for i, v := range ids {
-		tags[i].ID = v
-	}
-	db.Delete(&tags)
+	var tag model.Tag
+	// tags := make([]model.Tag, len(ids))
+	// for i, v := range ids {
+	// 	tags[i].ID = v
+	// }
+	db.Where(ids).Delete(&tag)
 }
 
 //#endregion
