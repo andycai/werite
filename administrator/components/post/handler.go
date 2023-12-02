@@ -78,6 +78,7 @@ func ManagerPage(c *fiber.Ctx) error {
 		"Posts":             voList,
 		"Categories":        categories,
 		"Q":                 q,
+		"Status":            status,
 		"Total":             total,
 		"TotalAll":          totalAll,
 		"TotalPublished":    totalPublished,

@@ -29,6 +29,7 @@
               <option {{if eq $.Category .ID}}selected{{end}} value="{{.ID}}">{{.Name}}</option>
                {{end}}
             </select>
+            <input type="hidden" name="status" value="{{ .Status }}" />
             <button type="submit" class="btn btn-s">Filter</button>
           </div>
         </form>
