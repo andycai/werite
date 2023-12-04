@@ -65,8 +65,8 @@
                   <a href="/admin/posts/editor/{{ .ID }}">{{ .Title }}</a>
                   <a target="_blank" href="/posts/{{.Slug}}" title="View {{.Title}}"><i class="i-exlink"></i></a>
                 </td>
-                <td>{{ .UserID }}</td>
-                <td>{{ .CategoryID }}</td>
+                <td>{{ .User.Name }}</td>
+                <td>{{ .Category.Name }}</td>
                 <td>{{ .GetTagsAsCharSeparated " " }}</td>
                 <td>{{ DateFormat .PublishedAt "2006-01-02 15:04" }}</td>
               </tr>

@@ -19,6 +19,7 @@ type Post struct {
 	PublishedAt time.Time `gorm:"column:published_at" json:"published_at"`
 	UserID      uint      `gorm:"column:user_id;not null" json:"user_id"`
 	User        User
+	Category    Category
 	Comments    []Comment
 	Tags        []Tag `gorm:"many2many:post_tag"`
 }

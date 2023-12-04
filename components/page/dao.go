@@ -52,6 +52,7 @@ func (pd PageDao) GetAllByPage(page, numPerPage int) []model.Page {
 func (pd PageDao) GetListByPage(page, numPerPage int, q string) []model.Page {
 	var pages []model.Page
 	db.Model(&pages).
+		Preload("User").
 		Limit(numPerPage).
 		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Offset(page * numPerPage).
@@ -64,6 +65,7 @@ func (pd PageDao) GetListByPage(page, numPerPage int, q string) []model.Page {
 func (pd PageDao) GetTrashListByPage(page, numPerPage int, q string) []model.Page {
 	var pages []model.Page
 	db.Model(&pages).
+		Preload("User").
 		Unscoped().
 		Where("deleted_at IS NOT NULL").
 		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).

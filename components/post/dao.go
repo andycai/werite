@@ -76,6 +76,8 @@ func (pd PostDao) GetListByPage(page, numPerPage int, category int, q string) []
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
+		Preload("User").
+		Preload("Category").
 		Where("category = ?", category).
 		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
@@ -92,6 +94,7 @@ func (pd PostDao) GetPublishedListByPage(page, numPerPage int, category int, q s
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
+		Preload("User").
 		Where("is_draft = ?", 0).
 		Where("category = ?", category).
 		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
@@ -109,6 +112,7 @@ func (pd PostDao) GetDraftListByPage(page, numPerPage int, category int, q strin
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
+		Preload("User").
 		Where("is_draft = ?", 1).
 		Where("category = ?", category).
 		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
@@ -126,6 +130,7 @@ func (pd PostDao) GetTrashListByPage(page, numPerPage int, category int, q strin
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
+		Preload("User").
 		Unscoped().
 		Where("deleted_at IS NOT NULL").
 		Where("category = ?", category).
