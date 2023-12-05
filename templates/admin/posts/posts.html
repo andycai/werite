@@ -23,7 +23,7 @@
           <div class="search" role="search">
             {{if or .Q (gt .FilterCategory 0)}}<a href="/admin/posts/manager">Cancel Filter</a>{{end}}
             <input type="text" class="text-s" value="{{if .Q}}{{.Q}}{{end}}" name="q" />
-            <select name="qc">
+            <select name="filter_category">
               <option value="">All Categories</option>
               {{range .Categories}}
               <option {{if eq $.Category .ID}}selected{{end}} value="{{.ID}}">{{.Name}}</option>

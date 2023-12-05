@@ -197,6 +197,7 @@ func Update(c *fiber.Ctx) error {
 		for i := 0; i < len(tagItems); i++ {
 			tagItem := tagItems[i]
 			tag := model.Tag{Name: tagItem.Value}
+			tag.Slug = slug.Make(tagItem.Value)
 
 			err := db.Model(&tag).Where("name = ?", tagItem.Value).First(&tag).Error
 			if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
