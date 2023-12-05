@@ -78,7 +78,6 @@ func (pd PostDao) GetListByPage(page, numPerPage int, categoryID int, q string) 
 		}).
 		Preload("User").
 		Preload("Category")
-
 	if categoryID > 0 {
 		tx = tx.Where("category_id = ?", categoryID)
 	}
@@ -93,15 +92,17 @@ func (pd PostDao) GetListByPage(page, numPerPage int, categoryID int, q string) 
 
 func (pd PostDao) GetPublishedListByPage(page, numPerPage int, categoryID int, q string) []model.Post {
 	var posts []model.Post
-	db.Model(&posts).
+	tx := db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
 		Preload("User").
 		Preload("Category").
-		Where("is_draft = ?", 0).
-		Where("category_id = ?", categoryID).
-		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
+		Where("is_draft = ?", 0)
+	if categoryID > 0 {
+		tx = tx.Where("category_id = ?", categoryID)
+	}
+	tx.Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").
@@ -112,15 +113,17 @@ func (pd PostDao) GetPublishedListByPage(page, numPerPage int, categoryID int, q
 
 func (pd PostDao) GetDraftListByPage(page, numPerPage int, categoryID int, q string) []model.Post {
 	var posts []model.Post
-	db.Model(&posts).
+	tx := db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
 		Preload("User").
 		Preload("Category").
-		Where("is_draft = ?", 1).
-		Where("category_id = ?", categoryID).
-		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
+		Where("is_draft = ?", 1)
+	if categoryID > 0 {
+		tx = tx.Where("category_id = ?", categoryID)
+	}
+	tx.Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").
@@ -131,16 +134,18 @@ func (pd PostDao) GetDraftListByPage(page, numPerPage int, categoryID int, q str
 
 func (pd PostDao) GetTrashListByPage(page, numPerPage int, categoryID int, q string) []model.Post {
 	var posts []model.Post
-	db.Model(&posts).
+	tx := db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
 		Preload("User").
 		Preload("Category").
 		Unscoped().
-		Where("deleted_at IS NOT NULL").
-		Where("category_id = ?", categoryID).
-		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
+		Where("deleted_at IS NOT NULL")
+	if categoryID > 0 {
+		tx = tx.Where("category_id = ?", categoryID)
+	}
+	tx.Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").
