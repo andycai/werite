@@ -72,14 +72,17 @@ func (pd PostDao) GetAllByPage(page, numPerPage int) []model.Post {
 
 func (pd PostDao) GetListByPage(page, numPerPage int, categoryID int, q string) []model.Post {
 	var posts []model.Post
-	db.Model(&posts).
+	tx := db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
 		Preload("User").
-		Preload("Category").
-		Where("category_id = ?", categoryID).
-		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
+		Preload("Category")
+
+	if categoryID > 0 {
+		tx = tx.Where("category_id = ?", categoryID)
+	}
+	tx.Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").

@@ -66,8 +66,8 @@
                   <a target="_blank" href="/posts/{{.Slug}}" title="View {{.Title}}"><i class="i-exlink"></i></a>
                 </td>
                 <td>{{ .User.Name }}</td>
-                <td>{{ .Category.Name }}</td>
-                <td>{{ .GetTagsAsCharSeparated " " }}</td>
+                <td>{{ if .Category.Name }}{{ .Category.Name }}{{ else }}-{{ end }}</td>
+                <td>{{ if eq (.GetTagsAsCharSeparated " ") "" }}-{{ else }}{{ .GetTagsAsCharSeparated " " }}{{ end }}</td>
                 <td>{{ DateFormat .PublishedAt "2006-01-02 15:04" }}</td>
               </tr>
               {{end}}
