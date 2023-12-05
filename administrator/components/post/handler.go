@@ -27,15 +27,15 @@ func ManagerPage(c *fiber.Ctx) error {
 		totalTrash         int64
 		voList             []model.Post
 		q                  string
-		filterCategory     int
+		categoryID         int
 		status             string
 		queryParam         string
 		categories         []model.Category
 		currrentPagination int
 	)
 	q = c.Query("q")
-	filterCategory = c.QueryInt("filter_category") // category
-	status = c.Query("status")                     // status: publish, draft or trash
+	categoryID = c.QueryInt("filter_category") // category
+	status = c.Query("status")                 // status: publish, draft or trash
 
 	if c.QueryInt("page") > 1 {
 		currrentPagination = c.QueryInt("page") - 1
@@ -48,24 +48,24 @@ func ManagerPage(c *fiber.Ctx) error {
 
 	switch status {
 	case "publish": // publish
-		voList = post.Dao.GetPublishedListByPage(currrentPagination, enum.NUM_PER_PAGE, filterCategory, q)
+		voList = post.Dao.GetPublishedListByPage(currrentPagination, enum.NUM_PER_PAGE, categoryID, q)
 		total = totalPublished
 	case "draft": // draft
-		voList = post.Dao.GetDraftListByPage(currrentPagination, enum.NUM_PER_PAGE, filterCategory, q)
+		voList = post.Dao.GetDraftListByPage(currrentPagination, enum.NUM_PER_PAGE, categoryID, q)
 		total = totalDraft
 	case "trash": // trash
-		voList = post.Dao.GetTrashListByPage(currrentPagination, enum.NUM_PER_PAGE, filterCategory, q)
+		voList = post.Dao.GetTrashListByPage(currrentPagination, enum.NUM_PER_PAGE, categoryID, q)
 		total = totalTrash
 	default: // all
-		voList = post.Dao.GetListByPage(currrentPagination, enum.NUM_PER_PAGE, filterCategory, q)
+		voList = post.Dao.GetListByPage(currrentPagination, enum.NUM_PER_PAGE, categoryID, q)
 		total = totalAll
 	}
 
 	if status != "" {
 		queryParam = fmt.Sprintf("&status=%s", status)
 	}
-	if filterCategory > 0 {
-		queryParam += fmt.Sprintf("&filter_category=%d", filterCategory)
+	if categoryID > 0 {
+		queryParam += fmt.Sprintf("&filter_category=%d", categoryID)
 	}
 
 	totalPagination, hasPagination := utils.CalcPagination(total)
@@ -84,7 +84,7 @@ func ManagerPage(c *fiber.Ctx) error {
 		"TotalPublished":    totalPublished,
 		"TotalDraft":        totalDraft,
 		"TotalTrash":        totalTrash,
-		"FilterCategory":    filterCategory,
+		"FilterCategory":    categoryID,
 		"TotalPagination":   totalPagination,
 		"HasPagination":     hasPagination,
 		"CurrentPagination": currrentPagination + 1,

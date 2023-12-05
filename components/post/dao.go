@@ -70,7 +70,7 @@ func (pd PostDao) GetAllByPage(page, numPerPage int) []model.Post {
 	return pd.GetListByPage(page, numPerPage, 0, "")
 }
 
-func (pd PostDao) GetListByPage(page, numPerPage int, category int, q string) []model.Post {
+func (pd PostDao) GetListByPage(page, numPerPage int, categoryID int, q string) []model.Post {
 	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
@@ -78,7 +78,7 @@ func (pd PostDao) GetListByPage(page, numPerPage int, category int, q string) []
 		}).
 		Preload("User").
 		Preload("Category").
-		Where("category = ?", category).
+		Where("category_id = ?", categoryID).
 		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
@@ -88,15 +88,16 @@ func (pd PostDao) GetListByPage(page, numPerPage int, category int, q string) []
 	return posts
 }
 
-func (pd PostDao) GetPublishedListByPage(page, numPerPage int, category int, q string) []model.Post {
+func (pd PostDao) GetPublishedListByPage(page, numPerPage int, categoryID int, q string) []model.Post {
 	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
 		Preload("User").
+		Preload("Category").
 		Where("is_draft = ?", 0).
-		Where("category = ?", category).
+		Where("category_id = ?", categoryID).
 		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
@@ -106,15 +107,16 @@ func (pd PostDao) GetPublishedListByPage(page, numPerPage int, category int, q s
 	return posts
 }
 
-func (pd PostDao) GetDraftListByPage(page, numPerPage int, category int, q string) []model.Post {
+func (pd PostDao) GetDraftListByPage(page, numPerPage int, categoryID int, q string) []model.Post {
 	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
 		Preload("User").
+		Preload("Category").
 		Where("is_draft = ?", 1).
-		Where("category = ?", category).
+		Where("category_id = ?", categoryID).
 		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
@@ -124,16 +126,17 @@ func (pd PostDao) GetDraftListByPage(page, numPerPage int, category int, q strin
 	return posts
 }
 
-func (pd PostDao) GetTrashListByPage(page, numPerPage int, category int, q string) []model.Post {
+func (pd PostDao) GetTrashListByPage(page, numPerPage int, categoryID int, q string) []model.Post {
 	var posts []model.Post
 	db.Model(&posts).
 		Preload("Tags", func(db *gorm.DB) *gorm.DB {
 			return db.Order("tags.name asc")
 		}).
 		Preload("User").
+		Preload("Category").
 		Unscoped().
 		Where("deleted_at IS NOT NULL").
-		Where("category = ?", category).
+		Where("category_id = ?", categoryID).
 		Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
 		Limit(numPerPage).
 		Offset(page * numPerPage).
