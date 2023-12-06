@@ -1,8 +1,7 @@
 package post
 
 import (
-	"fmt"
-
+	"github.com/andycai/werite/library/database"
 	"github.com/andycai/werite/model"
 	"gorm.io/gorm"
 )
@@ -78,11 +77,9 @@ func (pd PostDao) GetListByPage(page, numPerPage int, categoryID int, q string) 
 		}).
 		Preload("User").
 		Preload("Category")
-	if categoryID > 0 {
-		tx = tx.Where("category_id = ?", categoryID)
-	}
-	tx.Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
-		Limit(numPerPage).
+	tx = database.DecorateEqualInt(tx, "category_id", categoryID)
+	tx = database.DecorateLike(tx, "title", q)
+	tx.Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").
 		Find(&posts)
@@ -99,11 +96,9 @@ func (pd PostDao) GetPublishedListByPage(page, numPerPage int, categoryID int, q
 		Preload("User").
 		Preload("Category").
 		Where("is_draft = ?", 0)
-	if categoryID > 0 {
-		tx = tx.Where("category_id = ?", categoryID)
-	}
-	tx.Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
-		Limit(numPerPage).
+	tx = database.DecorateEqualInt(tx, "category_id", categoryID)
+	tx = database.DecorateLike(tx, "title", q)
+	tx.Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").
 		Find(&posts)
@@ -120,11 +115,9 @@ func (pd PostDao) GetDraftListByPage(page, numPerPage int, categoryID int, q str
 		Preload("User").
 		Preload("Category").
 		Where("is_draft = ?", 1)
-	if categoryID > 0 {
-		tx = tx.Where("category_id = ?", categoryID)
-	}
-	tx.Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
-		Limit(numPerPage).
+	tx = database.DecorateEqualInt(tx, "category_id", categoryID)
+	tx = database.DecorateLike(tx, "title", q)
+	tx.Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").
 		Find(&posts)
@@ -142,11 +135,9 @@ func (pd PostDao) GetTrashListByPage(page, numPerPage int, categoryID int, q str
 		Preload("Category").
 		Unscoped().
 		Where("deleted_at IS NOT NULL")
-	if categoryID > 0 {
-		tx = tx.Where("category_id = ?", categoryID)
-	}
-	tx.Where("title LIKE ?", fmt.Sprintf("%%%s%%", q)).
-		Limit(numPerPage).
+	tx = database.DecorateEqualInt(tx, "category_id", categoryID)
+	tx = database.DecorateLike(tx, "title", q)
+	tx.Limit(numPerPage).
 		Offset(page * numPerPage).
 		Order("created_at desc").
 		Find(&posts)
