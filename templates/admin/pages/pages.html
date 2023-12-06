@@ -56,7 +56,7 @@
                   <a target="_blank" href="/pages/{{ .Slug }}" title="View {{ .Title }}"><i class="i-exlink"></i></a>
                 </td>
                 <td>{{ .User.Name }}</td>
-                <td>{{ DateFormat .PublishedAt "2006-01-02 15:04" }}</td>
+                <td>Published<br />{{ DateFormat .PublishedAt "2006-01-02 15:04" }}</td>
               </tr>
               {{end}}
             </tbody>
