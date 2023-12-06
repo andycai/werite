@@ -145,6 +145,10 @@ func (pd PostDao) GetTrashListByPage(page, numPerPage int, categoryID int, q str
 	return posts
 }
 
+func (pd PostDao) UpdateDraft(value uint) {
+	db.Model(&model.Post{}).Update("is_draft", value)
+}
+
 func (pd PostDao) DeleteByIds(ids []uint) {
 	var post model.Post
 	db.Where(ids).Delete(&post)
