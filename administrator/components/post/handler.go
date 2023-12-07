@@ -217,7 +217,7 @@ func Update(c *fiber.Ctx) error {
 	return c.Redirect("/admin/posts/manager")
 }
 
-func Delete(c *fiber.Ctx) error {
+func MoveToTrash(c *fiber.Ctx) error {
 	form := &utils.FormIDArray{}
 	if err := c.BodyParser(form); err != nil {
 		return err
