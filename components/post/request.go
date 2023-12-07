@@ -15,7 +15,7 @@ type requestCreate struct {
 	Title       string `json:"title" validate:"required"`
 	Description string `json:"description" validate:"required"`
 	Body        string `json:"body" validate:"required"`
-	IsDraft     uint   `json:"is_draft" form:"is_draft"`
+	Action      string `json:"action" form:"action"`
 	CategoryID  uint   `json:"category_id" form:"category_id"`
 	PublishedAt string `json:"published_at" form:"published_at" validate:"required"`
 }
@@ -34,8 +34,13 @@ func Bind(c *fiber.Ctx, post *model.Post) error {
 	post.Title = r.Title
 	post.Description = r.Description
 	post.Body = r.Body
-	post.IsDraft = r.IsDraft
 	post.CategoryID = r.CategoryID
+
+	if r.Action == "draft" {
+		post.IsDraft = 1
+	} else {
+		post.IsDraft = 0
+	}
 
 	if r.Slug != "" {
 		post.Slug = r.Slug
