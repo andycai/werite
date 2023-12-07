@@ -75,10 +75,15 @@
               <input type="checkbox" class="typecho-table-select-all" />
             </label>
             <div class="btn-group btn-drop">
-              <button class="btn dropdown-toggle btn-s" type="button"><i class="sr-only">Operate</i>Action<i
+              <button class="btn dropdown-toggle btn-s" type="button"><i class="sr-only">Operate</i>Bulk actions<i
                   class="i-caret-down"></i></button>
               <ul class="dropdown-menu">
-                <li><a lang="Confirm to delete?" href="/admin/api/page-delete">Delete</a></li>
+                {{ if eq .Status "trash" }}
+                <li><a href="/admin/pages/restore">Restore</a></li>
+                <li><a lang="Are you sure to delete permanently?" href="/admin/pages/delete">Delete permanently</a></li>
+                {{ else }}
+                <li><a href="/admin/pages/movetotrash">Move to trash</a></li>
+                {{ end }}
               </ul>
             </div>
           </div>
