@@ -61,6 +61,7 @@
               </tr>
             </thead>
             <tbody>
+              {{ $Status := .Status }}
               {{ range .Posts }}
               <tr id="post-{{.ID}}">
                 <td>
@@ -69,7 +70,7 @@
                 <td>
                   <strong><a href="/admin/posts/editor/{{ .ID }}">{{ .Title }}</a> <a target="_blank" href="/posts/{{.Slug}}" title="View {{.Title}}"><i class="i-exlink"></i></a></strong>
                   <div>
-                    {{ if eq .Status "trash" }}
+                    {{ if eq $Status "trash" }}
                     <a href="/admin/posts/restore/{{ .ID }}">Restore</a> 
                     <a href="/admin/posts/delete/{{ .ID }}">Delete permanently</a> 
                     <a target="_blank" href="/posts/{{.Slug}}" title="View {{.Title}}">View</a>
