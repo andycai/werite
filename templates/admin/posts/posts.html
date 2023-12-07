@@ -67,8 +67,18 @@
                   <input type="checkbox" value="{{.ID}}" name="id[]" />
                 </td>
                 <td>
-                  <a href="/admin/posts/editor/{{ .ID }}">{{ .Title }}</a>
-                  <a target="_blank" href="/posts/{{.Slug}}" title="View {{.Title}}"><i class="i-exlink"></i></a>
+                  <strong><a href="/admin/posts/editor/{{ .ID }}">{{ .Title }}</a> <a target="_blank" href="/posts/{{.Slug}}" title="View {{.Title}}"><i class="i-exlink"></i></a></strong>
+                  <div>
+                    {{ if eq .Status "trash" }}
+                    <a href="/admin/posts/restore/{{ .ID }}">Restore</a> 
+                    <a href="/admin/posts/delete/{{ .ID }}">Delete permanently</a> 
+                    <a target="_blank" href="/posts/{{.Slug}}" title="View {{.Title}}">View</a>
+                    {{ else }}
+                    <a href="/admin/posts/editor/{{ .ID }}">Edit</a> 
+                    <a href="/admin/posts/movetotrash/{{ .ID }}">Trash</a> 
+                    <a target="_blank" href="/posts/{{.Slug}}" title="View {{.Title}}">View</a>
+                    {{ end }}
+                  </div>
                 </td>
                 <td>{{ .User.Name }}</td>
                 <td>{{ if .Category.Name }}{{ .Category.Name }}{{ else }}-{{ end }}</td>
