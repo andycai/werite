@@ -154,6 +154,11 @@ func (pd PostDao) DeleteByIds(ids []uint) {
 	db.Where(ids).Delete(&post)
 }
 
+func (pd PostDao) DeletePermanetlyByIds(ids []uint) {
+	var post model.Post
+	db.Unscoped().Where(ids).Delete(&post)
+}
+
 func (pd PostDao) RestoreByIds(ids []uint) {
 	var post model.Post
 	db.Unscoped().Model(&post).Where("id IN ?", ids).Update("deleted_at", nil)

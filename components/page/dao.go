@@ -81,6 +81,11 @@ func (pd PageDao) DeleteByIds(ids []uint) {
 	db.Where(ids).Delete(&page)
 }
 
+func (pd PageDao) DeletePermanetlyByIds(ids []uint) {
+	var page model.Page
+	db.Unscoped().Where(ids).Delete(&page)
+}
+
 func (pd PageDao) RestoreByIds(ids []uint) {
 	var page model.Page
 	db.Unscoped().Model(&page).Where("id IN ?", ids).Update("deleted_at", nil)

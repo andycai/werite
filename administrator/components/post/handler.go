@@ -224,7 +224,20 @@ func MoveToTrash(c *fiber.Ctx) error {
 	}
 	if len(form.ID) > 0 {
 		post.Dao.DeleteByIds(form.ID)
-		core.PushMessages(fmt.Sprintf("Delete posts: %v", form.ID))
+		core.PushMessages(fmt.Sprintf("Move to trash: %v", form.ID))
+	}
+
+	return c.Redirect("/admin/posts/manager")
+}
+
+func DeletePermanetlyByIds(c *fiber.Ctx) error {
+	form := &utils.FormIDArray{}
+	if err := c.BodyParser(form); err != nil {
+		return err
+	}
+	if len(form.ID) > 0 {
+		post.Dao.DeletePermanetlyByIds(form.ID)
+		core.PushMessages(fmt.Sprintf("Delete permanetly: %v", form.ID))
 	}
 
 	return c.Redirect("/admin/posts/manager")
