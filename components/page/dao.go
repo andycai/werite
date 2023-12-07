@@ -78,9 +78,10 @@ func (pd PageDao) GetTrashListByPage(page, numPerPage int, q string) []model.Pag
 
 func (pd PageDao) DeleteByIds(ids []uint) {
 	var page model.Page
-	// pages := make([]model.Page, len(ids))
-	// for i, v := range ids {
-	// 	pages[i].ID = v
-	// }
 	db.Where(ids).Delete(&page)
+}
+
+func (pd PageDao) RestoreByIds(ids []uint) {
+	var page model.Page
+	db.Unscoped().Model(&page).Where("id IN ?", ids).Update("deleted_at", nil)
 }

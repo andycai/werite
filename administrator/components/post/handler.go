@@ -230,6 +230,19 @@ func MoveToTrash(c *fiber.Ctx) error {
 	return c.Redirect("/admin/posts/manager")
 }
 
+func Restore(c *fiber.Ctx) error {
+	form := &utils.FormIDArray{}
+	if err := c.BodyParser(form); err != nil {
+		return err
+	}
+	if len(form.ID) > 0 {
+		post.Dao.RestoreByIds(form.ID)
+		core.PushMessages(fmt.Sprintf("Restore posts: %v", form.ID))
+	}
+
+	return c.Redirect("/admin/posts/manager")
+}
+
 func ManagerCategoryPage(c *fiber.Ctx) error {
 	var (
 		total             int64

@@ -133,3 +133,16 @@ func MoveToTrash(c *fiber.Ctx) error {
 
 	return c.Redirect("/admin/pages/manager")
 }
+
+func Restore(c *fiber.Ctx) error {
+	form := &utils.FormIDArray{}
+	if err := c.BodyParser(form); err != nil {
+		return err
+	}
+	if len(form.ID) > 0 {
+		page.Dao.RestoreByIds(form.ID)
+		core.PushMessages(fmt.Sprintf("Restore pages: %v", form.ID))
+	}
+
+	return c.Redirect("/admin/pages/manager")
+}
