@@ -119,6 +119,24 @@ func ProfilePage(c *fiber.Ctx) error {
 	}, "admin/layouts/app")
 }
 
-func ProfileAction(c *fiber.Ctx) error {
+func ProfileSave(c *fiber.Ctx) error {
 	return nil
+}
+
+func PasswordSave(c *fiber.Ctx) error {
+	var authenticatedUser *model.User
+	isAuthenticated, userID := authentication.AuthGet(c)
+
+	if isAuthenticated {
+		authenticatedUser = user.Dao.GetByID(userID)
+	}
+
+	err := user.BindPassword(c, authenticatedUser)
+	if err != nil {
+		return err
+	}
+
+	db.Model(authenticatedUser).Update("password", authenticatedUser.Password)
+
+	return c.Redirect("/admin/users/profile")
 }

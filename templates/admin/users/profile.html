@@ -12,7 +12,17 @@
     <div class="col-mb-12 col-tb-6 col-tb-offset-1 typecho-content-panel" role="form">
       <section>
         <h3>Profile</h3>
-        <form action="/admin/profile" method="post" enctype="application/x-www-form-urlencoded">
+        <form action="/admin/users/profile" method="post" enctype="application/x-www-form-urlencoded">
+          <ul class="typecho-option">
+            <li>
+              <label class="typecho-label" for="info-0-1">Gender</label>
+              <select name="gender">
+                <option value="1">Male</option>
+                <option value="2">Female</option>
+                <option value="3">Custom</option>
+              </select>
+            </li>
+          </ul>
           <ul class="typecho-option">
             <li>
               <label class="typecho-label" for="info-0-1">E-Mail</label>
@@ -44,7 +54,7 @@
       <br>
       <section>
         <h3>Blog Infomation</h3>
-        <form action="/admin/blog" method="post" enctype="application/x-www-form-urlencoded">
+        <form action="/admin/users/blog" method="post" enctype="application/x-www-form-urlencoded">
           <ul class="typecho-option">
             <li>
               <label class="typecho-label" for="blog-0-1">Blog Name</label>
@@ -68,7 +78,7 @@
       <br>
       <section id="change-password">
         <h3>Changing Password</h3>
-        <form action="/admin/password" method="post" enctype="application/x-www-form-urlencoded">
+        <form action="/admin/users/password" method="post" enctype="application/x-www-form-urlencoded">
           <ul class="typecho-option" id="typecho-option-item-oldpwd-11">
             <li>
               <label class="typecho-label" for="password-0-11">Current password</label>
