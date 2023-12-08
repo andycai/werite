@@ -68,7 +68,7 @@
                   <input type="checkbox" value="{{.ID}}" name="id[]" />
                 </td>
                 <td>
-                  <strong><a href="/admin/posts/editor/{{ .ID }}">{{ .Title }}</a> <a target="_blank" href="/posts/{{.Slug}}" title="View {{.Title}}"><i class="i-exlink"></i></a></strong>
+                  <strong>{{ .Title }}</strong>
                   <div>
                     {{ if eq $Status "trash" }}
                     <a href="/admin/posts/restore/{{ .ID }}">Restore</a> 
