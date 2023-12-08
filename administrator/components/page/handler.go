@@ -157,6 +157,16 @@ func DeletePermanetly(c *fiber.Ctx) error {
 	return c.Redirect("/admin/pages/manager")
 }
 
+func RestoreByID(c *fiber.Ctx) error {
+	id := cast.ToUint(c.Params("id"))
+	if id > 0 {
+		page.Dao.RestoreByIds([]uint{id})
+		core.PushMessages(fmt.Sprintf("Restore pages: %v", id))
+	}
+
+	return c.Redirect("/admin/pages/manager")
+}
+
 func Restore(c *fiber.Ctx) error {
 	form := &utils.FormIDArray{}
 	if err := c.BodyParser(form); err != nil {

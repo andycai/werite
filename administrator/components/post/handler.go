@@ -253,6 +253,16 @@ func DeletePermanetlyByIds(c *fiber.Ctx) error {
 	return c.Redirect("/admin/posts/manager")
 }
 
+func RestoreByID(c *fiber.Ctx) error {
+	id := cast.ToUint(c.Params("id"))
+	if id > 0 {
+		post.Dao.RestoreByIds([]uint{id})
+		core.PushMessages(fmt.Sprintf("Restore posts: %v", id))
+	}
+
+	return c.Redirect("/admin/posts/manager")
+}
+
 func Restore(c *fiber.Ctx) error {
 	form := &utils.FormIDArray{}
 	if err := c.BodyParser(form); err != nil {

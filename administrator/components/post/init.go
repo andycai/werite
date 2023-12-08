@@ -26,6 +26,7 @@ func initCheckRouter(r fiber.Router) {
 	r.Post("/posts/editor/:id", Update)
 	r.Get("/posts/movetotrash/:id", MoveToTrashByID)
 	r.Post("/posts/movetotrash", MoveToTrash)
+	r.Get("/posts/restore/:id", RestoreByID)
 	r.Post("/posts/restore", Restore)
 
 	r.Get("/categories/manager", ManagerCategoryPage)
