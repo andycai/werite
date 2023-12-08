@@ -2,6 +2,9 @@
   <div class="typecho-page-title">
     <h2>Dash Board</h2>
   </div>
+  {{ $UserTotal := .UserTotal }}
+  {{ $PostTotal := .PostTotal }}
+  {{ $PageTotal := .PageTotal }}
   {{with .Info}}
   <div class="row typecho-page-main">
     <div class="col-mb-12 col-tb-3">
@@ -11,7 +14,10 @@
     </div>
     <div class="col-mb-12 col-tb-6 col-tb-offset-1 typecho-content-panel" role="form">
       <section>
-        <h3>Wecome to Werite Administrator</h3>
+        <h3>Wecome to Werite DashBoard!</h3>
+        <div>Users: {{ $UserTotal }}</div>
+        <div>Posts: {{ $PostTotal }}</div>
+        <div>Pages: {{ $PagesTotal }}</div>
       </section>
     </div>
   </div>
