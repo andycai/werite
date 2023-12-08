@@ -74,15 +74,15 @@ func LogoutAction(c *fiber.Ctx) error {
 }
 
 func DashBoardPage(c *fiber.Ctx) error {
-	var authenticatedUser *model.User
+	var userVo *model.User
 	isAuthenticated, userID := authentication.AuthGet(c)
 
 	name := ""
 	loginAt := time.Now()
 	if isAuthenticated {
-		authenticatedUser = user.Dao.GetByID(userID)
-		name = authenticatedUser.Name
-		loginAt = authenticatedUser.LoginAt
+		userVo = user.Dao.GetByID(userID)
+		name = userVo.Name
+		loginAt = userVo.LoginAt
 	}
 
 	return core.Render(c, "admin/dashboard", fiber.Map{
@@ -99,44 +99,58 @@ func DashBoardPage(c *fiber.Ctx) error {
 }
 
 func ProfilePage(c *fiber.Ctx) error {
-	var authenticatedUser *model.User
+	var userVo *model.User
 	isAuthenticated, userID := authentication.AuthGet(c)
 
 	if isAuthenticated {
-		authenticatedUser = user.Dao.GetByID(userID)
+		userVo = user.Dao.GetByID(userID)
 	}
 
 	return core.Render(c, "admin/users/profile", fiber.Map{
 		"PageTitle":    "Profile",
 		"NavBarActive": "users",
 		"Path":         "/admin/users/profile",
-		"UserName":     authenticatedUser.Name,
+		"UserName":     userVo.Name,
 		"Info": fiber.Map{
 			"BlogName":     "Werite",
 			"BlogSubTitle": "Content Management System",
-			"LoginAt":      authenticatedUser.LoginAt,
+			"LoginAt":      userVo.LoginAt,
 		},
 	}, "admin/layouts/app")
 }
 
 func ProfileSave(c *fiber.Ctx) error {
-	return nil
-}
-
-func PasswordSave(c *fiber.Ctx) error {
-	var authenticatedUser *model.User
+	var userVo *model.User
 	isAuthenticated, userID := authentication.AuthGet(c)
 
 	if isAuthenticated {
-		authenticatedUser = user.Dao.GetByID(userID)
+		userVo = user.Dao.GetByID(userID)
 	}
 
-	err := user.BindPassword(c, authenticatedUser)
+	err := user.BindProfile(c, userVo)
 	if err != nil {
 		return err
 	}
 
-	db.Model(authenticatedUser).Update("password", authenticatedUser.Password)
+	db.Model(userVo).Updates(map[string]interface{}{"gender": userVo.Gender, "phone": userVo.Phone, "email": userVo.Email, "addr": userVo.Addr})
+
+	return c.Redirect("/admin/users/profile")
+}
+
+func PasswordSave(c *fiber.Ctx) error {
+	var userVo *model.User
+	isAuthenticated, userID := authentication.AuthGet(c)
+
+	if isAuthenticated {
+		userVo = user.Dao.GetByID(userID)
+	}
+
+	err := user.BindPassword(c, userVo)
+	if err != nil {
+		return err
+	}
+
+	db.Model(userVo).Update("password", userVo.Password)
 
 	return c.Redirect("/admin/users/profile")
 }
