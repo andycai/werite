@@ -121,6 +121,16 @@ func Update(c *fiber.Ctx) error {
 	return c.Redirect("/admin/pages/manager")
 }
 
+func MoveToTrashByID(c *fiber.Ctx) error {
+	id := cast.ToUint(c.Params("id"))
+	if id > 0 {
+		page.Dao.DeleteByIds([]uint{id})
+		core.PushMessages(fmt.Sprintf("Move to trash: %v", id))
+	}
+
+	return c.Redirect("/admin/pages/manager")
+}
+
 func MoveToTrash(c *fiber.Ctx) error {
 	form := &utils.FormIDArray{}
 	if err := c.BodyParser(form); err != nil {
