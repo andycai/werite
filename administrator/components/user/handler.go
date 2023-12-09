@@ -128,6 +128,27 @@ func ProfilePage(c *fiber.Ctx) error {
 	}, "admin/layouts/app")
 }
 
+func SecurityPage(c *fiber.Ctx) error {
+	var userVo *model.User
+	isAuthenticated, userID := authentication.AuthGet(c)
+
+	if isAuthenticated {
+		userVo = user.Dao.GetByID(userID)
+	}
+
+	return core.Render(c, "admin/users/security", fiber.Map{
+		"PageTitle":    "Security",
+		"NavBarActive": "users",
+		"Path":         "/admin/users/security",
+		"UserName":     userVo.Name,
+		"Info": fiber.Map{
+			"BlogName":     "Werite",
+			"BlogSubTitle": "Content Management System",
+			"LoginAt":      userVo.LoginAt,
+		},
+	}, "admin/layouts/app")
+}
+
 func ProfileSave(c *fiber.Ctx) error {
 	var userVo *model.User
 	isAuthenticated, userID := authentication.AuthGet(c)
@@ -161,5 +182,5 @@ func PasswordSave(c *fiber.Ctx) error {
 
 	db.Model(userVo).Update("password", userVo.Password)
 
-	return c.Redirect("/admin/users/profile")
+	return c.Redirect("/admin/users/security")
 }

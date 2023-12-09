@@ -32,6 +32,7 @@ func initCheckRouter(r fiber.Router) {
 
 	r.Get("/users/profile", ProfilePage)
 	r.Post("/users/profile", ProfileSave)
+	r.Get("/users/security", SecurityPage)
 	r.Post("/users/password", PasswordSave)
 }
 

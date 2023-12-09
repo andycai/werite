@@ -1,0 +1,44 @@
+<div class="body container">
+  <div class="typecho-page-title">
+    <h2>Infomation</h2>
+  </div>
+  {{with .Info}}
+  <div class="row typecho-page-main">
+    <div class="col-mb-12 col-tb-3">
+      <h2>{{.BlogName}}</h2>
+      <p>{{.BlogSubTitle}}</p>
+      <p>Last login at: {{ DateFormat .LoginAt "2006-01-02 15:04"}}</p>
+    </div>
+    <div class="col-mb-12 col-tb-6 col-tb-offset-1 typecho-content-panel" role="form">
+      <section id="change-password">
+        <h3>Changing Password</h3>
+        <form action="/admin/users/password" method="post" enctype="application/x-www-form-urlencoded">
+          <ul class="typecho-option" id="typecho-option-item-oldpwd-11">
+            <li>
+              <label class="typecho-label" for="password-0-11">Current password</label>
+              <input id="password-0-11" name="old" type="password" class="w-60" />
+            </li>
+          </ul>
+          <ul class="typecho-option" id="typecho-option-item-newpwd-12">
+            <li>
+              <label class="typecho-label" for="password-0-12">New password</label>
+              <input id="password-0-12" name="new" type="password" class="w-60" />
+            </li>
+          </ul>
+          <ul class="typecho-option" id="typecho-option-item-confirm-13">
+            <li>
+              <label class="typecho-label" for="confirm-0-13">Confirm password</label>
+              <input id="confirm-0-13" name="confirm" type="password" class="w-60" />
+            </li>
+          </ul>
+          <ul class="typecho-option typecho-option-submit" id="typecho-option-item-submit-14">
+            <li>
+              <button type="submit" class="btn primary">Update</button>
+            </li>
+          </ul>
+        </form>
+      </section>
+    </div>
+  </div>
+  {{end}}
+</div>
