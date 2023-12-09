@@ -1,0 +1,39 @@
+<div class="body container">
+  <div class="typecho-page-title">
+    <h2>Infomation</h2>
+  </div>
+  {{with .Info}}
+  <div class="row typecho-page-main">
+    <div class="col-mb-12 col-tb-3">
+      <h2>{{.BlogName}}</h2>
+      <p>{{.BlogSubTitle}}</p>
+      <p>Last login at: {{ DateFormat .LoginAt "2006-01-02 15:04"}}</p>
+    </div>
+    <div class="col-mb-12 col-tb-6 col-tb-offset-1 typecho-content-panel" role="form">
+      <section>
+        <h3>Blog Infomation</h3>
+        <form action="/admin/settings/blog" method="post" enctype="application/x-www-form-urlencoded">
+          <ul class="typecho-option">
+            <li>
+              <label class="typecho-label" for="blog-0-1">Blog Name</label>
+              <input id="blog-0-1" name="blogName" type="text" class="text" value="" />
+            </li>
+          </ul>
+          <ul class="typecho-option">
+            <li>
+              <label class="typecho-label" for="blog-0-2">Title</label>
+              <input id="blog-0-2" name="bTitle" type="text" class="text" value="" />
+              <p class="description">Meta title of page meta.</p>
+            </li>
+          </ul>
+          <ul class="typecho-option typecho-option-submit" id="typecho-option-item-submit-4">
+            <li>
+              <button type="submit" class="btn primary">Update</button>
+            </li>
+          </ul>
+        </form>
+      </section>
+    </div>
+  </div>
+  {{end}}
+</div>

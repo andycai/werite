@@ -21,6 +21,11 @@ type requestProfile struct {
 	Addr   string `json:"addr" validate:"required"`
 }
 
+type requestBlog struct {
+	Name        string `json:"name" validate:"required"`
+	Description string `json:"description" validate:"required"`
+}
+
 func BindPassword(c *fiber.Ctx, user *model.User) error {
 	var r requestChangingPassword
 	if err := c.BodyParser(&r); err != nil {
@@ -54,6 +59,22 @@ func BindProfile(c *fiber.Ctx, user *model.User) error {
 	user.Phone = r.Phone
 	user.Email = r.Email
 	user.Addr = r.Addr
+
+	return nil
+}
+
+func BindBlog(c *fiber.Ctx, blog *model.Blog) error {
+	var r requestBlog
+	if err := c.BodyParser(&r); err != nil {
+		return err
+	}
+
+	if err := core.Validate(r); err != nil {
+		return err
+	}
+
+	blog.Name = r.Name
+	blog.Description = r.Description
 
 	return nil
 }
