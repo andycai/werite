@@ -19,6 +19,14 @@ func (ud UserDao) GetByID(id uint) *model.User {
 	return &user
 }
 
+func (ud UserDao) Count() int64 {
+	var user model.User
+	var count int64
+	db.Model(&user).Count(&count)
+
+	return count
+}
+
 func (ud UserDao) FindByEmail(email string) (error, *model.User) {
 	var user model.User
 	db.Model(&user)

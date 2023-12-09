@@ -4,6 +4,8 @@ import (
 	"errors"
 	"time"
 
+	"github.com/andycai/werite/components/page"
+	"github.com/andycai/werite/components/post"
 	"github.com/andycai/werite/components/user"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
@@ -77,6 +79,10 @@ func DashBoardPage(c *fiber.Ctx) error {
 	var userVo *model.User
 	isAuthenticated, userID := authentication.AuthGet(c)
 
+	userTotal := user.Dao.Count()
+	postTotal := post.Dao.Count()
+	pageTotal := page.Dao.Count()
+
 	name := ""
 	loginAt := time.Now()
 	if isAuthenticated {
@@ -90,6 +96,9 @@ func DashBoardPage(c *fiber.Ctx) error {
 		"NavBarActive": "dashboard",
 		"Path":         "/admin/dashboard",
 		"UserName":     name,
+		"UserTotal":    userTotal,
+		"PostTotal":    postTotal,
+		"PageTotal":    pageTotal,
 		"Info": fiber.Map{
 			"BlogName":     "Werite",
 			"BlogSubTitle": "Content Management System",
