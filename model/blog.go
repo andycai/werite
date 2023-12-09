@@ -4,7 +4,7 @@ import (
 	"gorm.io/gorm"
 )
 
-const TableNameBlog = "blog"
+const TableNameBlog = "blogs"
 
 type Blog struct {
 	gorm.Model

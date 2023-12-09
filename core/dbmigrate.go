@@ -15,6 +15,7 @@ func AutoMigrate(dbs []*gorm.DB) {
 			&model.Page{},
 			&model.Tag{},
 			&model.Comment{},
+			&model.Blog{},
 		)
 	}
 }
