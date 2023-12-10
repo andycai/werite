@@ -121,6 +121,7 @@ func ProfilePage(c *fiber.Ctx) error {
 		"NavBarActive": "users",
 		"Path":         "/admin/users/profile",
 		"UserName":     userVo.Name,
+		"User":         userVo,
 		"Info": fiber.Map{
 			"BlogName":     "Werite",
 			"BlogSubTitle": "Content Management System",
