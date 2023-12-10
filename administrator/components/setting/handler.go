@@ -1,6 +1,7 @@
 package setting
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/andycai/werite/components/user"
@@ -8,6 +9,7 @@ import (
 	"github.com/andycai/werite/library/authentication"
 	"github.com/andycai/werite/model"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 func BlogPage(c *fiber.Ctx) error {
@@ -18,11 +20,18 @@ func BlogPage(c *fiber.Ctx) error {
 		userVo = user.Dao.GetByID(userID)
 	}
 
+	var blogVo model.Blog
+	err := db.Model(blogVo).Where("user_id= ?", userID).First(&blogVo).Error
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		blogVo = model.Blog{}
+	}
+
 	return core.Render(c, "admin/settings/blog", fiber.Map{
 		"PageTitle":    "Blog",
 		"NavBarActive": "settings",
 		"Path":         "/admin/settings/blog",
 		"UserName":     userVo.Name,
+		"Blog":         blogVo,
 		"Info": fiber.Map{
 			"BlogName":     "Werite",
 			"BlogSubTitle": "Content Management System",
@@ -32,14 +41,23 @@ func BlogPage(c *fiber.Ctx) error {
 }
 
 func BlogSave(c *fiber.Ctx) error {
-	var blogVo *model.Blog
+	blogVo := model.Blog{}
 
-	err := user.BindBlog(c, blogVo)
+	_, userID := authentication.AuthGet(c)
+
+	err := user.BindBlog(c, &blogVo)
 	if err != nil {
 		return err
 	}
 
-	db.Model(blogVo).Updates(map[string]interface{}{"name": blogVo.Name, "description": blogVo.Description})
+	blogVo.UserID = userID
+
+	err = db.Model(&blogVo).Where("user_id= ?", userID).First(&blogVo).Error
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		db.Create(&blogVo)
+	} else {
+		db.Model(&blogVo).Updates(map[string]interface{}{"name": blogVo.Name, "description": blogVo.Description})
+	}
 
 	core.PushMessages(fmt.Sprintf("Updated blog infomation"))
 
