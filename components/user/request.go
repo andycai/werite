@@ -9,9 +9,9 @@ import (
 )
 
 type requestChangingPassword struct {
-	CurrentPassword string `json:"current_password" validate:"required"`
-	NewPassword     string `json:"new_password" validate:"required"`
-	ConfirmPassword string `json:"confirm_password" validate:"eqfield=NewPassword"`
+	CurrentPassword string `json:"current_password" form:"current_password" validate:"required"`
+	NewPassword     string `json:"new_password" form:"new_password" validate:"required"`
+	ConfirmPassword string `json:"confirm_password" form:"confirm_password" validate:"eqfield=NewPassword"`
 }
 
 type requestProfile struct {
@@ -37,7 +37,7 @@ func BindPassword(c *fiber.Ctx, user *model.User) error {
 	}
 
 	if !core.CheckPassword(user.Password, r.CurrentPassword) {
-		return errors.New("Current password is error")
+		return errors.New("Current password is wrong.")
 	}
 
 	user.Password = core.HashPassword(r.NewPassword)

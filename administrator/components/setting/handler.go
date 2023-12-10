@@ -1,6 +1,8 @@
 package setting
 
 import (
+	"fmt"
+
 	"github.com/andycai/werite/components/user"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
@@ -38,6 +40,8 @@ func BlogSave(c *fiber.Ctx) error {
 	}
 
 	db.Model(blogVo).Updates(map[string]interface{}{"name": blogVo.Name, "description": blogVo.Description})
+
+	core.PushMessages(fmt.Sprintf("Updated blog infomation"))
 
 	return c.Redirect("/admin/settings/blog")
 }

@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/andycai/werite/components/page"
@@ -185,6 +186,8 @@ func ProfileSave(c *fiber.Ctx) error {
 
 	db.Model(userVo).Updates(map[string]interface{}{"gender": userVo.Gender, "phone": userVo.Phone, "email": userVo.Email, "addr": userVo.Addr})
 
+	core.PushMessages(fmt.Sprintf("Updated profile"))
+
 	return c.Redirect("/admin/users/profile")
 }
 
@@ -202,6 +205,8 @@ func PasswordSave(c *fiber.Ctx) error {
 	}
 
 	db.Model(userVo).Update("password", userVo.Password)
+
+	core.PushMessages(fmt.Sprintf("Updated password"))
 
 	return c.Redirect("/admin/users/security")
 }
