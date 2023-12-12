@@ -5,6 +5,7 @@ app:
   zoneoffset: 8 # timezone offset, east 8
   static: "static"
   cacheDir: "./cache/"
+  mediaDir: "./media/"
 httpserver:
   addr: ":8888"
 log:
