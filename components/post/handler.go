@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func PostDetailPage(c *fiber.Ctx) error {
+func DetailPage(c *fiber.Ctx) error {
 	var post *model.Post
 	var authenticatedUser model.User
 	isSelf := false

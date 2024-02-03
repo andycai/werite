@@ -10,7 +10,7 @@ const (
 )
 
 func initNoCheckRouter(r fiber.Router) {
-	r.Get("/", HomePage)
+	r.Get("/", IndexPage)
 
 	// HTMX
 	r.Get("/htmx/home", HTMXHomePage)

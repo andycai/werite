@@ -10,7 +10,7 @@ type PageDao struct {
 
 var Dao = new(PageDao)
 
-func (ad PageDao) Count() int64 {
+func (pd PageDao) Count() int64 {
 	var page model.Page
 	var count int64
 	db.Model(&page).Count(&count)
@@ -18,7 +18,7 @@ func (ad PageDao) Count() int64 {
 	return count
 }
 
-func (ad PageDao) CountTrash() int64 {
+func (pd PageDao) CountTrash() int64 {
 	var page model.Page
 	var count int64
 	db.Model(&page).Unscoped().Where("deleted_at IS NOT NULL").Count(&count)

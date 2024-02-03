@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func PageDetailPage(c *fiber.Ctx) error {
+func DetailPage(c *fiber.Ctx) error {
 	var page *model.Page
 	var authenticatedUser model.User
 

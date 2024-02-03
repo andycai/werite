@@ -11,7 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func HomePage(c *fiber.Ctx) error {
+func IndexPage(c *fiber.Ctx) error {
 	var authenticatedUser *model.User
 
 	isAuthenticated, userID := authentication.AuthGet(c)
