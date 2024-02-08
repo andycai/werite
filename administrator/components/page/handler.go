@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 
+	"github.com/andycai/werite/administrator/components/user"
 	"github.com/andycai/werite/administrator/enum"
 	"github.com/andycai/werite/administrator/utils"
 	"github.com/andycai/werite/components/page"
@@ -50,7 +51,7 @@ func ManagerPage(c *fiber.Ctx) error {
 
 	totalPagination, hasPagination := utils.CalcPagination(total)
 
-	return core.Render(c, "admin/pages/pages", fiber.Map{
+	bind := fiber.Map{
 		"PageTitle":         "All Pages",
 		"NavBarActive":      "pages",
 		"Path":              "/admin/pages/manager",
@@ -64,7 +65,10 @@ func ManagerPage(c *fiber.Ctx) error {
 		"HasPagination":     hasPagination,
 		"CurrentPagination": CurrentPagination + 1,
 		"QueryParam":        template.URL(queryParam),
-	}, "admin/layouts/app")
+	}
+	user.DecorateUserBar(c, bind)
+
+	return core.Render(c, "admin/pages/pages", bind, "admin/layouts/app")
 }
 
 func EditorPage(c *fiber.Ctx) error {
@@ -78,14 +82,17 @@ func EditorPage(c *fiber.Ctx) error {
 		pageVo = *vo
 	}
 
-	return core.Render(c, "admin/pages/page", fiber.Map{
+	bind := fiber.Map{
 		"PageTitle":    "Page Editor",
 		"NavBarActive": "pages",
 		"Path":         "/admin/pages/editor",
 		"Domain":       "127.0.0.1",
 		"HasPage":      hasPage,
 		"Page":         pageVo,
-	}, "admin/layouts/app")
+	}
+	user.DecorateUserBar(c, bind)
+
+	return core.Render(c, "admin/pages/page", bind, "admin/layouts/app")
 }
 
 func Create(c *fiber.Ctx) error {
