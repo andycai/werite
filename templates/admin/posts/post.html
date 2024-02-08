@@ -717,13 +717,16 @@
     $('#tab-files').bind('init', function () {
       var uploader = new plupload.Uploader({
         browse_button: $('.upload-file').get(0),
-        url: '/admin/api/file-upload',
+        url: '/admin/media/upload',
         runtimes: 'html5,flash,html4',
         flash_swf_url: '/static/admin/Moxie.swf',
         drop_element: $('.upload-area').get(0),
         filters: {
           max_file_size: '2mb',
-          prevent_duplicates: true
+          prevent_duplicates: true,
+          mime_types: [
+            {title : "Image files", extensions : "jpg,gif,png"}
+          ]
         },
 
         init: {
@@ -780,7 +783,7 @@
       $('.delete', el).click(function () {
         if (confirm('Confirm to delete the file %s?'.replace('%s', file))) {
           var title = $(this).parents('li').data('title');
-          $.post('/admin/api/file-delete',
+          $.post('/admin/media/delete',
             { 'title': title },
             function () {
               $(el).fadeOut(function () {

@@ -23,3 +23,14 @@ func DecorateUserBar(c *fiber.Ctx, bind fiber.Map) {
 		}
 	}
 }
+
+func Current(c *fiber.Ctx) *model.User {
+	var userVo *model.User
+	isAuthenticated, userID := authentication.AuthGet(c)
+
+	if isAuthenticated {
+		userVo = user.Dao.GetByID(userID)
+	}
+
+	return userVo
+}

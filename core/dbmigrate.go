@@ -9,13 +9,14 @@ func AutoMigrate(dbs []*gorm.DB) {
 	for _, db := range dbs {
 		db.AutoMigrate(
 			&model.User{},
+			&model.Site{},
 			&model.Post{},
 			&model.Category{},
 			&model.PostTag{},
 			&model.Page{},
 			&model.Tag{},
 			&model.Comment{},
-			&model.Blog{},
+			&model.Media{},
 		)
 	}
 }
