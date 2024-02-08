@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 
+	adminuser "github.com/andycai/werite/administrator/components/user"
 	"github.com/andycai/werite/components/user"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
@@ -13,12 +14,7 @@ import (
 )
 
 func BlogPage(c *fiber.Ctx) error {
-	var userVo *model.User
-	isAuthenticated, userID := authentication.AuthGet(c)
-
-	if isAuthenticated {
-		userVo = user.Dao.GetByID(userID)
-	}
+	_, userID := authentication.AuthGet(c)
 
 	var blogVo model.Blog
 	err := db.Model(blogVo).Where("user_id= ?", userID).First(&blogVo).Error
@@ -26,18 +22,15 @@ func BlogPage(c *fiber.Ctx) error {
 		blogVo = model.Blog{}
 	}
 
-	return core.Render(c, "admin/settings/blog", fiber.Map{
+	bind := fiber.Map{
 		"PageTitle":    "Blog",
 		"NavBarActive": "settings",
 		"Path":         "/admin/settings/blog",
-		"UserName":     userVo.Name,
 		"Blog":         blogVo,
-		"Info": fiber.Map{
-			"BlogName":     "Werite",
-			"BlogSubTitle": "Content Management System",
-			"LoginAt":      userVo.LoginAt,
-		},
-	}, "admin/layouts/app")
+	}
+	adminuser.DecorateUserBar(c, bind)
+
+	return core.Render(c, "admin/settings/blog", bind, "admin/layouts/app")
 }
 
 func BlogSave(c *fiber.Ctx) error {

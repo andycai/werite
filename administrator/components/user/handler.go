@@ -3,7 +3,6 @@ package user
 import (
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/andycai/werite/components/page"
 	"github.com/andycai/werite/components/post"
@@ -77,35 +76,21 @@ func LogoutAction(c *fiber.Ctx) error {
 }
 
 func DashBoardPage(c *fiber.Ctx) error {
-	var userVo *model.User
-	isAuthenticated, userID := authentication.AuthGet(c)
-
 	userTotal := user.Dao.Count()
 	postTotal := post.Dao.Count()
 	pageTotal := page.Dao.Count()
 
-	name := ""
-	loginAt := time.Now()
-	if isAuthenticated {
-		userVo = user.Dao.GetByID(userID)
-		name = userVo.Name
-		loginAt = userVo.LoginAt
-	}
-
-	return core.Render(c, "admin/dashboard", fiber.Map{
+	bind := fiber.Map{
 		"PageTitle":    "DashBoard",
 		"NavBarActive": "dashboard",
 		"Path":         "/admin/dashboard",
-		"UserName":     name,
 		"UserTotal":    userTotal,
 		"PostTotal":    postTotal,
 		"PageTotal":    pageTotal,
-		"Info": fiber.Map{
-			"BlogName":     "Werite",
-			"BlogSubTitle": "Content Management System",
-			"LoginAt":      loginAt,
-		},
-	}, "admin/layouts/app")
+	}
+	DecorateUserBar(c, bind)
+
+	return core.Render(c, "admin/dashboard", bind, "admin/layouts/app")
 }
 
 func ProfilePage(c *fiber.Ctx) error {
@@ -116,60 +101,26 @@ func ProfilePage(c *fiber.Ctx) error {
 		userVo = user.Dao.GetByID(userID)
 	}
 
-	return core.Render(c, "admin/users/profile", fiber.Map{
+	bind := fiber.Map{
 		"PageTitle":    "Profile",
 		"NavBarActive": "users",
 		"Path":         "/admin/users/profile",
-		"UserName":     userVo.Name,
 		"User":         userVo,
-		"Info": fiber.Map{
-			"BlogName":     "Werite",
-			"BlogSubTitle": "Content Management System",
-			"LoginAt":      userVo.LoginAt,
-		},
-	}, "admin/layouts/app")
+	}
+	DecorateUserBar(c, bind)
+
+	return core.Render(c, "admin/users/profile", bind, "admin/layouts/app")
 }
 
 func SecurityPage(c *fiber.Ctx) error {
-	var userVo *model.User
-	isAuthenticated, userID := authentication.AuthGet(c)
-
-	if isAuthenticated {
-		userVo = user.Dao.GetByID(userID)
-	}
-
-	return core.Render(c, "admin/users/security", fiber.Map{
-		"PageTitle":    "Security",
+	bind := fiber.Map{
+		"PageTitle":    "Profile",
 		"NavBarActive": "users",
 		"Path":         "/admin/users/security",
-		"UserName":     userVo.Name,
-		"Info": fiber.Map{
-			"BlogName":     "Werite",
-			"BlogSubTitle": "Content Management System",
-			"LoginAt":      userVo.LoginAt,
-		},
-	}, "admin/layouts/app")
-}
-
-func BlogPage(c *fiber.Ctx) error {
-	var userVo *model.User
-	isAuthenticated, userID := authentication.AuthGet(c)
-
-	if isAuthenticated {
-		userVo = user.Dao.GetByID(userID)
 	}
+	DecorateUserBar(c, bind)
 
-	return core.Render(c, "admin/users/blog", fiber.Map{
-		"PageTitle":    "Blog",
-		"NavBarActive": "users",
-		"Path":         "/admin/users/blog",
-		"UserName":     userVo.Name,
-		"Info": fiber.Map{
-			"BlogName":     "Werite",
-			"BlogSubTitle": "Content Management System",
-			"LoginAt":      userVo.LoginAt,
-		},
-	}, "admin/layouts/app")
+	return core.Render(c, "admin/users/security", bind, "admin/layouts/app")
 }
 
 func ProfileSave(c *fiber.Ctx) error {

@@ -6,8 +6,8 @@
   <div class="row typecho-page-main">
     <div class="col-mb-12 col-tb-3">
     {{ with .Info }}
-      <h2>{{.BlogName}}</h2>
-      <p>{{.BlogSubTitle}}</p>
+      <h2>{{.AdminName}}</h2>
+      <p>{{.AdminDescription}}</p>
       <p>Last login at: {{ DateFormat .LoginAt "2006-01-02 15:04"}}</p>
     {{ end }}
     </div>
