@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"html/template"
 
+	"github.com/andycai/werite/administrator/components/user"
 	"github.com/andycai/werite/administrator/enum"
 	"github.com/andycai/werite/administrator/utils"
 	"github.com/andycai/werite/components/post"
@@ -71,7 +72,7 @@ func ManagerPage(c *fiber.Ctx) error {
 	totalPagination, hasPagination := utils.CalcPagination(total)
 
 	categories = post.Dao.GetCategories()
-	return core.Render(c, "admin/posts/posts", fiber.Map{
+	bind := fiber.Map{
 		"PageTitle":         "All Posts",
 		"NavBarActive":      "posts",
 		"Path":              "/admin/posts/manager",
@@ -89,7 +90,10 @@ func ManagerPage(c *fiber.Ctx) error {
 		"HasPagination":     hasPagination,
 		"CurrentPagination": currrentPagination + 1,
 		"QueryParam":        template.URL(queryParam),
-	}, "admin/layouts/app")
+	}
+	user.DecorateUserBar(c, bind)
+
+	return core.Render(c, "admin/posts/posts", bind, "admin/layouts/app")
 }
 
 func EditorPage(c *fiber.Ctx) error {
@@ -104,8 +108,7 @@ func EditorPage(c *fiber.Ctx) error {
 	}
 
 	categories := post.Dao.GetCategories()
-
-	return core.Render(c, "admin/posts/post", fiber.Map{
+	bind := fiber.Map{
 		"PageTitle":    "Post Editor",
 		"NavBarActive": "posts",
 		"Path":         "/admin/posts/editor",
@@ -114,7 +117,10 @@ func EditorPage(c *fiber.Ctx) error {
 		"HasPost":      hasPost,
 		"Post":         postVo,
 		"Categories":   categories,
-	}, "admin/layouts/app")
+	}
+	user.DecorateUserBar(c, bind)
+
+	return core.Render(c, "admin/posts/post", bind, "admin/layouts/app")
 }
 
 func Create(c *fiber.Ctx) error {
@@ -292,7 +298,7 @@ func ManagerCategoryPage(c *fiber.Ctx) error {
 	total = post.Dao.CountCatgegory()
 	totalPagination, hasPagination := utils.CalcPagination(total)
 
-	return core.Render(c, "admin/posts/categories", fiber.Map{
+	bind := fiber.Map{
 		"PageTitle":         "All Categories",
 		"NavBarActive":      "categories",
 		"Path":              "/admin/categories/manager",
@@ -300,7 +306,10 @@ func ManagerCategoryPage(c *fiber.Ctx) error {
 		"TotalPagination":   totalPagination,
 		"HasPagination":     hasPagination,
 		"CurrentPagination": currentPagination + 1,
-	}, "admin/layouts/app")
+	}
+	user.DecorateUserBar(c, bind)
+
+	return core.Render(c, "admin/posts/categories", bind, "admin/layouts/app")
 }
 
 func EditorCategoryPage(c *fiber.Ctx) error {
@@ -314,14 +323,17 @@ func EditorCategoryPage(c *fiber.Ctx) error {
 		categoryVo = *vo
 	}
 
-	return core.Render(c, "admin/posts/category", fiber.Map{
+	bind := fiber.Map{
 		"PageTitle":    "Category Editor",
 		"NavBarActive": "categories",
 		"Path":         "/admin/categories/editor",
 		"Domain":       "127.0.0.1",
 		"HasCategory":  hasCategory,
 		"Category":     categoryVo,
-	}, "admin/layouts/app")
+	}
+	user.DecorateUserBar(c, bind)
+
+	return core.Render(c, "admin/posts/category", bind, "admin/layouts/app")
 }
 
 func CreateCategory(c *fiber.Ctx) error {
@@ -392,7 +404,7 @@ func ManagerTagsPage(c *fiber.Ctx) error {
 	total = post.Dao.CountTag()
 	totalPagination, hasPagination := utils.CalcPagination(total)
 
-	return core.Render(c, "admin/posts/tags", fiber.Map{
+	bind := fiber.Map{
 		"PageTitle":         "All Tags",
 		"NavBarActive":      "tags",
 		"Path":              "/admin/tags/manager",
@@ -400,7 +412,10 @@ func ManagerTagsPage(c *fiber.Ctx) error {
 		"TotalPagination":   totalPagination,
 		"HasPagination":     hasPagination,
 		"CurrentPagination": currentPagination + 1,
-	}, "admin/layouts/app")
+	}
+	user.DecorateUserBar(c, bind)
+
+	return core.Render(c, "admin/posts/tags", bind, "admin/layouts/app")
 }
 
 func EditorTagPage(c *fiber.Ctx) error {
