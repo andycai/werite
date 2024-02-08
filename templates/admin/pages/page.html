@@ -165,7 +165,7 @@
 
   // 原始的插入图片和文件
   Typecho.insertFileToEditor = function (file, url, isImage) {
-    var textarea = $('#text'),
+    var textarea = $('#body'),
       sel = textarea.getSelection(),
       html = isImage ? '<img src="' + url + '" alt="' + file + '" />' : '<a href="' + url + '">' + file + '</a>',
       offset = (sel ? sel.start : 0) + html.length;
@@ -213,7 +213,7 @@
     autoSaveListener();
   }
 
-  $('#text').bind('input propertychange', function () {
+  $('#body').bind('input propertychange', function () {
     if (!locked) {
       autoSave.text("Doesn't save" + (lastSaveTime ? ' (Last saved time: ' + lastSaveTime + ')' : ''));
     }
@@ -275,7 +275,7 @@
 <script src="/static/admin/diff.js"></script>
 <script>
   $(document).ready(function () {
-    var textarea = $('#text'),
+    var textarea = $('#body'),
       toolbar = $('<div class="editor" id="wmd-button-bar" />').insertBefore(textarea.parent()),
       preview = $('<div id="wmd-preview" class="wmd-hidetab" />').insertAfter('.editor');
 
@@ -329,7 +329,7 @@
     };
 
     var converter = new HyperDown(),
-      editor = new Markdown.Pageor(converter, '', options),
+      editor = new Markdown.Editor(converter, '', options),
       diffMatch = new diff_match_patch(), last = '', preview = $('#wmd-preview'),
       mark = '@mark' + Math.ceil(Math.random() * 100000000) + '@',
       span = '<span class="diff" />',
@@ -477,7 +477,7 @@
     });
 
 
-    var input = $('#text'), th = textarea.height(), ph = preview.height(),
+    var input = $('#body'), th = textarea.height(), ph = preview.height(),
       uploadBtn = $('<button type="button" id="btn-fullscreen-upload" class="btn btn-link">'
         + '<i class="i-upload">Attachment</i></button>')
         .prependTo('.submit .right')

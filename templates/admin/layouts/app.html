@@ -8,7 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{.PageTitle}} - Werite</title>
   <meta name="robots" content="noindex, nofollow">
-  <link rel="stylesheet" href="/static/admin/style.css">
+  <link rel="stylesheet" href="/static/admin/css/style.css">
+  {{ if .HasTags }}
   <link rel="stylesheet" href="/static/css/tagify.css">
   <style>
     .tagify--outside{
@@ -32,6 +33,7 @@
 
     .tagify__input { border-radius: 4px; margin: 0; padding: 10px 12px; }
   </style>
+  {{ end }}
   <script src="/static/admin/jquery.js"></script>
   <script src="/static/admin/jquery-ui.js"></script>
   <script src="/static/admin/typecho.js"></script>

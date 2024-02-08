@@ -83,6 +83,7 @@ func EditorPage(c *fiber.Ctx) error {
 		"NavBarActive": "pages",
 		"Path":         "/admin/pages/editor",
 		"Domain":       "127.0.0.1",
+		"HasTags":      true,
 		"HasPage":      hasPage,
 		"Page":         pageVo,
 	}, "admin/layouts/app")

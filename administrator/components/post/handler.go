@@ -110,6 +110,7 @@ func EditorPage(c *fiber.Ctx) error {
 		"NavBarActive": "posts",
 		"Path":         "/admin/posts/editor",
 		"Domain":       "127.0.0.1",
+		"HasTags":      true,
 		"HasPost":      hasPost,
 		"Post":         postVo,
 		"Categories":   categories,
