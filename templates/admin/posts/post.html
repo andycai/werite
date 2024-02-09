@@ -50,7 +50,7 @@
             <label for="date" class="typecho-label">Publish</label>
             <p>
               <input class="typecho-date w-100" type="text" name="published_at" id="published_at" {{ if .HasPost }}
-                value="{{ .Post.CreatedAt.Format " 2006-01-02 15:04" }}" {{ end }} />
+                value="{{ DateFormat .Post.PublishedAt "2006-01-02 15:04" }}" {{ end }} />
             </p>
           </section>
           <section class="typecho-post-option category-option">
@@ -717,7 +717,7 @@
     $('#tab-files').bind('init', function () {
       var uploader = new plupload.Uploader({
         browse_button: $('.upload-file').get(0),
-        url: '/admin/media/upload',
+        url: '/admin/media/upload?path=/post&created=true',
         runtimes: 'html5,flash,html4',
         flash_swf_url: '/static/admin/Moxie.swf',
         drop_element: $('.upload-area').get(0),
