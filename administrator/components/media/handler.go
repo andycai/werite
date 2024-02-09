@@ -11,8 +11,29 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func handleManagerPage(c *fiber.Ctx) error {
-	return nil
+type SimpleMedia struct {
+	Name string `json:"name"`
+	Size int64  `json:"size"`
+}
+
+func handleQuery(c *fiber.Ctx) error {
+	path := c.Query("path")
+	medias, err := getLatest(path, 10)
+	if err != nil {
+		return core.Error(c, http.StatusInternalServerError, err)
+	}
+
+	var result []SimpleMedia = make([]SimpleMedia, len(medias))
+	for i, media := range medias {
+		result[i] = SimpleMedia{
+			Name: media.Name,
+			Size: media.Size,
+		}
+	}
+
+	return c.JSON(fiber.Map{
+		"medias": result,
+	})
 }
 
 func handleMedia(c *fiber.Ctx) error {
@@ -116,5 +137,8 @@ func handleDelete(c *fiber.Ctx) error {
 	if err := removeFile(path, name); err != nil {
 		log.Infof("Delete file failed: %s, %s", media.StorePath, err)
 	}
+
+	db.Where("name = ? AND path = ?", name, path).Delete(&media)
+
 	return nil
 }

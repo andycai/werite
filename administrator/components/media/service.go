@@ -46,6 +46,16 @@ func removeFile(path, name string) error {
 	return nil
 }
 
+func getLatest(path string, count int) ([]model.Media, error) {
+	var medias []model.Media
+	tx := db.Model(&model.Media{}).Where("path", path).Order("created_at desc").Limit(count)
+	r := tx.Find(&medias)
+	if r.Error != nil {
+		return nil, r.Error
+	}
+	return medias, nil
+}
+
 func getMedia(path, name string) (*model.Media, error) {
 	var obj model.Media
 	if len(path) > 1 && path[len(path)-1] == '/' {

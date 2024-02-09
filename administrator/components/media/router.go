@@ -24,7 +24,7 @@ func initRootCheckRouter(r fiber.Router) {
 }
 
 func initAdminCheckRouter(r fiber.Router) {
-	r.Get("/media/manager", handleManagerPage)
+	r.Post("/media/latest", handleQuery)
 
 	r.Post("/media/upload", handleUpload)
 	r.Post("/media/delete", handleDelete)

@@ -572,6 +572,23 @@
 <script src="/static/admin/plupload.js"></script>
 <script>
   $(document).ready(function () {
+    $.post("/admin/media/latest?path=/page", {}, function (data) {
+      if (data.medias && data.medias.length > 0) {
+        var list = $('#file-list');
+        for (var i = 0; i < data.medias.length; i++) {
+          var media = data.medias[i];
+          var li = $('<li><input type="hidden" name="attachment[]" value="' + media.name + '" />'
+            + '<a class="insert" target="_blank" href="###" title="click to insert">' + media.name + '</a><div class="info">' + media.size
+            + ' <a class="file" target="_blank" href="/media/page/'
+            + media.name + '" title="View"><i class="i-edit"></i></a>'
+            + ' <a class="delete" href="###" title="Delete"><i class="i-delete"></i></a></div></li>').appendTo(list);
+          attachInsertEvent(li);
+          attachDeleteEvent(li);
+        }
+        updateAttacmentNumber();
+      }
+    }, 'json');
+
     function updateAttacmentNumber() {
       var btn = $('#tab-files-btn'),
         balloon = $('.balloon', btn),
@@ -660,7 +677,7 @@
         .data('url', data.url)
         .data('image', data.isImage)
         .html('<input type="hidden" name="attachment[]" value="' + data.title + '" />'
-          + '<a class="insert" target="_blank" href="###" title="click to upload">' + data.title + '</a><div class="info">' + data.bytes
+          + '<a class="insert" target="_blank" href="###" title="click to insert">' + data.title + '</a><div class="info">' + data.bytes
           + ' <a class="file" target="_blank" href="'
           + data.url + '" title="View"><i class="i-edit"></i></a>'
           + ' <a class="delete" href="###" title="Delete"><i class="i-delete"></i></a></div>')
