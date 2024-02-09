@@ -616,13 +616,12 @@
         var list = $('#file-list');
         for (var i = 0; i < data.medias.length; i++) {
           var media = data.medias[i];
-          var url = "/media/post/" + media.name;
           var li = $('<li><input type="hidden" name="attachment[]" value="' + media.name + '" />'
             + '<a class="insert" target="_blank" href="###" title="click to insert">' + media.name + '</a><div class="info">' + media.size
             + ' <a class="file" target="_blank" href="'
-            + url + '" title="View"><i class="i-edit"></i></a>'
+            + media.url + '" title="View"><i class="i-edit"></i></a>'
             + ' <a class="delete" href="###" title="Delete"><i class="i-delete"></i></a></div></li>').appendTo(list);
-          li.data('title', media.name).data('url', url).data('image', true)
+          li.data('title', media.name).data('url', media.url).data('image', true)
           attachInsertEvent(li);
           attachDeleteEvent(li);
         }
@@ -673,7 +672,7 @@
 
     function fileUploadStart(file) {
       $('<li id="' + file.id + '" class="loading">'
-        + file.name + '</li>').appendTo('#file-list');
+        + file.name + '</li>').prependTo('#file-list');
     }
 
     function fileUploadError(error) {

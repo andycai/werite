@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/andycai/werite/administrator/components/user"
+	"github.com/andycai/werite/conf"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/log"
 	"github.com/andycai/werite/model"
@@ -14,6 +15,7 @@ import (
 type SimpleMedia struct {
 	Name string `json:"name"`
 	Size int64  `json:"size"`
+	Url  string `json:"url"`
 }
 
 func handleQuery(c *fiber.Ctx) error {
@@ -25,9 +27,14 @@ func handleQuery(c *fiber.Ctx) error {
 
 	var result []SimpleMedia = make([]SimpleMedia, len(medias))
 	for i, media := range medias {
+		mediaHost := conf.GetValue("app.mediaHost", "http://127.0.0.1:8000")
+		mediaPrefix := conf.GetValue("app.mediaPrefix", "/media/")
+		media.BuildPublicUrls(mediaHost, mediaPrefix)
+
 		result[i] = SimpleMedia{
 			Name: media.Name,
 			Size: media.Size,
+			Url:  media.PublicUrl,
 		}
 	}
 
@@ -110,8 +117,8 @@ func handleUpload(c *fiber.Ctx) error {
 		}
 	}
 
-	mediaHost := ""
-	mediaPrefix := "/media/"
+	mediaHost := conf.GetValue("app.mediaHost", "http://127.0.0.1:8000")
+	mediaPrefix := conf.GetValue("app.mediaPrefix", "/media/")
 	media.BuildPublicUrls(mediaHost, mediaPrefix)
 
 	r.PublicUrl = media.PublicUrl

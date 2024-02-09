@@ -22,3 +22,17 @@ func ReadConf() {
 	pflag.Parse()
 	viper.BindPFlags(pflag.CommandLine) // 绑定命令行参数
 }
+
+func GetValue(key, defaultValue string) string {
+	if viper.GetString(key) == "" {
+		return defaultValue
+	}
+	return viper.GetString(key)
+}
+
+func GetIntValue(key string, defaultValue int) int {
+	if viper.GetInt(key) == 0 {
+		return defaultValue
+	}
+	return viper.GetInt(key)
+}

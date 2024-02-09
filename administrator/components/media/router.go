@@ -1,6 +1,7 @@
 package media
 
 import (
+	"github.com/andycai/werite/conf"
 	"github.com/andycai/werite/core"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -19,7 +20,8 @@ func initDB(dbs []*gorm.DB) {
 }
 
 func initRootCheckRouter(r fiber.Router) {
-	g := r.Group("/media/")
+	prefix := conf.GetValue("app.mediaPrefix", "/media/")
+	g := r.Group(prefix)
 	g.Get("/*", handleMedia)
 }
 

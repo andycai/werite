@@ -8,6 +8,7 @@ import (
 	"github.com/andycai/werite/administrator/enum"
 	"github.com/andycai/werite/administrator/utils"
 	"github.com/andycai/werite/components/page"
+	"github.com/andycai/werite/conf"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
 	"github.com/andycai/werite/model"
@@ -89,6 +90,8 @@ func handleEditorPage(c *fiber.Ctx) error {
 		"Domain":       "127.0.0.1",
 		"HasPage":      hasPage,
 		"Page":         pageVo,
+		"MediaPrefix":  conf.GetValue("app.mediaPrefix", "/media/"),
+		"MediaHost":    conf.GetValue("app.mediaHost", "http://127.0.0.1:8000"),
 	}
 	user.DecorateUserBar(c, bind)
 
