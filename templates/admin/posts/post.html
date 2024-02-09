@@ -783,7 +783,7 @@
       $('.delete', el).click(function () {
         if (confirm('Confirm to delete the file %s?'.replace('%s', file))) {
           var title = $(this).parents('li').data('title');
-          $.post('/admin/media/delete',
+          $.post('/admin/media/delete?name=' + file + '&path=/post',
             { 'title': title },
             function () {
               $(el).fadeOut(function () {

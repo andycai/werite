@@ -6,6 +6,7 @@ import (
 
 	"github.com/andycai/werite/administrator/components/user"
 	"github.com/andycai/werite/core"
+	"github.com/andycai/werite/log"
 	"github.com/andycai/werite/model"
 	"github.com/gofiber/fiber/v2"
 )
@@ -104,5 +105,16 @@ func handleUpload(c *fiber.Ctx) error {
 }
 
 func handleDelete(c *fiber.Ctx) error {
+	path := c.Query("path")
+	name := c.Query("name")
+
+	media, err := getMedia(path, name)
+	if err != nil {
+		return core.Error(c, http.StatusNotFound, err)
+	}
+
+	if err := removeFile(path, name); err != nil {
+		log.Infof("Delete file failed: %s, %s", media.StorePath, err)
+	}
 	return nil
 }
