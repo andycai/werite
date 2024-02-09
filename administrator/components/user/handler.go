@@ -103,7 +103,7 @@ func handleProfilePage(c *fiber.Ctx) error {
 
 	bind := fiber.Map{
 		"PageTitle":    "Profile",
-		"NavBarActive": "users",
+		"NavBarActive": "settings",
 		"Path":         "/admin/users/profile",
 		"User":         userVo,
 	}
@@ -115,7 +115,7 @@ func handleProfilePage(c *fiber.Ctx) error {
 func handleSecurityPage(c *fiber.Ctx) error {
 	bind := fiber.Map{
 		"PageTitle":    "Profile",
-		"NavBarActive": "users",
+		"NavBarActive": "settings",
 		"Path":         "/admin/users/security",
 	}
 	DecorateUserBar(c, bind)
@@ -143,7 +143,7 @@ func handleProfileSave(c *fiber.Ctx) error {
 	return c.Redirect("/admin/users/profile")
 }
 
-func handlePasswordSave(c *fiber.Ctx) error {
+func handleSecuritySave(c *fiber.Ctx) error {
 	var userVo *model.User
 	isAuthenticated, userID := authentication.AuthGet(c)
 

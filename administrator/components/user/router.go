@@ -33,7 +33,7 @@ func initCheckRouter(r fiber.Router) {
 	r.Get("/users/profile", handleProfilePage)
 	r.Post("/users/profile", handleProfileSave)
 	r.Get("/users/security", handleSecurityPage)
-	r.Post("/users/password", handlePasswordSave)
+	r.Post("/users/security", handleSecuritySave)
 }
 
 func init() {

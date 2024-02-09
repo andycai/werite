@@ -7,7 +7,7 @@ app:
   cacheDir: "./cache/"
   mediaDir: "./media/"
 httpserver:
-  addr: ":8888"
+  addr: ":8000"
 log:
   dir: "./log/"
 db:

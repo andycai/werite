@@ -18,6 +18,9 @@
 # vendor/
 bin/
 .idea/
+*.db
+*.sqlite3
+data/
 
 # Go workspace file
 go.work
