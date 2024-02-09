@@ -19,5 +19,5 @@ func initNoCheckRouter(r fiber.Router) {
 }
 
 func init() {
-	core.RegisterNoCheckRouter(KeyHomeNoCheckRouter, initNoCheckRouter)
+	core.RegisterRootNoCheckRouter(KeyHomeNoCheckRouter, initNoCheckRouter)
 }

@@ -18,7 +18,12 @@ func initDB(dbs []*gorm.DB) {
 	db = dbs[0]
 }
 
-func initCheckRouter(r fiber.Router) {
+func initRootCheckRouter(r fiber.Router) {
+	g := r.Group("/media/")
+	g.Get("/*", handleMedia)
+}
+
+func initAdminCheckRouter(r fiber.Router) {
 	r.Get("/media/manager", handleManagerPage)
 
 	r.Post("/media/upload", handleUpload)
@@ -27,5 +32,6 @@ func initCheckRouter(r fiber.Router) {
 
 func init() {
 	core.RegisterDatabase(KeyDB, initDB)
-	core.RegisterAdminCheckRouter(KeyCheckRouter, initCheckRouter)
+	core.RegisterRootNoCheckRouter(KeyNoCheckRouter, initRootCheckRouter)
+	core.RegisterAdminCheckRouter(KeyCheckRouter, initAdminCheckRouter)
 }

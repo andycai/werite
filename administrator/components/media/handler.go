@@ -88,8 +88,8 @@ func handleUpload(c *fiber.Ctx) error {
 		}
 	}
 
-	mediaHost := ""          // user.GetValue(enum.KEY_CMS_MEDIA_HOST)
-	mediaPrefix := "/media/" // user.GetValue(enum.KEY_CMS_MEDIA_PREFIX)
+	mediaHost := ""
+	mediaPrefix := "/media/"
 	media.BuildPublicUrls(mediaHost, mediaPrefix)
 
 	r.PublicUrl = media.PublicUrl

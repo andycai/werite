@@ -37,6 +37,6 @@ func initCheckRouter(r fiber.Router) {
 
 func init() {
 	core.RegisterDatabase(KeyUserDB, initDB)
-	core.RegisterNoCheckRouter(KeyUserCheckRouter, initNoCheckRouter)
-	core.RegisterCheckRouter(KeyUserCheckRouter, initCheckRouter)
+	core.RegisterRootNoCheckRouter(KeyUserCheckRouter, initNoCheckRouter)
+	core.RegisterAPICheckRouter(KeyUserCheckRouter, initCheckRouter)
 }
