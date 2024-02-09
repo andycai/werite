@@ -20,7 +20,7 @@ type SimpleMedia struct {
 
 func handleQuery(c *fiber.Ctx) error {
 	path := c.Query("path")
-	medias, err := getLatest(path, 10)
+	medias, err := getLatest(path, conf.GetIntValue("app.mediaShowLimit", 20))
 	if err != nil {
 		return core.Error(c, http.StatusInternalServerError, err)
 	}

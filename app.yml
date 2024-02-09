@@ -8,6 +8,7 @@ app:
   mediaDir: "./media/"
   mediaPrefix: "/media/"
   mediaHost: "http://127.0.0.1:8000"
+  mediaShowLimit: 20
 httpserver:
   addr: ":8000"
 log:
