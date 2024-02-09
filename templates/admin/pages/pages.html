@@ -38,14 +38,16 @@
           <table class="typecho-list-table">
             <colgroup>
               <col width="20" />
-              <col width="64%" />
-              <col width="12" />
+              <col width="48%" />
+              <col width="20%" />
+              <col width="12%" />
               <col width="16%" />
             </colgroup>
             <thead>
               <tr>
                 <th> </th>
                 <th>Title</th>
+                <th>Slug</th>
                 <th>Author</th>
                 <th>Date</th>
               </tr>
@@ -71,6 +73,7 @@
                     {{ end }}
                   </div>
                 </td>
+                <td>{{ .Slug }}</td>
                 <td>{{ .User.Name }}</td>
                 <td>Published<br />{{ DateFormat .PublishedAt "2006-01-02 15:04" }}</td>
               </tr>
