@@ -13,7 +13,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func BlogPage(c *fiber.Ctx) error {
+func handleBlogPage(c *fiber.Ctx) error {
 	_, userID := authentication.AuthGet(c)
 
 	var blogVo model.Blog
@@ -33,7 +33,7 @@ func BlogPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/settings/blog", bind, "admin/layouts/app")
 }
 
-func BlogSave(c *fiber.Ctx) error {
+func handleBlogSave(c *fiber.Ctx) error {
 	blogVo := model.Blog{}
 
 	_, userID := authentication.AuthGet(c)

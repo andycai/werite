@@ -63,7 +63,7 @@ func LoginAction(c *fiber.Ctx) error {
 	return c.Redirect("/admin/dashboard")
 }
 
-func LogoutAction(c *fiber.Ctx) error {
+func handleLogoutAction(c *fiber.Ctx) error {
 	isAuthenticated, userID := authentication.AuthGet(c)
 	if !isAuthenticated {
 		return core.Render(c, "admin/login", fiber.Map{})
@@ -75,7 +75,7 @@ func LogoutAction(c *fiber.Ctx) error {
 	return core.Render(c, "admin/login", fiber.Map{})
 }
 
-func DashBoardPage(c *fiber.Ctx) error {
+func handleDashBoardPage(c *fiber.Ctx) error {
 	userTotal := user.Dao.Count()
 	postTotal := post.Dao.Count()
 	pageTotal := page.Dao.Count()
@@ -93,7 +93,7 @@ func DashBoardPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/dashboard", bind, "admin/layouts/app")
 }
 
-func ProfilePage(c *fiber.Ctx) error {
+func handleProfilePage(c *fiber.Ctx) error {
 	var userVo *model.User
 	isAuthenticated, userID := authentication.AuthGet(c)
 
@@ -112,7 +112,7 @@ func ProfilePage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/users/profile", bind, "admin/layouts/app")
 }
 
-func SecurityPage(c *fiber.Ctx) error {
+func handleSecurityPage(c *fiber.Ctx) error {
 	bind := fiber.Map{
 		"PageTitle":    "Profile",
 		"NavBarActive": "users",
@@ -123,7 +123,7 @@ func SecurityPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/users/security", bind, "admin/layouts/app")
 }
 
-func ProfileSave(c *fiber.Ctx) error {
+func handleProfileSave(c *fiber.Ctx) error {
 	var userVo *model.User
 	isAuthenticated, userID := authentication.AuthGet(c)
 
@@ -143,7 +143,7 @@ func ProfileSave(c *fiber.Ctx) error {
 	return c.Redirect("/admin/users/profile")
 }
 
-func PasswordSave(c *fiber.Ctx) error {
+func handlePasswordSave(c *fiber.Ctx) error {
 	var userVo *model.User
 	isAuthenticated, userID := authentication.AuthGet(c)
 

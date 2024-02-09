@@ -27,13 +27,13 @@ func initNoCheckRouter(r fiber.Router) {
 }
 
 func initCheckRouter(r fiber.Router) {
-	r.Get("/logout", LogoutAction)
-	r.Get("/dashboard", DashBoardPage)
+	r.Get("/logout", handleLogoutAction)
+	r.Get("/dashboard", handleDashBoardPage)
 
-	r.Get("/users/profile", ProfilePage)
-	r.Post("/users/profile", ProfileSave)
-	r.Get("/users/security", SecurityPage)
-	r.Post("/users/password", PasswordSave)
+	r.Get("/users/profile", handleProfilePage)
+	r.Post("/users/profile", handleProfileSave)
+	r.Get("/users/security", handleSecurityPage)
+	r.Post("/users/password", handlePasswordSave)
 }
 
 func init() {

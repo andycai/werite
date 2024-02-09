@@ -19,10 +19,10 @@ func initDB(dbs []*gorm.DB) {
 }
 
 func initCheckRouter(r fiber.Router) {
-	r.Get("/media/manager", ManagerPage)
+	r.Get("/media/manager", handleManagerPage)
 
-	r.Post("/media/upload", Upload)
-	r.Post("/media/delete", Delete)
+	r.Post("/media/upload", handleUpload)
+	r.Post("/media/delete", handleDelete)
 }
 
 func init() {

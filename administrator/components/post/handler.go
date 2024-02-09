@@ -19,7 +19,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func ManagerPage(c *fiber.Ctx) error {
+func handleManagerPage(c *fiber.Ctx) error {
 	var (
 		total              int64
 		totalAll           int64
@@ -96,7 +96,7 @@ func ManagerPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/posts/posts", bind, "admin/layouts/app")
 }
 
-func EditorPage(c *fiber.Ctx) error {
+func handleEditorPage(c *fiber.Ctx) error {
 	var postVo model.Post
 	hasPost := false
 
@@ -123,7 +123,7 @@ func EditorPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/posts/post", bind, "admin/layouts/app")
 }
 
-func Create(c *fiber.Ctx) error {
+func handleCreate(c *fiber.Ctx) error {
 	type TagItem struct {
 		Value string
 	}
@@ -167,7 +167,7 @@ func Create(c *fiber.Ctx) error {
 	return c.Redirect("/admin/posts/manager")
 }
 
-func Update(c *fiber.Ctx) error {
+func handleUpdate(c *fiber.Ctx) error {
 	type TagItem struct {
 		Value string
 	}
@@ -224,7 +224,7 @@ func Update(c *fiber.Ctx) error {
 	return c.Redirect("/admin/posts/manager")
 }
 
-func MoveToTrashByID(c *fiber.Ctx) error {
+func handleMoveToTrashByID(c *fiber.Ctx) error {
 	id := cast.ToUint(c.Params("id"))
 	if id > 0 {
 		post.Dao.DeleteByIds([]uint{id})
@@ -234,7 +234,7 @@ func MoveToTrashByID(c *fiber.Ctx) error {
 	return c.Redirect("/admin/posts/manager")
 }
 
-func MoveToTrash(c *fiber.Ctx) error {
+func handleMoveToTrash(c *fiber.Ctx) error {
 	form := &utils.FormIDArray{}
 	if err := c.BodyParser(form); err != nil {
 		return err
@@ -260,7 +260,7 @@ func DeletePermanetlyByIds(c *fiber.Ctx) error {
 	return c.Redirect("/admin/posts/manager")
 }
 
-func RestoreByID(c *fiber.Ctx) error {
+func handleRestoreByID(c *fiber.Ctx) error {
 	id := cast.ToUint(c.Params("id"))
 	if id > 0 {
 		post.Dao.RestoreByIds([]uint{id})
@@ -270,7 +270,7 @@ func RestoreByID(c *fiber.Ctx) error {
 	return c.Redirect("/admin/posts/manager")
 }
 
-func Restore(c *fiber.Ctx) error {
+func handleRestore(c *fiber.Ctx) error {
 	form := &utils.FormIDArray{}
 	if err := c.BodyParser(form); err != nil {
 		return err
@@ -283,7 +283,7 @@ func Restore(c *fiber.Ctx) error {
 	return c.Redirect("/admin/posts/manager")
 }
 
-func ManagerCategoryPage(c *fiber.Ctx) error {
+func handleManagerCategoryPage(c *fiber.Ctx) error {
 	var (
 		total             int64
 		currentPagination int
@@ -312,7 +312,7 @@ func ManagerCategoryPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/posts/categories", bind, "admin/layouts/app")
 }
 
-func EditorCategoryPage(c *fiber.Ctx) error {
+func handleEditorCategoryPage(c *fiber.Ctx) error {
 	var categoryVo model.Category
 	hasCategory := false
 
@@ -336,7 +336,7 @@ func EditorCategoryPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/posts/category", bind, "admin/layouts/app")
 }
 
-func CreateCategory(c *fiber.Ctx) error {
+func handleCreateCategory(c *fiber.Ctx) error {
 	var categoryVo model.Category
 
 	err := post.BindCategory(c, &categoryVo)
@@ -351,7 +351,7 @@ func CreateCategory(c *fiber.Ctx) error {
 	return c.Redirect("/admin/categories/manager")
 }
 
-func UpdateCategory(c *fiber.Ctx) error {
+func handleUpdateCategory(c *fiber.Ctx) error {
 	var categoryVo model.Category
 
 	err := db.Model(&categoryVo).
@@ -376,7 +376,7 @@ func UpdateCategory(c *fiber.Ctx) error {
 	return c.Redirect("/admin/categories/manager")
 }
 
-func DeleteCategories(c *fiber.Ctx) error {
+func handleDeleteCategories(c *fiber.Ctx) error {
 	form := &utils.FormIDArray{}
 	if err := c.BodyParser(form); err != nil {
 		return err
@@ -389,7 +389,7 @@ func DeleteCategories(c *fiber.Ctx) error {
 	return c.Redirect("/admin/categories/manager")
 }
 
-func ManagerTagsPage(c *fiber.Ctx) error {
+func handleManagerTagsPage(c *fiber.Ctx) error {
 	var (
 		total             int64
 		currentPagination int
@@ -418,7 +418,7 @@ func ManagerTagsPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/posts/tags", bind, "admin/layouts/app")
 }
 
-func EditorTagPage(c *fiber.Ctx) error {
+func handleEditorTagPage(c *fiber.Ctx) error {
 	var tagVo model.Tag
 	hasTag := false
 
@@ -439,7 +439,7 @@ func EditorTagPage(c *fiber.Ctx) error {
 	}, "admin/layouts/app")
 }
 
-func CreateTag(c *fiber.Ctx) error {
+func handleCreateTag(c *fiber.Ctx) error {
 	var tagVo model.Tag
 
 	err := post.BindTag(c, &tagVo)
@@ -454,7 +454,7 @@ func CreateTag(c *fiber.Ctx) error {
 	return c.Redirect("/admin/tags/manager")
 }
 
-func DeleteTags(c *fiber.Ctx) error {
+func handleDeleteTags(c *fiber.Ctx) error {
 	form := &utils.FormIDArray{}
 	if err := c.BodyParser(form); err != nil {
 		return err

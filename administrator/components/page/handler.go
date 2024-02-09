@@ -15,7 +15,7 @@ import (
 	"github.com/spf13/cast"
 )
 
-func ManagerPage(c *fiber.Ctx) error {
+func handleManagerPage(c *fiber.Ctx) error {
 	var (
 		total             int64
 		totalAll          int64
@@ -71,7 +71,7 @@ func ManagerPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/pages/pages", bind, "admin/layouts/app")
 }
 
-func EditorPage(c *fiber.Ctx) error {
+func handleEditorPage(c *fiber.Ctx) error {
 	var pageVo model.Page
 	hasPage := false
 
@@ -95,7 +95,7 @@ func EditorPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/pages/page", bind, "admin/layouts/app")
 }
 
-func Create(c *fiber.Ctx) error {
+func handleCreate(c *fiber.Ctx) error {
 	var pageVo model.Page
 
 	err := page.Bind(c, &pageVo)
@@ -113,7 +113,7 @@ func Create(c *fiber.Ctx) error {
 	return c.Redirect("/admin/pages/manager")
 }
 
-func Update(c *fiber.Ctx) error {
+func handleUpdate(c *fiber.Ctx) error {
 	var pageVo model.Page
 
 	err := page.Bind(c, &pageVo)
@@ -128,7 +128,7 @@ func Update(c *fiber.Ctx) error {
 	return c.Redirect("/admin/pages/manager")
 }
 
-func MoveToTrashByID(c *fiber.Ctx) error {
+func handleMoveToTrashByID(c *fiber.Ctx) error {
 	id := cast.ToUint(c.Params("id"))
 	if id > 0 {
 		page.Dao.DeleteByIds([]uint{id})
@@ -138,7 +138,7 @@ func MoveToTrashByID(c *fiber.Ctx) error {
 	return c.Redirect("/admin/pages/manager")
 }
 
-func MoveToTrash(c *fiber.Ctx) error {
+func handleMoveToTrash(c *fiber.Ctx) error {
 	form := &utils.FormIDArray{}
 	if err := c.BodyParser(form); err != nil {
 		return err
@@ -164,7 +164,7 @@ func DeletePermanetly(c *fiber.Ctx) error {
 	return c.Redirect("/admin/pages/manager")
 }
 
-func RestoreByID(c *fiber.Ctx) error {
+func handleRestoreByID(c *fiber.Ctx) error {
 	id := cast.ToUint(c.Params("id"))
 	if id > 0 {
 		page.Dao.RestoreByIds([]uint{id})
@@ -174,7 +174,7 @@ func RestoreByID(c *fiber.Ctx) error {
 	return c.Redirect("/admin/pages/manager")
 }
 
-func Restore(c *fiber.Ctx) error {
+func handleRestore(c *fiber.Ctx) error {
 	form := &utils.FormIDArray{}
 	if err := c.BodyParser(form); err != nil {
 		return err
