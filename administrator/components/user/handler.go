@@ -14,7 +14,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func LoginPage(c *fiber.Ctx) error {
+func handleLoginPage(c *fiber.Ctx) error {
 	isAuthenticated, _ := authentication.AuthGet(c)
 
 	if isAuthenticated {
@@ -24,7 +24,7 @@ func LoginPage(c *fiber.Ctx) error {
 	return core.Render(c, "admin/login", fiber.Map{})
 }
 
-func LoginAction(c *fiber.Ctx) error {
+func handleLoginAction(c *fiber.Ctx) error {
 	var userVo *model.User
 	email := c.FormValue("email")
 	password := c.FormValue("password")
