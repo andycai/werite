@@ -27,9 +27,11 @@ func main() {
 	log.Setup()
 	conf.ReadConf()
 
+	dbDriver := viper.GetString("db.type")
+	dsn := viper.GetString("db.dsn")
 	// database open and init
-	db, err := database.InitRDBMS(viper.GetString("db.type"),
-		viper.GetString("db.dsn"),
+	db, err := database.InitRDBMS(dbDriver,
+		dsn,
 		viper.GetInt("db.active"),
 		viper.GetInt("db.idle"),
 		viper.GetInt("db.idletimeout"))
@@ -40,7 +42,9 @@ func main() {
 	dbs := []*gorm.DB{db}
 	core.AutoMigrate(dbs)
 	core.SetupDatabase(dbs)
-	authentication.SessionStart()
+
+	sqlDb, _ := db.DB()
+	authentication.SessionSetup(dbDriver, sqlDb, dsn, "auth_session")
 	core.SetZoneOffset(viper.GetInt("app.zoneoffset"))
 	core.SetLang(viper.GetString("app.lang"))
 
