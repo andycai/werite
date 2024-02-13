@@ -7,13 +7,13 @@ import (
 	"html/template"
 
 	"github.com/andycai/werite/administrator/components/user"
-	"github.com/andycai/werite/administrator/enum"
-	"github.com/andycai/werite/administrator/utils"
 	"github.com/andycai/werite/components/post"
 	"github.com/andycai/werite/conf"
+	"github.com/andycai/werite/constant"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
 	"github.com/andycai/werite/model"
+	"github.com/andycai/werite/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gosimple/slug"
 	"github.com/spf13/cast"
@@ -50,16 +50,16 @@ func handleManagerPage(c *fiber.Ctx) error {
 
 	switch status {
 	case "publish": // publish
-		voList = post.Dao.GetPublishedListByPage(currrentPagination, enum.NUM_PER_PAGE, categoryID, q)
+		voList = post.Dao.GetPublishedListByPage(currrentPagination, constant.NUM_PER_PAGE, categoryID, q)
 		total = totalPublished
 	case "draft": // draft
-		voList = post.Dao.GetDraftListByPage(currrentPagination, enum.NUM_PER_PAGE, categoryID, q)
+		voList = post.Dao.GetDraftListByPage(currrentPagination, constant.NUM_PER_PAGE, categoryID, q)
 		total = totalDraft
 	case "trash": // trash
-		voList = post.Dao.GetTrashListByPage(currrentPagination, enum.NUM_PER_PAGE, categoryID, q)
+		voList = post.Dao.GetTrashListByPage(currrentPagination, constant.NUM_PER_PAGE, categoryID, q)
 		total = totalTrash
 	default: // all
-		voList = post.Dao.GetListByPage(currrentPagination, enum.NUM_PER_PAGE, categoryID, q)
+		voList = post.Dao.GetListByPage(currrentPagination, constant.NUM_PER_PAGE, categoryID, q)
 		total = totalAll
 	}
 
@@ -296,7 +296,7 @@ func handleManagerCategoryPage(c *fiber.Ctx) error {
 		currentPagination = c.QueryInt("page") - 1
 	}
 
-	categories = post.Dao.GetCategoriesByPage(currentPagination, enum.NUM_PER_PAGE)
+	categories = post.Dao.GetCategoriesByPage(currentPagination, constant.NUM_PER_PAGE)
 
 	total = post.Dao.CountCatgegory()
 	totalPagination, hasPagination := utils.CalcPagination(total)
@@ -402,7 +402,7 @@ func handleManagerTagsPage(c *fiber.Ctx) error {
 		currentPagination = c.QueryInt("page") - 1
 	}
 
-	tags = post.Dao.GetTagsByPage(currentPagination, enum.NUM_PER_PAGE)
+	tags = post.Dao.GetTagsByPage(currentPagination, constant.NUM_PER_PAGE)
 
 	total = post.Dao.CountTag()
 	totalPagination, hasPagination := utils.CalcPagination(total)

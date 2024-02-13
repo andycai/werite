@@ -5,13 +5,13 @@ import (
 	"html/template"
 
 	"github.com/andycai/werite/administrator/components/user"
-	"github.com/andycai/werite/administrator/enum"
-	"github.com/andycai/werite/administrator/utils"
 	"github.com/andycai/werite/components/page"
 	"github.com/andycai/werite/conf"
+	"github.com/andycai/werite/constant"
 	"github.com/andycai/werite/core"
 	"github.com/andycai/werite/library/authentication"
 	"github.com/andycai/werite/model"
+	"github.com/andycai/werite/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cast"
 )
@@ -39,10 +39,10 @@ func handleManagerPage(c *fiber.Ctx) error {
 
 	switch status {
 	case "trash":
-		voList = page.Dao.GetTrashListByPage(CurrentPagination, enum.NUM_PER_PAGE, q)
+		voList = page.Dao.GetTrashListByPage(CurrentPagination, constant.NUM_PER_PAGE, q)
 		total = totalTrash
 	default:
-		voList = page.Dao.GetListByPage(CurrentPagination, enum.NUM_PER_PAGE, q)
+		voList = page.Dao.GetListByPage(CurrentPagination, constant.NUM_PER_PAGE, q)
 		total = totalAll
 	}
 

@@ -13,7 +13,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/andycai/werite/administrator/enum"
+	"github.com/andycai/werite/constant"
 	"github.com/andycai/werite/library/random"
 	"github.com/andycai/werite/log"
 	"github.com/andycai/werite/model"
@@ -146,13 +146,13 @@ func uploadFile(path, name string, reader io.Reader) (*model.UploadResult, error
 		canGetDimension = true
 		fallthrough
 	case ".webp", ".svg", ".ico", ".bmp":
-		r.ContentType = enum.ContentTypeImage
+		r.ContentType = constant.ContentTypeImage
 	case ".mp3", ".wav", ".ogg", ".aac", ".flac":
-		r.ContentType = enum.ContentTypeAudio
+		r.ContentType = constant.ContentTypeAudio
 	case ".mp4", ".webm", ".avi", ".mov", ".wmv", ".mkv":
-		r.ContentType = enum.ContentTypeVideo
+		r.ContentType = constant.ContentTypeVideo
 	default:
-		r.ContentType = enum.ContentTypeFile
+		r.ContentType = constant.ContentTypeFile
 	}
 	data, err := io.ReadAll(reader)
 	if err != nil {
